@@ -3,7 +3,7 @@ const refreshAccessToken = async () => {
 
     if (!refreshToken) {
         console.error("No refresh token found, redirecting to login.");
-        window.location.href = "/login"; // توجيه المستخدم إلى صفحة تسجيل الدخول
+        window.location.href = "/login"; 
         return null;
     }
 
@@ -16,7 +16,7 @@ const refreshAccessToken = async () => {
 
         if (!response.ok) {
             console.error("Failed to refresh token. Redirecting to login.");
-            window.location.href = "/login"; // توجيه المستخدم عند فشل التحديث
+            window.location.href = "/login"; 
             return null;
         }
 
@@ -33,7 +33,7 @@ const refreshAccessToken = async () => {
 
     } catch (error) {
         console.error("Error refreshing token:", error);
-        window.location.href = "/login"; // التوجيه عند حدوث أي خطأ
+        window.location.href = "/login"; 
         return null;
     }
 };
