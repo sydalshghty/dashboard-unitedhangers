@@ -30,7 +30,7 @@ import EditProduct from "./components/EditProduct";
 import Login from "./components/login";
 import ViewInquiry from "./components/ViewInquiry";
 import { useNavigate } from "react-router-dom";
-import "./app.css";
+import "./App.css";
 import useTokenRefresher from "./components/TokenContext";
 
 
