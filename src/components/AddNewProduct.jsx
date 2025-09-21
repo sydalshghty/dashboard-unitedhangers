@@ -70,61 +70,56 @@ function AddNewProduct() {
         console.error("Error not found data", error)
         alert("Not Found Data")
        }
+    }
+
+    useEffect(() => {
+        getAllMaterials();
+    }, []);
+
+    const materials = allmaterials;
+//
+    const [allSizes, setAllSizes] = useState([]);
+    const getAllSizes = () => {
+        try{
+            fetch(`https://united-hanger-2025.up.railway.app//api/sizes`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }).then((response) => response.json())
+            .then(data => setAllSizes(data.sizes));
         }
-
-        useEffect(() => {
-            getAllMaterials();
-        }, []);
-
-        console.log(allmaterials);
-
-        const materials = allmaterials;
-//
-        const [allSizes, setAllSizes] = useState([]);
-        const getAllSizes = () => {
-            try{
-                fetch(`https://united-hanger-2025.up.railway.app//api/sizes`, {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
-                }).then((response) => response.json())
-                .then(data => setAllSizes(data.sizes));
-            }
-            catch (error) {
-                console.error("Error not found data", error)
-            }
-            }
+        catch (error) {
+            console.error("Error not found data", error)
+        }
+    }
     
-        useEffect(() => {
-            getAllSizes();
-        }, [])
-        console.log(allSizes);
-        const sizes = allSizes;
+    useEffect(() => {
+        getAllSizes();
+    }, [])
+    const sizes = allSizes;
 //
-        const [allColors,setAllColors] = useState([]);
-        const getAllColors = async () => {
-            try{
-                await fetch("https://united-hanger-2025.up.railway.app//api/colors", {
-                    method: "GET",
-                      headers: {
-                              "Authorization": `Bearer ${token}` 
-                          }
-                })
-                  .then((response) => response.json())
-                  .then((data) => setAllColors(data.colors))
-              }
-              catch (error) {
-                console.error("Error not found data", error)
-              }
-            }
+    const [allColors,setAllColors] = useState([]);
+    const getAllColors = async () => {
+        try{
+            await fetch("https://united-hanger-2025.up.railway.app//api/colors", {
+                method: "GET",
+                  headers: {
+                          "Authorization": `Bearer ${token}` 
+                      }
+            })
+              .then((response) => response.json())
+              .then((data) => setAllColors(data.colors))
+          }
+          catch (error) {
+            console.error("Error not found data", error)
+          }
+    }
     
-        useEffect(() => {
-            getAllColors()
-        }, []);
-        console.log(allColors);
-
-        const colors = allColors;
+    useEffect(() => {
+        getAllColors()
+    }, []);
+    const colors = allColors;
 //
     const handleSelectMaterial = (id) => {
         setSelectedMaterials((prev) =>
@@ -160,7 +155,6 @@ function AddNewProduct() {
         material_ids: selectedMaterials, 
         };
 
-        
         const formData = new FormData();
         formData.append("product_data", JSON.stringify(productData));
         formData.append("images", image1);
@@ -177,19 +171,24 @@ function AddNewProduct() {
                 body: formData,
             })
     
-            const data = response.json()
-                .then(data => console.log({
-                    data,
-                    images,
-                    productData
-            }))
-            console.log(data)
+            if (!response.ok) {
+                alert("❌ Failed to add product. Please try again");
+                return;
+            }
+
+            const data = await response.json();
+            console.log({ data, images, productData });
+
+            alert("✅ Product added successfully");
+            handleNavigate();
+
         }
         catch (error) {
             console.log("Error adding product:",error)
-            alert("Failed to add product. Please try again.");
+            alert("❌ Failed to add product. Please try again");
         }            
-}    
+    }    
+
     return (
         <div className="Add-New-Product-Departament">
             <div className="heading-AddNewProduct">
@@ -204,13 +203,7 @@ function AddNewProduct() {
             <div
                 className="submit-col"
                 onClick={async () => {
-                    await  AddNewProduct();
-                    handleNavigate();
-                    console.log({
-                        images,
-                        name,
-                        selectedMaterials,
-                    });
+                    await AddNewProduct();
                 }}
             >
                 <SubmitButton />
@@ -224,19 +217,20 @@ function AddNewProduct() {
                         <input type="file" onChange={handleImageChange} name="Img-Product" />
                         <img src={imgSelect} alt="img-Select" />
                         <p>Select Main Image</p>
-                        {image1 ? (
-                            <img
-                                className="img-upload"
-                                src={URL.createObjectURL(image1)}
-                                alt="Uploaded"
-                                style={{
-                                    position: "absolute",
-                                    maxWidth: "100%",
-                                    maxHeight: "100%",
-                                    objectFit: "contain",
-                                }}
-                            />
-                        ) : null}
+                            {image1 ? (
+                                <img
+                                    className="img-upload"
+                                    src={URL.createObjectURL(image1)}
+                                    alt="Uploaded"
+                                    style={{
+                                        position: "absolute",
+                                        width: "250px",
+                                        height: "230px",
+                                        left: "40%",
+                                        top: "-50%"
+                                    }}
+                                />
+                            ) : null}
                     </div>
                 </div>
                 <div className="select-Image-Two">
@@ -248,14 +242,13 @@ function AddNewProduct() {
                                 <p>Select Image</p>
                                 {image2 ? (
                                     <img
-                                        className="img-upload"
+                                        className="img-upload-small"
                                         src={URL.createObjectURL(image2)}
                                         alt="Uploaded"
                                         style={{
                                             position: "absolute",
-                                            maxWidth: "100%",
-                                            maxHeight: "100%",
-                                            objectFit: "contain",
+                                            width: "100%",
+                                            height: "100%",
                                         }}
                                     />
                                 ) : null}
@@ -268,14 +261,13 @@ function AddNewProduct() {
                                 <p>Select Image</p>
                                 {image3 ? (
                                     <img
-                                        className="img-upload"
+                                        className="img-upload-small"
                                         src={URL.createObjectURL(image3)}
                                         alt="Uploaded"
                                         style={{
                                             position: "absolute",
-                                            maxWidth: "100%",
-                                            maxHeight: "100%",
-                                            objectFit: "contain",
+                                            width: "100%",
+                                            height: "100%",
                                         }}
                                     />
                                 ) : null}
@@ -290,14 +282,13 @@ function AddNewProduct() {
                                 <p>Select Image</p>
                                 {image4 ? (
                                     <img
-                                        className="img-upload"
+                                        className="img-upload-small"
                                         src={URL.createObjectURL(image4)}
                                         alt="Uploaded"
                                         style={{
                                             position: "absolute",
-                                            maxWidth: "100%",
-                                            maxHeight: "100%",
-                                            objectFit: "contain",
+                                            width: "100%",
+                                            height: "100%",
                                         }}
                                     />
                                 ) : null}
@@ -415,4 +406,5 @@ function AddNewProduct() {
 }
 
 export default AddNewProduct;
+
 

@@ -338,3 +338,20 @@
         padding-right: 20px;
     }
 }
+@media (max-width: 1800px){
+    .img-upload{
+        width: 50% !important;
+     /*   left: -20px !important;*/
+    }
+}
+@media (max-width: 1200px){
+    .img-upload{
+        width: 70% !important;
+      /*  left: -20px !important;*/
+    }
+}
+@media (max-width: 1150px){
+    .img-upload{
+        width: 85% !important;
+    }
+}
