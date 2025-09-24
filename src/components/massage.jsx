@@ -3,13 +3,46 @@ import SearchInput from "./searchInput";
 import AddNew from "./addNew";
 import "../css/messages.css";
 import { useNavigate } from "react-router-dom";
+import { token } from "./token";
+import { useState,useEffect } from "react";
+import Loading from "./Loading";
 function Messages() {
+    const [AllMessages,setAllMessages] = useState([]);
+    const getAllMessages = async () => {
+        try{
+            await  fetch(`https://united-hanger-2025.up.railway.app/api/questions`,{
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}` 
+                }
+            })
+            .then((response) => response.json())
+            .then(data => setAllMessages(data.questions));
+        }
+        catch (error) {
+            console.error("Error Not Found Data", error)
+        }
+    }
+
+    useEffect(() => {
+        getAllMessages();
+    },[]);
+
+    console.log(AllMessages);
 
     const navigate = useNavigate();
-
     const handleNavigate = () => {
         navigate("/AddNewMessage")
     }
+
+     const backgroundMessage = (id) => {
+        if ((id % 2) === 0) {
+            return "#FFFFFF";
+        } else {
+            return "#f1f2f7";
+        }
+    }
+
     return (
         <div className="Messages-Departament">
             <div className="heading-messages">
@@ -28,13 +61,23 @@ function Messages() {
                 </div>
             </div>
             <div className="Main-Messages-Cols">
-                <div className="content-Mesaage">
-                    <p className="id-P">1</p>
-                    <div className="text-Message">
-                        <p className="Name-P">Name</p>
-                        <p className="Description-P">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-                    </div>
-                </div>
+                {!AllMessages ? 
+                    <Loading/>
+                    :
+                    <>
+                    {AllMessages.map((message,index) => {
+                        return(
+                            <div className="content-Mesaage" key={message.id} style={{backgroundColor: backgroundMessage(message.id), cursor: "pointer"}}>
+                                <p className="id-P">{index + 1}</p>
+                                <div className="text-Message">
+                                    <p className="Name-P">{message.name}</p>
+                                    <p className="Description-P">{message.message}</p>
+                                </div>
+                            </div>
+                        )
+                    })}
+                    </>
+                }
             </div>
        </div>
     )

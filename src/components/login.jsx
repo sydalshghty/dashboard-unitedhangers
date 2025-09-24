@@ -18,7 +18,7 @@ function Login() {
     try {
       const response = await fetch(`https://united-hanger-2025.up.railway.app//api/login`, {
         method: "POST",
-        body: formData, 
+        body: formData,
       });
 
       if (response.ok) {
@@ -27,7 +27,7 @@ function Login() {
         localStorage.setItem("refreshToken", data.refresh_token);
 
         alert("Login successful!");
-        navigate("/Slider"); 
+        navigate("/Products");
       } else {
         const errorData = await response.json();
         alert(`Login failed! ${errorData.message || "Please check your credentials."}`);

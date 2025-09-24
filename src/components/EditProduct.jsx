@@ -13,11 +13,8 @@ import { useEffect, useState } from "react";
 import Loading from "./Loading";
 import "../css/ProductSubmit.css";
 function EditProduct() {
-
     const [Product, setProduct] = useState([]);
-
     const { ProductID } = useParams();
- 
     const getProductData = async () => {
         try {
             const response = await fetch(`https://united-hanger-2025.up.railway.app/api/products/${ProductID}`, {
@@ -27,25 +24,19 @@ function EditProduct() {
                     "Content-Type": "application/json"
                 }
             });
-    
+
             if (!response.ok) {
                 throw new Error("فشل في جلب بيانات المنتج");
             }
-    
+
             const data = await response.json();
             setProduct(data.product);
         } catch (error) {
             console.error("حدث خطأ أثناء جلب بيانات المنتج:", error);
         }
     };
-    
 
-    useEffect(() => {
-        getProductData();
-    }, [])
-    console.log(Product);
     const navigate = useNavigate();
-
     const handleNavigate = () => {
         navigate("/Products")
     }
@@ -68,6 +59,11 @@ function EditProduct() {
             return "#8D8D8D"
         }
     }
+
+    useEffect(() => {
+        getProductData();
+    }, []);
+
     return (
         <div className="Edit-Product-Departament">
             <div className="heading-EditProduct">
@@ -76,85 +72,85 @@ function EditProduct() {
                     <p>Edit Product</p>
                 </div>
                 <div className="col-userName">
-                    <UserName/>
+                    <UserName />
                 </div>
             </div>
             <SubmitButton />
             <div className="col-images">
                 <p>Images</p>
             </div>
-            {Product.length === 0 ? <Loading /> : 
+            {Product.length === 0 ? <Loading /> :
                 <>
-                <div className="Images-Departament">
-                <div className="main-Image">
-                    <img className="img-Product" src={Product.images[0].image_path} alt="img-Product" />
-                    <div className="Delete-Edit-Image">
-                        <img src={imgDelete} alt="img-Delete" />
-                        <img src={imgEdit} alt="img-Edit"/>
-                    </div>
-                </div>
-                <div className="all-Images-Products">
-                    <div className="col-img-product">
-                            {Product.images.map((img, index) => {
-                                return (
-                                    <div key={img.id} className="main-img-product">
-                                        <img className="main-img" src={img.image_path} alt="img-Product" />
-                                        <div className="Delete-Edit-Img">
-                                            <img src={closeSquare} alt="img-Delete" />
-                                            <img src={ProductEdit} alt="img-Edit"/>
-                                        </div>
-                                    </div>
-                            )
-                        })}
-                    </div>
-                </div>
-            </div>
-             <div className="content-Product-Submit">
-                <div className="Name-Description-Col">
-                    <form action="">
-                        <div className="col-Name">
-                            <label>Name</label>
-                            <input type="text" placeholder={Product.name} />
-                        </div>
-                        <div className="col-Description">
-                            <label>Description</label>
-                            <input type="text" placeholder={Product.description} />
-                        </div>
-                    </form>
-                    <div className="col-Raw-Material">
-                        <h3>Raw Material</h3>
-                            <div>
-                                {Product?.materials?.map((material, index) => (
-                                <p style={{ backgroundColor: `${backgroundColors(material.id)}`, color: `${colorColors(material.id)}`}} key={material.id || index}>{material.name}</p>))}
+                    <div className="Images-Departament">
+                        <div className="main-Image">
+                            <img className="img-Product" src={Product.images[0].image_path} alt="img-Product" />
+                            <div className="Delete-Edit-Image">
+                                <img src={imgDelete} alt="img-Delete" />
+                                <img src={imgEdit} alt="img-Edit" />
                             </div>
+                        </div>
+                        <div className="all-Images-Products">
+                            <div className="col-img-product">
+                                {Product.images.map((img, index) => {
+                                    return (
+                                        <div key={img.id} className="main-img-product">
+                                            <img className="main-img" src={img.image_path} alt="img-Product" />
+                                            <div className="Delete-Edit-Img">
+                                                <img src={closeSquare} alt="img-Delete" />
+                                                <img src={ProductEdit} alt="img-Edit" />
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div className="Colors-Sizes-Col">
-                    <div className="Colors-Departament">
-                        <h3>Colors</h3>
-                        <div className="ALL-Col-Colors">
-                            {Product?.colors?.map((color,index) => (
-                                <div className="selected" key={color.id} style={{ backgroundColor: `${backgroundColors(color.id)}`}}>
-                                    <li style={{backgroundColor: `${color.hex_code}`}}></li>
-                                    <p style={{color: `${colorColors(color.id)}`}}>{color.name}</p>
+                    <div className="content-Product-Submit">
+                        <div className="Name-Description-Col">
+                            <form action="">
+                                <div className="col-Name">
+                                    <label>Name</label>
+                                    <input type="text" placeholder={Product.name} />
                                 </div>
-                            ))}
+                                <div className="col-Description">
+                                    <label>Description</label>
+                                    <input type="text" placeholder={Product.description} />
+                                </div>
+                            </form>
+                            <div className="col-Raw-Material">
+                                <h3>Raw Material</h3>
+                                <div>
+                                    {Product?.materials?.map((material, index) => (
+                                        <p style={{ backgroundColor: `${backgroundColors(material.id)}`, color: `${colorColors(material.id)}` }} key={material.id || index}>{material.name}</p>))}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="Colors-Sizes-Col">
+                            <div className="Colors-Departament">
+                                <h3>Colors</h3>
+                                <div className="ALL-Col-Colors">
+                                    {Product?.colors?.map((color, index) => (
+                                        <div className="selected" key={color.id} style={{ backgroundColor: `${backgroundColors(color.id)}` }}>
+                                            <li style={{ backgroundColor: `${color.hex_code}` }}></li>
+                                            <p style={{ color: `${colorColors(color.id)}` }}>{color.name}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="Sizes-Departament">
+                                <h3>Sizes</h3>
+                                <div className="ALL-Col-Sizes">
+                                    {Product?.sizes?.map((size, index) => (
+                                        <p key={size.id} style={{ backgroundColor: `${backgroundColors(size.id)}`, color: `${colorColors(size.id)}` }}>{`${size.value} ${size.unit}`}</p>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="Sizes-Departament">
-                        <h3>Sizes</h3>
-                        <div className="ALL-Col-Sizes">
-                            {Product?.sizes?.map((size,index) => (
-                                <p key={size.id} style={{ backgroundColor: `${backgroundColors(size.id)}`, color: `${colorColors(size.id)}`}}>{`${size.value} ${size.unit}`}</p>
-                        ))}
-                        </div>
-                    </div>
-                </div>
-                </div>
-            </>
+                </>
             }
         </div>
-        
+
     )
 }
 export default EditProduct;

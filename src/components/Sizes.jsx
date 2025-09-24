@@ -11,19 +11,13 @@ import { useEffect, useState } from "react";
 import Loading from "./Loading";
 
 function Sizes() {
-
     const navigate = useNavigate();
 
     const handleNavigate = () => {
         navigate("/AddNewSize");
     }
 
-    const handleNavigateSize = () => {
-        navigate("/EditSize");
-    }
-
-        const handleDelete = (id) => {
-
+    const handleDelete = (id) => {
         Swal.fire({
             title: "Delete Size",
             text: `Are You Sure You want to delete Size ${id}`,
@@ -41,12 +35,11 @@ function Sizes() {
                 fetch(`https://united-hanger-2025.up.railway.app//api/sizes/${id}`, {
                     method: "DELETE",
                     headers: {
-                            "Authorization": `Bearer ${token}`
+                        "Authorization": `Bearer ${token}`
                     }
-                }).then((response) => response.json())
-                .then(data => console.log(data))
-            } else {
-                return false;
+                })
+                .then((response) => response.json())
+                .then(() => getAllSizes());
             }
         })
     }
@@ -54,13 +47,14 @@ function Sizes() {
     const [sizes, setSizes] = useState([]);
 
     const getAllSizes = () => {
-        try{
+        try {
             fetch(`https://united-hanger-2025.up.railway.app//api/sizes`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
-            }).then((response) => response.json())
+            })
+            .then((response) => response.json())
             .then(data => setSizes(data.sizes))
         }
         catch (error) {
@@ -71,15 +65,9 @@ function Sizes() {
     useEffect(() => {
         getAllSizes();
     }, [])
-    
-    console.log(sizes);
 
-    const backgroundSize = (id) => {
-        if ((id % 2) === 0) {
-            return "#FFFFFF";
-        } else {
-            return "#f1f2f7";
-        }
+    const backgroundSize = (index) => {
+        return (index % 2 === 0) ? "#FFFFFF" : "#f1f2f7";
     }
 
     return (
@@ -99,27 +87,37 @@ function Sizes() {
                     <AddNew/>
                 </div>
             </div>
+
             {!sizes ? <Loading /> :
             <div className="main-product-sizes">
-                {sizes.map((size,index) => {
-                        return (
-                         <div className="content-product-size" key={size.id} style={{backgroundColor: backgroundSize(size.id)}}>
-                                <Link to={`/sizes/${size.id}`} style={{display: "flex",alignItems: "center", textDecoration: "none",width: "100%"}}>
-                                    <p className="id-product">{size.id}</p>
-                                    <p className="title-product">{`${size.value} ${size.unit}`}</p>
+                {sizes.map((size, index) => {
+                    return (
+                        <div 
+                            className="content-product-size" 
+                            key={size.id} 
+                            style={{backgroundColor: backgroundSize(index)}}
+                        >
+                            <Link 
+                                to={`/sizes/${size.id}`} 
+                                style={{display: "flex",alignItems: "center", textDecoration: "none",width: "100%"}}
+                            >
+                                <p className="id-product">{index + 1}</p> 
+                                <p className="title-product">{`${size.value} ${size.unit}`}</p>
+                            </Link>
+                            <div className="Edit-Delete-col">
+                                <img 
+                                    onClick={() => handleDelete(size.id)} 
+                                    className="delete-Img" 
+                                    src={deleteImg} 
+                                    alt="delete-Img" 
+                                />
+                                <Link to={`/sizes/${size.id}`}>
+                                    <img className="edit-Img" src={EditImg} alt="Edit-Img"/>
                                 </Link>
-                                <div className="Edit-Delete-col">
-                                    <img onClick={() => {
-                                        handleDelete(size.id);
-                                        getAllSizes();
-                                    }} className="delete-Img" src={deleteImg} alt="delete-Img" />
-                                    <Link to={`/sizes/${size.id}`}>
-                                        <img className="edit-Img" src={EditImg} alt="Edit-Img"/>
-                                    </Link>
-                                </div>
+                            </div>
                         </div>
-                     )
-                 })}   
+                    )
+                })}   
             </div>
             }
         </div>

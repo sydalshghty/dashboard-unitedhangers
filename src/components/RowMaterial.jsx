@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import { token } from "./token";
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
+
 function RowMaterial() {
     const navigate = useNavigate();
 
@@ -24,7 +25,6 @@ function RowMaterial() {
     }
 
     const handleDelete = (MaterialID) => {
-
         Swal.fire({
             title: "Delete Material",
             text: `Are You Sure You want to delete material ${MaterialID}`,
@@ -45,7 +45,7 @@ function RowMaterial() {
                         "Authorization": `Bearer ${token}`
                     }
                 }).then((response) => response.json())
-                    .then(data => getAllMaterials());
+                .then(data => getAllMaterials());
             }
         })
     }
@@ -57,9 +57,10 @@ function RowMaterial() {
         await fetch(`https://united-hanger-2025.up.railway.app//api/materials`, {
             method: "GET",
             headers: {
-                    "Authorization": `Bearer ${token}` 
-                }
-        }).then((response) => response.json())
+                "Authorization": `Bearer ${token}` 
+            }
+        })
+        .then((response) => response.json())
         .then(data => setMaterials(data.materials))
       }
       catch (error) {
@@ -105,11 +106,12 @@ function RowMaterial() {
                 <>
                     {materials.map((material, index) => {
                         return (
-                            <div className="col-main-product">
-                                <div className="container-product" key={material.id} style={{backgroundColor: backgroundColor(material.id)}}>
+                            <div className="col-main-product" key={material.id}>
+                                <div className="container-product" style={{backgroundColor: backgroundColor(material.id)}}>
                                     <Link to={`/materials/${material.id}`} style={{textDecoration: "none",width: "100%"}}>
                                         <div className="contain-text">
-                                            <p className="id-product">{material.id}</p>
+                                            {/* هنا حطينا الترقيم بدل id */}
+                                            <p className="id-product">{index + 1}</p>
                                             <p className="title-product">{material.name}</p>
                                         </div>
                                     </Link>
@@ -118,13 +120,13 @@ function RowMaterial() {
                                             handleDelete(`${material.id}`)
                                         }} />
                                         <Link to={`/materials/${material.id}`}>
-                                            <img  className="editIcon"src={editIcon} alt="editIcon"/>
+                                            <img  className="editIcon" src={editIcon} alt="editIcon"/>
                                         </Link>
                                     </div>
                                 </div>
                             </div>
                         )
-                })}
+                    })}
                 </>
             }
         </div>

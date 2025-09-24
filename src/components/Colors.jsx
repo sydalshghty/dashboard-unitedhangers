@@ -15,17 +15,16 @@ function Colors() {
     const [AllColors, setAllColors] = useState([]);
 
     const getAllColors = async () => {
-        try{
+        try {
             await fetch("https://united-hanger-2025.up.railway.app//api/colors", {
                 method: "GET",
-                  headers: {
-                          "Authorization": `Bearer ${token}` 
-                      }
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
             })
-              .then((response) => response.json())
-              .then((data) => setAllColors(data.colors))
-        }
-        catch (error) {
+            .then((response) => response.json())
+            .then((data) => setAllColors(data.colors))
+        } catch (error) {
             console.error("Error: Not Found Data", error)
         }
     }
@@ -33,16 +32,14 @@ function Colors() {
     useEffect(() => {
         getAllColors()
     }, [])
-    
-    console.log(AllColors);
 
     const navigate = useNavigate();
 
     const handleAddNew = () => {
         navigate("/AddNewColor");
     }
-    const handleDelete = (id) => {
 
+    const handleDelete = (id) => {
         Swal.fire({
             title: "Delete Color",
             text: `Are You Sure You want to delete Color ${id}`,
@@ -60,7 +57,7 @@ function Colors() {
                 fetch(`https://united-hanger-2025.up.railway.app//api/colors/${id}`, {
                     method: "DELETE",
                     headers: {
-                    "Authorization": `Bearer ${token}` 
+                        "Authorization": `Bearer ${token}`
                     }
                 }).then((response) => response.json())
                 .then(data => getAllColors())
@@ -81,43 +78,49 @@ function Colors() {
             <div className="heading-colors">
                 <p className="title-colors">Colors</p>
                 <div className="col-userName">
-                    <UserName/>
+                    <UserName />
                 </div>
             </div>
             <div className="col-search">
-                <SearchInput/>
+                <SearchInput />
             </div>
             <div className="all-colors">
                 <p>All Colors</p>
                 <div className="addNew-Button" onClick={handleAddNew}>
-                    <AddNew/>
+                    <AddNew />
                 </div>
-            </div> 
-            {!AllColors ? <Loading/> :
-                AllColors.map((color,index) => {
+            </div>
+            {!AllColors ? <Loading /> :
+                AllColors.map((color, index) => {
                     return (
-                <div className="main-product-colors" key={color.id}>
-                    <div className="content-product" style={{backgroundColor: backgroundProduct(`${color.id}`)}}>
-                        <Link to={`/colors/${color.id}`} style={{textDecoration: "none", display: "flex", width: "100%"}}>
-                        <div className="col-text">
-                            <p className="id-product">{color.id}</p>
-                            <p className="background-color" style={{ backgroundColor: `${color.hex_code}`}}></p>
-                            <p className="title-product">{color.name}</p>
-                        </div>    
-                        </Link>
-                        <div className="Edit-Delete-Col">
-                                    <img onClick={() => {
-                                        handleDelete(`${color.id}`)
-                            }} className="img-Delete" src={imgDelete} alt="img-Delete" />
-                            <Link to={`/colors/${color.id}`}>
-                                <img  className="img-Edit" src={imgEdit} alt="img-Edit"/>
-                            </Link>
+                        <div className="main-product-colors" key={color.id}>
+                            <div className="content-product" style={{ backgroundColor: backgroundProduct(`${color.id}`) }}>
+                                <Link to={`/colors/${color.id}`} style={{ textDecoration: "none", display: "flex", width: "100%" }}>
+                                    <div className="col-text">
+                                        {/* هنا بقي الترقيم فقط مكان الـ id */}
+                                        <p className="id-product">{index + 1}</p>
+                                        <p className="background-color" style={{ backgroundColor: `${color.hex_code}` }}></p>
+                                        <p className="title-product">{color.name}</p>
+                                    </div>
+                                </Link>
+                                <div className="Edit-Delete-Col">
+                                    <img
+                                        onClick={() => handleDelete(`${color.id}`)}
+                                        className="img-Delete"
+                                        src={imgDelete}
+                                        alt="img-Delete"
+                                    />
+                                    <Link to={`/colors/${color.id}`}>
+                                        <img className="img-Edit" src={imgEdit} alt="img-Edit" />
+                                    </Link>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
                     )
-                })}      
+                })}
         </div>
     )
 }
+
 export default Colors;
+

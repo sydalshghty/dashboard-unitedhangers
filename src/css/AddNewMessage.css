@@ -192,60 +192,6 @@
     background-color: var(--submit-background);
     color: #ffffff;
 }
-
-.AddNewMessage-Departament .Cancel-And-Delete .cancel::before,
-.AddNewMessage-Departament .Cancel-And-Delete .cancel::after,
-.AddNewMessage-Departament .Cancel-And-Delete .submit::before,
-.AddNewMessage-Departament .Cancel-And-Delete .submit::after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    width: 0%;
-    height: 100%;
-    top: 0;
-    overflow: hidden;
-    background-color: #5A67BA;
-    transition: width 0.7s ease;
-    -webkit-transition: width 0.7s ease;
-    -moz-transition: width 0.7s ease;
-    -ms-transition: width 0.7s ease;
-    -o-transition: width 0.7s ease;
-}
-
-.AddNewMessage-Departament .Cancel-And-Delete .submit::before,
-.AddNewMessage-Departament .Cancel-And-Delete .submit::after {
-    background-color: #ffffff;
-}
-
-.AddNewMessage-Departament .Cancel-And-Delete .cancel::before,
-.AddNewMessage-Departament .Cancel-And-Delete .submit::before {
-    left: 50%;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-}
-
-.AddNewMessage-Departament .Cancel-And-Delete .cancel::after,
-.AddNewMessage-Departament .Cancel-And-Delete .submit::after {
-    right: 50%;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-}
-
-.AddNewMessage-Departament .Cancel-And-Delete .cancel:hover::before,
-.AddNewMessage-Departament .Cancel-And-Delete .cancel:hover::after,
-.AddNewMessage-Departament .Cancel-And-Delete .submit:hover::before,
-.AddNewMessage-Departament .Cancel-And-Delete .submit:hover::after {
-    width: 50%;
-}
-
-.AddNewMessage-Departament .Cancel-And-Delete .cancel:hover {
-    color: #ffffff;
-}
-
-.AddNewMessage-Departament .Cancel-And-Delete .submit:hover {
-    color: #5A67BA;
-}
-
 @media (max-width: 992px) {
 
     .AddNewMessage-Departament .Cancel-And-Delete .cancel,

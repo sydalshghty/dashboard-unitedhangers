@@ -32,7 +32,7 @@ function Navbar() {
     return (
         <div className="navBar-departament">
             <div className="united-hanger-logo">
-                <img src= {logo} alt="United Hanger"/>
+                <img src={logo} alt="United Hanger" />
                 <p>United Hanger</p>
             </div>
             <nav>
@@ -40,7 +40,7 @@ function Navbar() {
                     <ul>
                         <li className={`${hover ? "hovered" : ""}`}
                             onClick={() => {
-                                setHover(true);
+                                setHover(false);
                                 setSliderHover(false);
                                 setInquiriesHover(false);
                                 setMessageHover(false);
@@ -72,9 +72,9 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                        }}>
+                            }}>
                             <Link to={"Slider"} className="link">
-                            <img src= {iconSlider} alt="Slider"/> 
+                                <img src={iconSlider} alt="Slider" />
                             </Link>
                             <Link to={"Slider"}>Slider</Link>
                         </li>
@@ -92,10 +92,10 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                        }}>
+                            }}>
                             <Link to={"Inquiries"} className="link">
-                            <img src= {iconInquiries} alt="Inquiries"/>  
-                            </Link>   
+                                <img src={iconInquiries} alt="Inquiries" />
+                            </Link>
                             <Link to={"Inquiries"}>Inquiries</Link>
                         </li>
                         <li className={`${messageHover ? "hovered" : ""}`}
@@ -112,10 +112,10 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                        }}>
+                            }}>
                             <Link to={"Messages"} className="link">
-                             <img src={iconMessage} alt="Messages" />   
-                            </Link>  
+                                <img src={iconMessage} alt="Messages" />
+                            </Link>
                             <Link to={"Messages"}>Messages</Link>
                         </li>
                         <li className={`${servicesHover ? "hovered" : ""}`}
@@ -132,10 +132,10 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                        }}>
+                            }}>
                             <Link to={"Services"} className="link">
-                             <img src={iconServices} alt="Services" />   
-                            </Link>  
+                                <img src={iconServices} alt="Services" />
+                            </Link>
                             <Link to={"Services"}>Services</Link>
                         </li>
                         <li className={`${aboutUsHover ? "hovered" : ""}`}
@@ -152,10 +152,10 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                        }}>
+                            }}>
                             <Link to={"AboutUs"} className="link">
-                            <img src={iconAboutUs} alt="About Us" />
-                            </Link>   
+                                <img src={iconAboutUs} alt="About Us" />
+                            </Link>
                             <Link to={"AboutUs"}>About Us</Link>
                         </li>
                         <li className={`${whyUsHover ? "hovered" : ""}`}
@@ -172,10 +172,10 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                        }}>
+                            }}>
                             <Link to={"WhyUS"} className="link">
-                            <img src={iconWhyUs} alt="Why US" />    
-                            </Link>   
+                                <img src={iconWhyUs} alt="Why US" />
+                            </Link>
                             <Link to={"WhyUS"}>Why US</Link>
                         </li>
                         <li className={`${ourFactoryHover ? "hovered" : ""}`}
@@ -192,10 +192,10 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                        }}>
+                            }}>
                             <Link to={"OurFactory"} className="link">
-                            <img src={iconOurFactory} alt="Our Factory" />    
-                            </Link>    
+                                <img src={iconOurFactory} alt="Our Factory" />
+                            </Link>
                             <Link to={"OurFactory"}>Our Factory</Link>
                         </li>
                         <li className={`${businessHover ? "hovered" : ""}`}
@@ -212,10 +212,10 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                        }}>
+                            }}>
                             <Link to={"BusinessHours"} className="link">
-                            <img src={iconBusinessHours} alt="Business Hours" />    
-                            </Link>    
+                                <img src={iconBusinessHours} alt="Business Hours" />
+                            </Link>
                             <Link to={"BusinessHours"}>Business Hours</Link>
                         </li>
                         <li className={`${colorsHover ? "hovered" : ""}`}
@@ -232,10 +232,10 @@ function Navbar() {
                                 setColorsHover(true);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                        }}>
+                            }}>
                             <Link to={"Colors"} className="link">
-                            <img src={iconColors} alt="Business Hours" />    
-                            </Link>    
+                                <img src={iconColors} alt="Business Hours" />
+                            </Link>
                             <Link to={"Colors"}>Colors</Link>
                         </li>
                         <li className={`${rawMaterialHover ? "hovered" : ""}`}
@@ -252,10 +252,10 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(true);
                                 setSizesHover(false);
-                        }}>
+                            }}>
                             <Link to={"RowMaterial"} className="link">
-                            <img src={iconRawMaterial} alt="Business Hours" />    
-                            </Link>    
+                                <img src={iconRawMaterial} alt="Business Hours" />
+                            </Link>
                             <Link to={"RowMaterial"}>Row Material</Link>
                         </li>
                         <li className={`${sizesHover ? "hovered" : ""}`}
@@ -272,10 +272,10 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(true);
-                        }}>
+                            }}>
                             <Link to={"Sizes"} className="link">
-                            <img src={iconSizes} alt="Business Hours" />    
-                            </Link>    
+                                <img src={iconSizes} alt="Business Hours" />
+                            </Link>
                             <Link to={"Sizes"}>Sizes</Link>
                         </li>
                     </ul>
