@@ -45,8 +45,10 @@ function EditProduct() {
         switch (id % 3) {
             case 1:
                 return "#5A67BA"
-            case 2:
-                return "#ffffff"
+            case 3:
+                return "#5A67BA"
+            case 4:
+                return "#5A67BA"
             default:
                 return "#5A67BA"
         }
@@ -56,7 +58,7 @@ function EditProduct() {
         if ((id % 2 === 1)) {
             return "#ffffff"
         } else {
-            return "#8D8D8D"
+            return "#ffffff"
         }
     }
 
