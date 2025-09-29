@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import Loading from "./Loading";
 import { token } from "./token";
-
+import { authFetch } from "./authFetch.js";
 function ProductSlider() {
 
     const [Slider, setSlider] = useState([]);
@@ -22,20 +22,20 @@ function ProductSlider() {
         sliderId: sliderID
     })
     const fetchData = async () => {
-       try{
-            await fetch(`https://united-hanger-2025.up.railway.app/api/slider/${sliderID}`, {
+        try {
+            await authFetch(`https://united-hanger-2025.up.railway.app/api/slider/${sliderID}`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json"
                 }
-        }).then((response) => response.json())
-            .then((data) => setSlider(data.slider))
-       }
-       catch (error) {
+            }).then((response) => response.json())
+                .then((data) => setSlider(data.slider))
+        }
+        catch (error) {
             console.error("Error Not Found Data", error)
             alert("Error: Not Found Data")
-       }
+        }
     }
 
     useEffect(() => {
@@ -44,7 +44,7 @@ function ProductSlider() {
 
     const [EditTitle, setEditTitle] = useState("");
     const [EditDescription, setEditDescription] = useState("");
-    const [EditImage, setEditImage] = useState(null); 
+    const [EditImage, setEditImage] = useState(null);
 
     const EditSliderData = async () => {
         const formData = new FormData();
@@ -61,7 +61,7 @@ function ProductSlider() {
         }
 
         try {
-            const response = await fetch(`https://united-hanger-2025.up.railway.app/api/slider/${sliderID}`, {
+            const response = await authFetch(`https://united-hanger-2025.up.railway.app/api/slider/${sliderID}`, {
                 method: "PUT",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -96,11 +96,9 @@ function ProductSlider() {
                 cancelButton: "my-cancel",
             }
         })
-        
+
     }
-
     const navigate = useNavigate();
-
     const handleNavigate = () => {
         navigate("/Slider")
     }
@@ -116,31 +114,31 @@ function ProductSlider() {
                     <img src={iconSlider} alt="imgProduct" onClick={handleNavigate} />
                     <p>Slider</p>
                 </div>
-                <UserName/>
+                <UserName />
             </div>
             <div className="addNew-col" onClick={handleNavigateSlider}>
-                <AddNew/>
+                <AddNew />
             </div>
-            {!Slider ? <Loading /> : 
+            {!Slider ? <Loading /> :
                 <div className="col-product">
-                <div className="col-image">
-                    <img src={Slider.image_path} alt="productimg"/>
-                </div>
+                    <div className="col-image">
+                        <img src={Slider.image_path} alt="productimg" />
+                    </div>
                     <div className="information-product">
                         <div className="title-content">
                             <p>Title</p>
                         </div>
                         <input onChange={(e) => {
                             setEditTitle(e.target.value)
-                        }} type="text" placeholder={Slider.title}/>
+                        }} type="text" placeholder={Slider.title} />
                         <div className="description-content">
                             <p>Description</p>
                         </div>
                         <input onChange={(e) => {
                             setEditDescription(e.target.value)
-                        }} className="input-Description" type="text" placeholder={Slider.description}/>
+                        }} className="input-Description" type="text" placeholder={Slider.description} />
+                    </div>
                 </div>
-            </div>
             }
             <div className="Edit-And-Delete">
                 <button onClick={handleDelete} className="Delete">Delete</button>

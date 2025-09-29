@@ -1,11 +1,11 @@
-import imgIcon from "../images/Group 429.svg"; 
+import imgIcon from "../images/Group 429.svg";
 import UserName from "./userName";
 import "../css/addNewSlider.css";
 import { useNavigate } from "react-router-dom";
 import imgUpload from "../images/Vector (4).svg";
 import { useState } from "react";
 import { token } from "./token";
-
+import { authFetch } from "./authFetch.js";
 function AddNewSlider() {
   const navigate = useNavigate();
   const handlNavigate = () => {
@@ -14,37 +14,37 @@ function AddNewSlider() {
 
   const [title, setTitle] = useState("Title");
   const [description, setDescription] = useState("Description...");
-  const [sliderTitle, setSliderTitle] = useState(""); 
-  const [sliderDescription, setSliderDescription] = useState(""); 
-  const [image, setImage] = useState(null); 
+  const [sliderTitle, setSliderTitle] = useState("");
+  const [sliderDescription, setSliderDescription] = useState("");
+  const [image, setImage] = useState(null);
 
   const handleImageChange = (event) => {
-    const file = event.target.files[0]; 
+    const file = event.target.files[0];
     if (file) {
-      setImage(file); 
+      setImage(file);
     }
   };
 
   const sendDataSlider = async () => {
     const formData = new FormData();
-    formData.append("image", image); 
-    formData.append("title", sliderTitle); 
-    formData.append("description", sliderDescription); 
+    formData.append("image", image);
+    formData.append("title", sliderTitle);
+    formData.append("description", sliderDescription);
 
     try {
-      const response = await fetch("https://united-hanger-2025.up.railway.app/api/new_slider", {
+      const response = await authFetch("https://united-hanger-2025.up.railway.app/api/new_slider", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${token}` 
+          "Authorization": `Bearer ${token}`
         },
-        body: formData 
+        body: formData
       });
 
       const data = await response.json();
-      console.log("Response from server:", data); 
+      console.log("Response from server:", data);
       alert("✅ Slider added successfully");
     } catch (error) {
-      console.error("Error sending data:", error); 
+      console.error("Error sending data:", error);
       alert("❌ Failed to add slider. Please try again");
     }
   };
@@ -122,6 +122,7 @@ function AddNewSlider() {
             setImage(null);
             setSliderTitle("");
             setSliderDescription("");
+            handlNavigate();
           }}
         >
           Cancel

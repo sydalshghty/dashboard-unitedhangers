@@ -7,8 +7,8 @@ import imgSelect from "../images/Vector (2).png";
 import { useEffect, useState } from "react";
 import { token } from "./token";
 import "../css/cssNewProduct.css";
-
-function AddNewProduct() { 
+import { authFetch } from "./authFetch.js";
+function AddNewProduct() {
     const navigate = useNavigate();
 
     const handleNavigate = () => {
@@ -54,22 +54,22 @@ function AddNewProduct() {
     const [selectedSizes, setSelectedSizes] = useState([]);
     const [selectedColors, setSelectedColors] = useState([]);
 
-    const [allmaterials,setAllmaterial] = useState([]);
+    const [allmaterials, setAllmaterial] = useState([]);
 
     const getAllMaterials = async () => {
-       try{
-        await fetch(`https://united-hanger-2025.up.railway.app//api/materials`, {
-            method: "GET",
-            headers: {
-                    "Authorization": `Bearer ${token}` 
+        try {
+            await authFetch(`https://united-hanger-2025.up.railway.app//api/materials`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
                 }
-        }).then((response) => response.json())
-        .then(data => setAllmaterial(data.materials))
-       }
-       catch (error) {
-        console.error("Error not found data", error)
-        alert("Not Found Data")
-       }
+            }).then((response) => response.json())
+                .then(data => setAllmaterial(data.materials))
+        }
+        catch (error) {
+            console.error("Error not found data", error)
+            alert("Not Found Data")
+        }
     }
 
     useEffect(() => {
@@ -77,50 +77,50 @@ function AddNewProduct() {
     }, []);
 
     const materials = allmaterials;
-//
+    //
     const [allSizes, setAllSizes] = useState([]);
     const getAllSizes = () => {
-        try{
-            fetch(`https://united-hanger-2025.up.railway.app//api/sizes`, {
+        try {
+            authFetch(`https://united-hanger-2025.up.railway.app//api/sizes`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
             }).then((response) => response.json())
-            .then(data => setAllSizes(data.sizes));
+                .then(data => setAllSizes(data.sizes));
         }
         catch (error) {
             console.error("Error not found data", error)
         }
     }
-    
+
     useEffect(() => {
         getAllSizes();
     }, [])
     const sizes = allSizes;
-//
-    const [allColors,setAllColors] = useState([]);
+    //
+    const [allColors, setAllColors] = useState([]);
     const getAllColors = async () => {
-        try{
-            await fetch("https://united-hanger-2025.up.railway.app//api/colors", {
+        try {
+            await authFetch("https://united-hanger-2025.up.railway.app//api/colors", {
                 method: "GET",
-                  headers: {
-                          "Authorization": `Bearer ${token}` 
-                      }
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
             })
-              .then((response) => response.json())
-              .then((data) => setAllColors(data.colors))
-          }
-          catch (error) {
+                .then((response) => response.json())
+                .then((data) => setAllColors(data.colors))
+        }
+        catch (error) {
             console.error("Error not found data", error)
-          }
+        }
     }
-    
+
     useEffect(() => {
         getAllColors()
     }, []);
     const colors = allColors;
-//
+    //
     const handleSelectMaterial = (id) => {
         setSelectedMaterials((prev) =>
             prev.includes(id)
@@ -149,10 +149,10 @@ function AddNewProduct() {
 
     const AddNewProduct = async () => {
         const productData = {
-        name: name,
-        color_ids: selectedColors, 
-        size_ids: selectedSizes,      
-        material_ids: selectedMaterials, 
+            name: name,
+            color_ids: selectedColors,
+            size_ids: selectedSizes,
+            material_ids: selectedMaterials,
         };
 
         const formData = new FormData();
@@ -162,15 +162,15 @@ function AddNewProduct() {
         formData.append("images", image3);
         formData.append("images", image4);
 
-        try{
-            const response = await fetch(`https://united-hanger-2025.up.railway.app/api/products/new`, {
+        try {
+            const response = await authFetch(`https://united-hanger-2025.up.railway.app/api/products/new`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
                 },
                 body: formData,
             })
-    
+
             if (!response.ok) {
                 alert("❌ Failed to add product. Please try again");
                 return;
@@ -184,10 +184,10 @@ function AddNewProduct() {
 
         }
         catch (error) {
-            console.log("Error adding product:",error)
+            console.log("Error adding product:", error)
             alert("❌ Failed to add product. Please try again");
-        }            
-    }    
+        }
+    }
 
     return (
         <div className="Add-New-Product-Departament">
@@ -217,20 +217,20 @@ function AddNewProduct() {
                         <input type="file" onChange={handleImageChange} name="Img-Product" />
                         <img src={imgSelect} alt="img-Select" />
                         <p>Select Main Image</p>
-                            {image1 ? (
-                                <img
-                                    className="img-upload"
-                                    src={URL.createObjectURL(image1)}
-                                    alt="Uploaded"
-                                    style={{
-                                        position: "absolute",
-                                        width: "250px",
-                                        height: "230px",
-                                        left: "40%",
-                                        top: "-50%"
-                                    }}
-                                />
-                            ) : null}
+                        {image1 ? (
+                            <img
+                                className="img-upload"
+                                src={URL.createObjectURL(image1)}
+                                alt="Uploaded"
+                                style={{
+                                    position: "absolute",
+                                    width: "250px",
+                                    height: "230px",
+                                    left: "40%",
+                                    top: "-50%"
+                                }}
+                            />
+                        ) : null}
                     </div>
                 </div>
                 <div className="select-Image-Two">
@@ -335,20 +335,19 @@ function AddNewProduct() {
                         <div className="material">
                             {!materials ?
                                 <h3>Loading Data ...</h3>
-                            :
-                            <>
-                            {materials.map((material) => (
-                                <p
-                                    key={material.id}
-                                    className={`material-item  ${
-                                        selectedMaterials.includes(material.id) ? "selected" : ""
-                                    }`}
-                                    onClick={() => handleSelectMaterial(material.id)}
-                                >
-                                    {material.name}
-                                </p>
-                            ))}
-                            </>
+                                :
+                                <>
+                                    {materials.map((material) => (
+                                        <p
+                                            key={material.id}
+                                            className={`material-item  ${selectedMaterials.includes(material.id) ? "selected" : ""
+                                                }`}
+                                            onClick={() => handleSelectMaterial(material.id)}
+                                        >
+                                            {material.name}
+                                        </p>
+                                    ))}
+                                </>
                             }
                         </div>
                     </div>
@@ -357,46 +356,44 @@ function AddNewProduct() {
                     <div className="Colors-Departament">
                         <h3>Colors</h3>
                         <div className="ALL-Col-Colors">
-                            {!colors ? 
-                            <h3>Loading Data ...</h3>
-                            :
-                            <>
-                            {colors.map((color) => (
-                                <div
-                                    key={color.id}
-                                    className={`color-item onclick-btn ${
-                                        selectedColors.includes(color.id) ? "selected" : ""
-                                    }`}
-                                    onClick={() => handleSelectColor(color.id)}
-                                >
-                                    <li style={{ backgroundColor: color.hex_code }}></li>
-                                    <p className="selected">{color.name}</p>
-                                </div>
-                            ))}
-                            </>
-                        }
+                            {!colors ?
+                                <h3>Loading Data ...</h3>
+                                :
+                                <>
+                                    {colors.map((color) => (
+                                        <div
+                                            key={color.id}
+                                            className={`color-item onclick-btn ${selectedColors.includes(color.id) ? "selected" : ""
+                                                }`}
+                                            onClick={() => handleSelectColor(color.id)}
+                                        >
+                                            <li style={{ backgroundColor: color.hex_code }}></li>
+                                            <p className="selected">{color.name}</p>
+                                        </div>
+                                    ))}
+                                </>
+                            }
                         </div>
                     </div>
                     <div className="Sizes-Departament">
                         <h3>Sizes</h3>
                         <div className="ALL-Col-Sizes">
-                            {!sizes?
-                            <h3>Loading Data ...</h3>
-                            :
-                            <>
-                                {sizes.map((size) => (
-                                <p
-                                    key={size.id}
-                                    className={`size-item ${
-                                        selectedSizes.includes(size.id) ? "selected" : ""
-                                    }`}
-                                    onClick={() => handleSelectSize(size.id)}
-                                >
-                                    {size.value} {size.unit}
-                                </p>
-                            ))}
-                            </>
-                        }
+                            {!sizes ?
+                                <h3>Loading Data ...</h3>
+                                :
+                                <>
+                                    {sizes.map((size) => (
+                                        <p
+                                            key={size.id}
+                                            className={`size-item ${selectedSizes.includes(size.id) ? "selected" : ""
+                                                }`}
+                                            onClick={() => handleSelectSize(size.id)}
+                                        >
+                                            {size.value} {size.unit}
+                                        </p>
+                                    ))}
+                                </>
+                            }
                         </div>
                     </div>
                 </div>

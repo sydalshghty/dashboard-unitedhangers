@@ -7,9 +7,10 @@ import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import { token } from "./token";
 import Loading from "./Loading";
+import { authFetch } from "./authFetch.js";
 function EditMaterial() {
     const { MaterialID } = useParams();
-    
+
     const [namePlaceholder, setNamePlaceholder] = useState("Name");
 
     const navigate = useNavigate();
@@ -18,38 +19,21 @@ function EditMaterial() {
         navigate("/RowMaterial");
     }
 
-    const handleDelete = (id) => {
-        Swal.fire({
-            title: "Delete Material",
-            text: `Are You Sure You want to delete Material ${id}`,
-            showCancelButton: true,
-            cancelButtonText: "Cancel",
-            confirmButtonText: "Delete",
-            customClass: {
-                popup: "my-Popup",
-                title: "my-title",
-                confirmButton: "my-delete",
-                cancelButton: "my-cancel",
-            }
-        })
-        
-    }
-
     const [Material, setMaterial] = useState([]);
 
     const getMaterial = async () => {
-       try{
-            await  fetch(`https://united-hanger-2025.up.railway.app//api/materials/${MaterialID}`, {
+        try {
+            await authFetch(`https://united-hanger-2025.up.railway.app//api/materials/${MaterialID}`, {
                 method: "GET",
                 headers: {
-                        "Authorization": `Bearer ${token}` 
-                    }
+                    "Authorization": `Bearer ${token}`
+                }
             }).then((response) => response.json())
-            .then(data => setMaterial(data.material))
-       }
-       catch (error) {
-        console.error("Error: Not Found Data", error)
-       }
+                .then(data => setMaterial(data.material))
+        }
+        catch (error) {
+            console.error("Error: Not Found Data", error)
+        }
     }
 
     useEffect(() => {
@@ -63,8 +47,8 @@ function EditMaterial() {
         const formData = new FormData();
         formData.append("name", newName);
 
-        try{
-            fetch(`https://united-hanger-2025.up.railway.app//api/materials/${MaterialID}`, {
+        try {
+            authFetch(`https://united-hanger-2025.up.railway.app//api/materials/${MaterialID}`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -82,11 +66,11 @@ function EditMaterial() {
         <div className="Edit-Material-Departament">
             <div className="Edit-Material-Heading">
                 <div className="col-material">
-                    <img onClick={handleNavigate} src={imgMaterial} alt="img-Material"/>
+                    <img onClick={handleNavigate} src={imgMaterial} alt="img-Material" />
                     <p>Material</p>
                 </div>
                 <div className="col-userName">
-                    <UserName/>
+                    <UserName />
                 </div>
             </div>
             {!Material ? <Loading />
@@ -108,7 +92,7 @@ function EditMaterial() {
                     </div>
                     <div className="col-Delete-Edit">
                         <button onClick={() => {
-                            handleDelete(Material.id)
+                            handleNavigate();
                         }} className="delete">Delete</button>
                         <button className="Edit" onClick={async () => {
                             PutMaterial();

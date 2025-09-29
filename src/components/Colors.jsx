@@ -9,21 +9,21 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { token } from "./token";
 import Loading from "./Loading";
-
+import { authFetch } from "./authFetch.js";
 function Colors() {
 
     const [AllColors, setAllColors] = useState([]);
 
     const getAllColors = async () => {
         try {
-            await fetch("https://united-hanger-2025.up.railway.app//api/colors", {
+            await authFetch("https://united-hanger-2025.up.railway.app//api/colors", {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
             })
-            .then((response) => response.json())
-            .then((data) => setAllColors(data.colors))
+                .then((response) => response.json())
+                .then((data) => setAllColors(data.colors))
         } catch (error) {
             console.error("Error: Not Found Data", error)
         }
@@ -54,13 +54,13 @@ function Colors() {
             }
         }).then((data) => {
             if (data.isConfirmed) {
-                fetch(`https://united-hanger-2025.up.railway.app//api/colors/${id}`, {
+                authFetch(`https://united-hanger-2025.up.railway.app//api/colors/${id}`, {
                     method: "DELETE",
                     headers: {
                         "Authorization": `Bearer ${token}`
                     }
                 }).then((response) => response.json())
-                .then(data => getAllColors())
+                    .then(data => getAllColors())
             }
         })
     }

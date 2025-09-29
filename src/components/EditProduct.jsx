@@ -2,7 +2,6 @@ import imgProduct from "../images/Group 429.svg";
 import UserName from "./userName";
 import "../css/EditProduct.css";
 import { useNavigate } from "react-router-dom";
-import SubmitButton from "./Submit";
 import imgDelete from "../images/Vector (8).svg";
 import imgEdit from "../images/Group 445.svg";
 import closeSquare from "../images/Close-Square.svg";
@@ -12,12 +11,13 @@ import { token } from "./token";
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
 import "../css/ProductSubmit.css";
+import { authFetch } from "./authFetch.js";
 function EditProduct() {
     const [Product, setProduct] = useState([]);
     const { ProductID } = useParams();
     const getProductData = async () => {
         try {
-            const response = await fetch(`https://united-hanger-2025.up.railway.app/api/products/${ProductID}`, {
+            const response = await authFetch(`https://united-hanger-2025.up.railway.app/api/products/${ProductID}`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -71,13 +71,13 @@ function EditProduct() {
             <div className="heading-EditProduct">
                 <div className="col-image">
                     <img onClick={handleNavigate} src={imgProduct} alt="imgIcon" />
-                    <p>Edit Product</p>
+                    <p>View Product</p>
                 </div>
                 <div className="col-userName">
                     <UserName />
                 </div>
             </div>
-            <SubmitButton />
+
             <div className="col-images">
                 <p>Images</p>
             </div>

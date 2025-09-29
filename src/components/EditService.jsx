@@ -7,14 +7,14 @@ import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import { token } from "./token";
 import "../css/EditService.css";
-
+import { authFetch } from "./authFetch.js";
 function EditService() {
 
     const { EditServiceID } = useParams();
 
     const [EditService, setEditService] = useState([]);
 
-        const handleDelete = () => {
+    const handleDelete = () => {
         Swal.fire({
             title: "Delete Service",
             text: "Are You Sure You want to delete Service",
@@ -28,7 +28,7 @@ function EditService() {
                 cancelButton: "my-cancel",
             }
         })
-        
+
     }
 
     const [title, setTitle] = useState("Title");
@@ -42,14 +42,14 @@ function EditService() {
     }
 
     const getDataService = () => {
-        try{
-            fetch(`https://united-hanger-2025.up.railway.app/api/service/${EditServiceID}`, {
+        try {
+            authFetch(`https://united-hanger-2025.up.railway.app/api/service/${EditServiceID}`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
             }).then((response) => response.json())
-            .then(data => setEditService(data.service))
+                .then(data => setEditService(data.service))
         }
         catch (error) {
             console.error("Error: Not Found Data", error)
@@ -62,27 +62,27 @@ function EditService() {
 
     const [TitleService, setTitleService] = useState("");
     const [DescService, setDescService] = useState("");
-    
+
     const putEditService = () => {
         const formData = new FormData();
         formData.append("title", TitleService);
         formData.append("description", DescService);
 
-        try{
-            fetch(`https://united-hanger-2025.up.railway.app/api/service/${EditServiceID}`, {
+        try {
+            authFetch(`https://united-hanger-2025.up.railway.app/api/service/${EditServiceID}`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`
                 },
                 body: formData
             }).then((response) => response.json())
-            .then(data => console.log(data))
+                .then(data => console.log(data))
         }
         catch (error) {
             console.error("Error: Not Found Data", error)
         }
     }
-    
+
     return (
         <div className="EditSlider-Departament">
             <div className="heading-EditSlider">
@@ -91,12 +91,12 @@ function EditService() {
                     <p>Edit Service</p>
                 </div>
                 <div className="col-UserName">
-                    <UserName/>
+                    <UserName />
                 </div>
             </div>
             <div className="col-product-Edit">
                 <div className="col-image-product">
-                    <img style={{maxWidth: "420px"}} src={EditService.image_path} alt="imgProduct"/>
+                    <img style={{ maxWidth: "420px" }} src={EditService.image_path} alt="imgProduct" />
                 </div>
                 <div className="content-product-Edit">
                     <div className="col-title">
@@ -136,7 +136,7 @@ function EditService() {
                     handlNavigate();
                 }}>Edit</button>
             </div>
-       </div> 
+        </div>
     )
 }
 export default EditService;

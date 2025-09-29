@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 import Loading from "./Loading";
 import { token } from "./token";
 import { sliderID } from "./sliderID";
-
+import { authFetch } from "./authFetch.js";
 function Slider() {
   const [sliders, setSliders] = useState([]);
   const [placeholder, setPlaceholder] = useState("Search");
@@ -19,7 +19,7 @@ function Slider() {
 
   const fetchData = async () => {
     try {
-      await fetch("https://united-hanger-2025.up.railway.app/api/sliders", {
+      await authFetch("https://united-hanger-2025.up.railway.app/api/sliders", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -57,7 +57,7 @@ function Slider() {
       },
     }).then((data) => {
       if (data.isConfirmed) {
-        fetch(
+        authFetch(
           `https://united-hanger-2025.up.railway.app/api/slider/${productID}`,
           {
             method: "DELETE",

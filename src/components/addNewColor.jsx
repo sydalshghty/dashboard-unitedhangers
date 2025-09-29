@@ -5,75 +5,75 @@ import { useNavigate } from "react-router-dom";
 import React, { useState } from 'react';
 import { ChromePicker } from 'react-color';
 import { token } from "./token";
+import { authFetch } from "./authFetch.js";
 function AddNewColor() {
-
     const [name, setname] = useState("");
     const [hex_code, sethex_code] = useState("");
     const [codeColor, setcodeColor] = useState("");
 
-    const [color, setColor] = useState('#F6F6FB');  
-    const [showPicker, setShowPicker] = useState(false); 
+    const [color, setColor] = useState('#F6F6FB');
+    const [showPicker, setShowPicker] = useState(false);
     const [Name, setName] = useState("Name");
 
     const handleName = () => {
         setName("");
-    }
+    };
 
     const handleInputChange = (event) => {
         setColor(event.target.value);
     };
 
     const handleColorChange = (newColor) => {
-        setColor(newColor.hex); 
+        setColor(newColor.hex);
         sethex_code(newColor.hex);
+        setShowPicker(false);
     };
 
     const togglePicker = () => {
-        setShowPicker(!showPicker); 
+        setShowPicker(!showPicker);
     };
 
     const blurtogglePicker = () => {
         setShowPicker(false);
-    }
+    };
 
     const navigate = useNavigate();
-
     const handleNavigate = () => {
         navigate("/Colors");
-    }
+    };
 
     const [code, setCode] = useState("Code");
 
     const AddNewColor = async () => {
-
         const formData = new FormData();
         formData.append("name", name);
         formData.append("hex_code", hex_code);
         formData.append("code", codeColor);
-        
-        try{
-            await fetch("https://united-hanger-2025.up.railway.app//api/colors/new", {
+
+        try {
+            await authFetch("https://united-hanger-2025.up.railway.app//api/colors/new", {
                 method: "POST",
                 headers: {
-                    "Authorization": `Bearer ${token}` 
-              },
-              body: formData,
-            }).then((response) => response.json())
-            .then(data => console.log(data))
-        }
-        catch (error) {
+                    "Authorization": `Bearer ${token}`
+                },
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then(data => console.log(data))
+        } catch (error) {
             console.error("Error: Not Found Data", error)
         }
-    }
+    };
+
     return (
         <div className="Add-New-Color-Departament">
             <div className="heading-Add-New-Color">
                 <div className="col-image">
-                    <img onClick={handleNavigate} src={imgAddNew} alt="img-AddNew"/>
+                    <img onClick={handleNavigate} src={imgAddNew} alt="img-AddNew" />
                     <p>Add New Color</p>
                 </div>
                 <div className="col-userName">
-                    <UserName/>
+                    <UserName />
                 </div>
             </div>
             <div className="col-inputs-content">
@@ -82,28 +82,18 @@ function AddNewColor() {
                         <p>Name</p>
                         <input
                             onFocus={handleName}
-                            onBlur={() => {
-                                setName("Name")
-                            }}
+                            onBlur={() => setName("Name")}
                             onClick={blurtogglePicker}
-                            onChange={(e) => {
-                                setname(e.target.value)
-                            }}
-                            
+                            onChange={(e) => setname(e.target.value)}
                             type="text" placeholder={Name} name="Name" />
                     </div>
                     <div className="col-code">
                         <p>Code</p>
-                        <input onFocus={() => {
-                            setCode("");
-                        }}
-                            onBlur={() => {
-                                setCode("Code");
-                            }} onClick={blurtogglePicker}
-                            onChange={(e) => {
-                                setcodeColor(e.target.value)
-                            }}
-                            
+                        <input
+                            onFocus={() => setCode("")}
+                            onBlur={() => setCode("Code")}
+                            onClick={blurtogglePicker}
+                            onChange={(e) => setcodeColor(e.target.value)}
                             type="text" placeholder={code} name="Code" />
                     </div>
                 </div>
@@ -118,15 +108,17 @@ function AddNewColor() {
                             type="text" placeholder="Hex Code" name="Hex Code"
                         />
                         {showPicker && (
-                            <div style={{ position: 'absolute', zIndex: 2 , marginTop: "20px"}}>
+                            <div style={{ position: 'absolute', zIndex: 2, marginTop: "20px" }}>
                                 <ChromePicker color={color} onChangeComplete={handleColorChange} />
-                             </div>
+                            </div>
                         )}
                     </div>
                 </div>
             </div>
             <div className="Cancel-And-Delete">
-                <button className="cancel">Cancel</button>
+                <button className="cancel" onClick={() => {
+                    handleNavigate();
+                }}>Cancel</button>
                 <button className="submit" onClick={async () => {
                     AddNewColor();
                     handleNavigate();

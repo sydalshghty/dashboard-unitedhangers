@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import { token } from "./token";
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
-
+import { authFetch } from "./authFetch.js";
 function RowMaterial() {
     const navigate = useNavigate();
 
@@ -39,13 +39,13 @@ function RowMaterial() {
             }
         }).then((data) => {
             if (data.isConfirmed) {
-                fetch(`https://united-hanger-2025.up.railway.app//api/materials/${MaterialID}`, {
+                authFetch(`https://united-hanger-2025.up.railway.app//api/materials/${MaterialID}`, {
                     method: "DELETE",
                     headers: {
                         "Authorization": `Bearer ${token}`
                     }
                 }).then((response) => response.json())
-                .then(data => getAllMaterials());
+                    .then(data => getAllMaterials());
             }
         })
     }
@@ -53,25 +53,25 @@ function RowMaterial() {
     const [materials, setMaterials] = useState([]);
 
     const getAllMaterials = async () => {
-      try{
-        await fetch(`https://united-hanger-2025.up.railway.app//api/materials`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}` 
-            }
-        })
-        .then((response) => response.json())
-        .then(data => setMaterials(data.materials))
-      }
-      catch (error) {
-        console.error("Error: Not Found Data",error)
-      }
+        try {
+            await authFetch(`https://united-hanger-2025.up.railway.app//api/materials`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+                .then((response) => response.json())
+                .then(data => setMaterials(data.materials))
+        }
+        catch (error) {
+            console.error("Error: Not Found Data", error)
+        }
     }
 
     useEffect(() => {
         getAllMaterials();
     }, [])
-    
+
     const backgroundColor = (id) => {
         if ((id % 2) === 0) {
             return "#ffffff";
@@ -87,30 +87,29 @@ function RowMaterial() {
                     <p>Row Material</p>
                 </div>
                 <div className="col-userName">
-                    <UserName/>
+                    <UserName />
                 </div>
             </div>
             <div className="col-search">
-                <SearchInput/>
+                <SearchInput />
             </div>
             <div className="All-Row-Material">
                 <div className="text">
                     <p>All Row Material</p>
                 </div>
                 <div className="col-addNew" onClick={handleNavigate2}>
-                    <AddNew/>
+                    <AddNew />
                 </div>
             </div>
-            {!materials ? <Loading /> 
-                : 
+            {!materials ? <Loading />
+                :
                 <>
                     {materials.map((material, index) => {
                         return (
                             <div className="col-main-product" key={material.id}>
-                                <div className="container-product" style={{backgroundColor: backgroundColor(material.id)}}>
-                                    <Link to={`/materials/${material.id}`} style={{textDecoration: "none",width: "100%"}}>
+                                <div className="container-product" style={{ backgroundColor: backgroundColor(material.id) }}>
+                                    <Link to={`/materials/${material.id}`} style={{ textDecoration: "none", width: "100%" }}>
                                         <div className="contain-text">
-                                            {/* هنا حطينا الترقيم بدل id */}
                                             <p className="id-product">{index + 1}</p>
                                             <p className="title-product">{material.name}</p>
                                         </div>
@@ -120,7 +119,7 @@ function RowMaterial() {
                                             handleDelete(`${material.id}`)
                                         }} />
                                         <Link to={`/materials/${material.id}`}>
-                                            <img  className="editIcon" src={editIcon} alt="editIcon"/>
+                                            <img className="editIcon" src={editIcon} alt="editIcon" />
                                         </Link>
                                     </div>
                                 </div>

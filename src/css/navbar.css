@@ -85,7 +85,8 @@
 }
 }
 
-.navBar-departament nav .container ul li img {
+.navBar-departament nav .container ul li img,
+.icon {
     margin-right: 10px;
     cursor: pointer;
 }
@@ -115,7 +116,8 @@
         margin-bottom: 15px;
     }
 
-    .navBar-departament nav .container ul li img {
+    .navBar-departament nav .container ul li img,
+    .icon{
         margin-right: 0;
     }
     .navBar-departament .united-hanger-logo img {
@@ -124,4 +126,7 @@
     .navBar-departament .united-hanger-logo p {
         display: none;
     }
+}
+.icon{
+    font-size: 18px;
 }

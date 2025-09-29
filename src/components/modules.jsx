@@ -9,13 +9,13 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
 import { token } from "./token";
-
+import { authFetch } from "./authFetch.js";
 function Modules() {
   const [products, setProducts] = useState([]);
 
   const getAllProducts = async () => {
     try {
-      const response = await fetch("https://united-hanger-2025.up.railway.app/api/products");
+      const response = await authFetch("https://united-hanger-2025.up.railway.app/api/products");
       const data = await response.json();
       setProducts(data.products);
     } catch (error) {
@@ -52,7 +52,7 @@ function Modules() {
       },
     }).then((data) => {
       if (data.isConfirmed) {
-        fetch(`https://united-hanger-2025.up.railway.app/api/products/${productID}`, {
+        authFetch(`https://united-hanger-2025.up.railway.app/api/products/${productID}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,

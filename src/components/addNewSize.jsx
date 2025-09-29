@@ -4,6 +4,7 @@ import "../css/addNewSize.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { token } from "./token";
+import { authFetch } from "./authFetch.js";
 function AddNewSize() {
 
     const [Value, setValue] = useState("Value");
@@ -23,15 +24,15 @@ function AddNewSize() {
         formData.append("value", valueSize);
         formData.append("unit", unitSize);
 
-        try{
-            await fetch(`https://united-hanger-2025.up.railway.app//api/sizes/new`, {
+        try {
+            await authFetch(`https://united-hanger-2025.up.railway.app//api/sizes/new`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`
-              },
-              body: formData,
+                },
+                body: formData,
             }).then((response) => response.json())
-            .then(data => console.log(data))
+                .then(data => console.log(data))
         }
         catch (error) {
             console.error("Error: Not Found Data", error)
@@ -41,11 +42,11 @@ function AddNewSize() {
         <div className="AddNewSize-Departament">
             <div className="addNewSize-Heading">
                 <div className="col-image">
-                    <img onClick={handleNavigate} src={imgSize} alt="imgSize"/>
+                    <img onClick={handleNavigate} src={imgSize} alt="imgSize" />
                     <p>Add New Size</p>
                 </div>
                 <div className="col-userName">
-                    <UserName/>
+                    <UserName />
                 </div>
             </div>
             <div className="col-input-AddNewSize">
@@ -79,7 +80,7 @@ function AddNewSize() {
                 </div>
             </div>
             <div className="Cancel-And-Delete">
-                <button className="cancel">Cancel</button>
+                <button className="cancel" onClick={handleNavigate}>Cancel</button>
                 <button className="submit" onClick={async () => {
                     AddNewSize();
                     handleNavigate();

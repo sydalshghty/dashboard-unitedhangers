@@ -1,4 +1,4 @@
-import imgIcon from "../images/Group 429.svg"; 
+import imgIcon from "../images/Group 429.svg";
 import UserName from "./userName";
 import "../css/addNewSlider.css";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import imgUpload from "../images/Vector (4).svg";
 import { useState } from "react";
 import "../css/addNewService.css";
 import { token } from "./token";
+import { authFetch } from "./authFetch.js";
 function AddNewService() {
     const navigate = useNavigate();
     const handlNavigate = () => {
@@ -23,9 +24,9 @@ function AddNewService() {
     const [descService, setDescService] = useState("");
 
     const handleImageChange = (event) => {
-        const file = event.target.files[0]; 
+        const file = event.target.files[0];
         if (file) {
-            setImage(file); 
+            setImage(file);
         }
     };
 
@@ -35,17 +36,17 @@ function AddNewService() {
         formData.append("title", titleService);
         formData.append("description", descService);
 
-        try{
-            await fetch("https://united-hanger-2025.up.railway.app//api/services/new",
+        try {
+            await authFetch("https://united-hanger-2025.up.railway.app//api/services/new",
                 {
                     method: "POST",
                     headers: {
-                        "Authorization": `Bearer ${token}` 
+                        "Authorization": `Bearer ${token}`
                     },
                     body: formData
                 }
             ).then((response) => response.json())
-            .then((data) => console.log(data))
+                .then((data) => console.log(data))
         }
         catch (error) {
             console.error("Error: Not Found Data", error)
@@ -61,11 +62,11 @@ function AddNewService() {
         <div className="addNewSlider-departament">
             <div className="addNewSlider-heading">
                 <div className="col-image">
-                    <img onClick={handlNavigate} src= {imgIcon} alt="imgIcon" />
+                    <img onClick={handlNavigate} src={imgIcon} alt="imgIcon" />
                     <p>Add New Service</p>
                 </div>
                 <div className="col-userName">
-                    <UserName/>
+                    <UserName />
                 </div>
             </div>
             <div className="content-upload-product">
@@ -74,16 +75,16 @@ function AddNewService() {
                     <input onChange={handleImageChange} type="file" />
                     <p>Select Image to upload</p>
                     {image ? <img
-                                className="img-upload"
-                                src={image}
-                                alt="Uploaded"
-                                style={{
-                                position: "absolute",
-                                maxWidth: "100%",
-                                maxHeight: "100%",
-                                objectFit: "contain", 
-                     }}
-                                /> : null}
+                        className="img-upload"
+                        src={image}
+                        alt="Uploaded"
+                        style={{
+                            position: "absolute",
+                            maxWidth: "100%",
+                            maxHeight: "100%",
+                            objectFit: "contain",
+                        }}
+                    /> : null}
                 </div>
                 <div className="product-content">
                     <div className="col-title">
@@ -118,7 +119,9 @@ function AddNewService() {
                 </div>
             </div>
             <div className="Cancel-And-Delete">
-                <button className="cancel">Cancel</button>
+                <button className="cancel" onClick={() => {
+                    handlNavigate();
+                }}>Cancel</button>
                 <button onClick={async () => {
                     handleSubmit();
                 }} className="submit">Submit</button>

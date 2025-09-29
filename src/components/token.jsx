@@ -11,14 +11,14 @@ const refreshAccessToken = async () => {
     const response = await fetch("/api/refresh_token", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${refreshToken}`, 
+        "Authorization": `Bearer ${refreshToken}`,
       },
     });
 
     if (response.ok) {
       const data = await response.json();
       localStorage.setItem("accessToken", data.access_token);
-      return data.access_token; 
+      return data.access_token;
     } else {
       console.error("Failed to refresh access token.");
       const errorData = await response.json();

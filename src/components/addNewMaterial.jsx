@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "../css/addNewSlider.css";
 import { useState } from "react";
 import { token } from "./token";
+import { authFetch } from "./authFetch.js";
 
 function AddNewMaterial() {
 
@@ -23,29 +24,29 @@ function AddNewMaterial() {
         const formData = new FormData();
         formData.append("name", nameMaterial);
 
-      try{
-            await fetch(`https://united-hanger-2025.up.railway.app//api/materials/new`, {
+        try {
+            await authFetch(`https://united-hanger-2025.up.railway.app//api/materials/new`, {
                 method: "POST",
                 headers: {
-                        "Authorization": `Bearer ${token}` 
-            },
+                    "Authorization": `Bearer ${token}`
+                },
                 body: formData
             }).then((response) => response.json())
-            .then(data => console.log(data))
-      }
-      catch (error) {
-        console.error("Error: Not Found Data", error)
-      }
+                .then(data => console.log(data))
+        }
+        catch (error) {
+            console.error("Error: Not Found Data", error)
+        }
     }
     return (
         <div className="Add-New-Material-Departament">
             <div className="heading-AddNewMaterial">
                 <div className="col-material">
-                    <img onClick={handleNavigate} src={imgReturn} alt="imgReturn"/>
+                    <img onClick={handleNavigate} src={imgReturn} alt="imgReturn" />
                     <p>Add New Material</p>
                 </div>
                 <div className="col-userName">
-                    <UserName/>
+                    <UserName />
                 </div>
             </div>
             <div className="col-input-material">
@@ -63,7 +64,7 @@ function AddNewMaterial() {
                     type="text" placeholder={namePlaceholder} name="Name-Material" />
             </div>
             <div className="Cancel-And-Delete">
-                    <button className="cancel">Cancel</button>
+                <button className="cancel" onClick={handleNavigate}>Cancel</button>
                 <button className="submit" onClick={async () => {
                     AddNewMaterial();
                     handleNavigate();

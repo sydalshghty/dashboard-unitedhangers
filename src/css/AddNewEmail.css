@@ -1,0 +1,38 @@
+.content-Add-new-Email{
+    margin-top: 60px;
+    padding-left: 40px;
+    padding-right: 40px;
+    display: flex;
+    flex-direction: column;
+}
+.content-Add-new-Email input{
+    height: 60px;
+    border: 1px solid var(--border-new-slider-color);
+    outline: none;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    caret-color: var(--border-new-slider-color);
+    font-size: 15px;
+}
+.content-Add-new-Email input::placeholder{
+    padding-left: 3px;
+}
+.content-Add-new-Email button{
+    width: 200px;
+    height: 40px;
+    cursor: pointer;
+    border: none;
+    background-color: var(--submit-background);
+    color: white;
+    border-radius: 4px;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+@media (max-width: 768px){
+    .content-Add-new-Email{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}

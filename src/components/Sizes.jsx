@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { token } from "./token";
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
-
+import { authFetch } from "./authFetch.js";
 function Sizes() {
     const navigate = useNavigate();
 
@@ -32,14 +32,14 @@ function Sizes() {
             }
         }).then(data => {
             if (data.isConfirmed) {
-                fetch(`https://united-hanger-2025.up.railway.app//api/sizes/${id}`, {
+                authFetch(`https://united-hanger-2025.up.railway.app//api/sizes/${id}`, {
                     method: "DELETE",
                     headers: {
                         "Authorization": `Bearer ${token}`
                     }
                 })
-                .then((response) => response.json())
-                .then(() => getAllSizes());
+                    .then((response) => response.json())
+                    .then(() => getAllSizes());
             }
         })
     }
@@ -48,14 +48,14 @@ function Sizes() {
 
     const getAllSizes = () => {
         try {
-            fetch(`https://united-hanger-2025.up.railway.app//api/sizes`, {
+            authFetch(`https://united-hanger-2025.up.railway.app//api/sizes`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
             })
-            .then((response) => response.json())
-            .then(data => setSizes(data.sizes))
+                .then((response) => response.json())
+                .then(data => setSizes(data.sizes))
         }
         catch (error) {
             console.error("Error: Not Found Data", error)
@@ -75,50 +75,50 @@ function Sizes() {
             <div className="heading-sizes">
                 <p className="p-title">Sizes</p>
                 <div className="col-userName">
-                    <UserName/>
+                    <UserName />
                 </div>
             </div>
             <div className="col-search">
-                <SearchInput/>
+                <SearchInput />
             </div>
             <div className="col-All-Sizes">
                 <p>All Sizes</p>
                 <div className="add-New" onClick={handleNavigate}>
-                    <AddNew/>
+                    <AddNew />
                 </div>
             </div>
 
             {!sizes ? <Loading /> :
-            <div className="main-product-sizes">
-                {sizes.map((size, index) => {
-                    return (
-                        <div 
-                            className="content-product-size" 
-                            key={size.id} 
-                            style={{backgroundColor: backgroundSize(index)}}
-                        >
-                            <Link 
-                                to={`/sizes/${size.id}`} 
-                                style={{display: "flex",alignItems: "center", textDecoration: "none",width: "100%"}}
+                <div className="main-product-sizes">
+                    {sizes.map((size, index) => {
+                        return (
+                            <div
+                                className="content-product-size"
+                                key={size.id}
+                                style={{ backgroundColor: backgroundSize(index) }}
                             >
-                                <p className="id-product">{index + 1}</p> 
-                                <p className="title-product">{`${size.value} ${size.unit}`}</p>
-                            </Link>
-                            <div className="Edit-Delete-col">
-                                <img 
-                                    onClick={() => handleDelete(size.id)} 
-                                    className="delete-Img" 
-                                    src={deleteImg} 
-                                    alt="delete-Img" 
-                                />
-                                <Link to={`/sizes/${size.id}`}>
-                                    <img className="edit-Img" src={EditImg} alt="Edit-Img"/>
+                                <Link
+                                    to={`/sizes/${size.id}`}
+                                    style={{ display: "flex", alignItems: "center", textDecoration: "none", width: "100%" }}
+                                >
+                                    <p className="id-product">{index + 1}</p>
+                                    <p className="title-product">{`${size.value} ${size.unit}`}</p>
                                 </Link>
+                                <div className="Edit-Delete-col">
+                                    <img
+                                        onClick={() => handleDelete(size.id)}
+                                        className="delete-Img"
+                                        src={deleteImg}
+                                        alt="delete-Img"
+                                    />
+                                    <Link to={`/sizes/${size.id}`}>
+                                        <img className="edit-Img" src={EditImg} alt="Edit-Img" />
+                                    </Link>
+                                </div>
                             </div>
-                        </div>
-                    )
-                })}   
-            </div>
+                        )
+                    })}
+                </div>
             }
         </div>
     )

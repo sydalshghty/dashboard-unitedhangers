@@ -124,9 +124,102 @@ html {
   margin-right: 20px;
 }
 .my-cancel{
-  background-color: #ffffff;
+  background-color: #ffffff !important;
   border: 1px solid #5A67BA;
   color: #5A67BA;
   margin-left: 20px;
 }
-
+.all-emails{
+  padding-left: 40px;
+  padding-right: 40px;
+  margin-top: 20px;
+}
+.all-emails .col-email{
+    background-color: #f6f6f6;
+    padding: 20px;
+    cursor: pointer;
+    color: #1F384C;
+}
+.all-emails .col-email{
+  background-color: var(--background-search) !important;
+  color: var(--color-search);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+.all-emails .col-email div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.all-emails .col-email p{
+  width: 35px;
+  height: 35px;
+  background-color: #5A67BA;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ border-radius: 4px;
+ color: #ffffff;
+}
+.add-new-Email{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+@media (max-width: 768px) {
+  .emails-departament{
+    overflow: hidden !important;
+  }
+  .all-emails{
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .all-emails .col-email img{
+    width: 35px;
+  }
+  .Edit-Delete-Col{
+    flex-direction: column;
+  }
+}
+.col-Edit-Email{
+  margin-top: 30px;
+  padding-left: 40px;
+  padding-right: 40px;
+  display: flex;
+  flex-direction: column;
+}
+.col-Edit-Email input{
+  width: 90%;
+  height: 60px;
+  background-color: var(--background-search);
+  border: none;
+  outline: none;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 4px;
+  font-size: 15px;
+}
+.col-Edit-Email button{
+  width: 200px;
+  height: 40px;
+  border: none;
+  background-color: #5A67BA;
+  color: #ffffff;
+  border-radius: 4px;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+@media (max-width: 768px){
+  .col-Edit-Email{
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .col-Edit-Email input{
+    width: 100% !important;
+  }
+}

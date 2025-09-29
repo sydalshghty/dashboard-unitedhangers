@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { token } from "./token";
 import Loading from "./Loading";
-
+import { authFetch } from "./authFetch.js";
 function Inquiries() {
     const navigate = useNavigate("");
 
@@ -17,7 +17,7 @@ function Inquiries() {
 
     const getAllInquiries = async () => {
         try {
-            await fetch(`https://united-hanger-2025.up.railway.app//api/inquiries`, {
+            await authFetch(`https://united-hanger-2025.up.railway.app//api/inquiries`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -32,6 +32,11 @@ function Inquiries() {
 
     useEffect(() => {
         getAllInquiries();
+        const interval = setInterval(() => {
+            window.location.reload();
+        }, 5000);
+
+        return () => clearInterval(interval);
     }, []);
 
     const backgroundProduct = (id) => {
@@ -70,7 +75,6 @@ function Inquiries() {
                                         className="Col-Inquiriey"
                                         style={{ backgroundColor: backgroundProduct(inquiry.id) }}
                                     >
-                                        {/* ✅ هنا خليت الـ index مكان الـ id */}
                                         <p className="P-Id">{index + 1}</p>
 
                                         <div className="inquiry-Content">
@@ -99,4 +103,5 @@ function Inquiries() {
     );
 }
 export default Inquiries;
+
 

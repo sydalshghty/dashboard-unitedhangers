@@ -14,8 +14,8 @@ import iconColors from "../images/Vector (5).svg";
 import iconRawMaterial from "../images/Vector (6).svg";
 import iconSizes from "../images/Vector (7).svg";
 import { useState } from "react";
+import { MdEmail } from "react-icons/md";
 function Navbar() {
-
     const [hover, setHover] = useState(false);
     const [sliderHover, setSliderHover] = useState(false);
     const [inquiriesHover, setInquiriesHover] = useState(false);
@@ -28,6 +28,7 @@ function Navbar() {
     const [colorsHover, setColorsHover] = useState(false);
     const [rawMaterialHover, setRawMaterialHover] = useState(false);
     const [sizesHover, setSizesHover] = useState(false);
+    const [emailsHover, setEmailsHover] = useState(false);
 
     return (
         <div className="navBar-departament">
@@ -52,6 +53,7 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
+                                setEmailsHover(false);
                             }}>
                             <Link to={"Products"} className="link">
                                 <img src={iconProducts} alt="Products" />
@@ -72,6 +74,7 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
+                                setEmailsHover(false);
                             }}>
                             <Link to={"Slider"} className="link">
                                 <img src={iconSlider} alt="Slider" />
@@ -92,6 +95,7 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
+                                setEmailsHover(false);
                             }}>
                             <Link to={"Inquiries"} className="link">
                                 <img src={iconInquiries} alt="Inquiries" />
@@ -112,6 +116,7 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
+                                setEmailsHover(false);
                             }}>
                             <Link to={"Messages"} className="link">
                                 <img src={iconMessage} alt="Messages" />
@@ -132,6 +137,7 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
+                                setEmailsHover(false);
                             }}>
                             <Link to={"Services"} className="link">
                                 <img src={iconServices} alt="Services" />
@@ -152,6 +158,7 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
+                                setEmailsHover(false);
                             }}>
                             <Link to={"AboutUs"} className="link">
                                 <img src={iconAboutUs} alt="About Us" />
@@ -172,6 +179,7 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
+                                setEmailsHover(false);
                             }}>
                             <Link to={"WhyUS"} className="link">
                                 <img src={iconWhyUs} alt="Why US" />
@@ -192,6 +200,7 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
+                                setEmailsHover(false);
                             }}>
                             <Link to={"OurFactory"} className="link">
                                 <img src={iconOurFactory} alt="Our Factory" />
@@ -212,6 +221,7 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
+                                setEmailsHover(false);
                             }}>
                             <Link to={"BusinessHours"} className="link">
                                 <img src={iconBusinessHours} alt="Business Hours" />
@@ -232,6 +242,7 @@ function Navbar() {
                                 setColorsHover(true);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
+                                setEmailsHover(false);
                             }}>
                             <Link to={"Colors"} className="link">
                                 <img src={iconColors} alt="Business Hours" />
@@ -252,6 +263,7 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(true);
                                 setSizesHover(false);
+                                setEmailsHover(false);
                             }}>
                             <Link to={"RowMaterial"} className="link">
                                 <img src={iconRawMaterial} alt="Business Hours" />
@@ -272,11 +284,33 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(true);
+                                setEmailsHover(false);
                             }}>
                             <Link to={"Sizes"} className="link">
                                 <img src={iconSizes} alt="Business Hours" />
                             </Link>
                             <Link to={"Sizes"}>Sizes</Link>
+                        </li>
+                        <li className={`${emailsHover ? "hovered" : ""}`}
+                            onClick={() => {
+                                setHover(false);
+                                setSliderHover(false);
+                                setInquiriesHover(false);
+                                setMessageHover(false);
+                                setServicesHover(false);
+                                setAboutUsHover(false);
+                                setWhyUsHover(false);
+                                setOurFactoryHover(false);
+                                setBusinessHover(false);
+                                setColorsHover(false);
+                                setRawMaterialHover(false);
+                                setEmailsHover(true);
+                                setSizesHover(false);
+                            }}>
+                            <Link to={"Email"} className="link">
+                                <MdEmail className="icon" />
+                            </Link>
+                            <Link to={"Email"}>Emails</Link>
                         </li>
                     </ul>
                 </div>

@@ -10,12 +10,10 @@ import { useParams } from "react-router-dom";
 import { token } from "./token";
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
+import { authFetch } from "./authFetch.js";
 function Service() {
-
     const { serviceID } = useParams();
-
     const [service, setService] = useState([]);
-
     const handleDelete = () => {
         Swal.fire({
             title: "Delete Service",
@@ -30,7 +28,7 @@ function Service() {
                 cancelButton: "my-cancel",
             }
         })
-        
+
     }
 
     const navigate = useNavigate();
@@ -46,27 +44,25 @@ function Service() {
     const handleNavigateEditService = () => {
         navigate("/EditService")
     }
- 
+
     const getServiceData = async () => {
-       try{
-            await  fetch(`https://united-hanger-2025.up.railway.app/api/service/${serviceID}`, {
+        try {
+            await authFetch(`https://united-hanger-2025.up.railway.app/api/service/${serviceID}`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
-        }).then((response) => response.json())
-            .then(data => setService(data.service))
-       }
-       catch (error) {
-        console.error("Error: Not Found Data",error)
-       }
+            }).then((response) => response.json())
+                .then(data => setService(data.service))
+        }
+        catch (error) {
+            console.error("Error: Not Found Data", error)
+        }
     }
 
     useEffect(() => {
         getServiceData();
     }, [])
-    
-    console.log(service);
 
     return (
         <div className="productSlider-departament">
@@ -75,16 +71,16 @@ function Service() {
                     <img src={iconSlider} alt="imgProduct" onClick={handleNavigate} />
                     <p>Service</p>
                 </div>
-                <UserName/>
+                <UserName />
             </div>
             <div className="addNew-col" onClick={handleNavigateAddNew}>
-                <AddNew/>
+                <AddNew />
             </div>
             {!service ? <Loading /> :
-            <>
+                <>
                     <div className="col-product">
                         <div className="col-image">
-                            <img src={service.image_path} alt="productimg"/>
+                            <img src={service.image_path} alt="productimg" />
                         </div>
                         <div className="information-product">
                             <div className="title-content">
@@ -99,9 +95,9 @@ function Service() {
                     </div>
                     <div className="Edit-And-Delete">
                         <button onClick={handleDelete} className="Delete">Delete</button>
-                        <button  className="Edit">Edit</button>
+                        <button className="Edit">Edit</button>
                     </div>
-            </>
+                </>
             }
         </div>
     )
