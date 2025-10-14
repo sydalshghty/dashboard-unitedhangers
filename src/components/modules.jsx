@@ -155,12 +155,13 @@ function Modules() {
                   </Link>
                   <div className="Edit-Delete-Col">
                     <Link to={`/products/${product.id}`}>
-                      <img className="img-Edit" src={imgEdit} alt="img-Edit" />
+                      <img className="img-Edit" src={imgEdit} alt="img-Edit" style={{ width: "40px", marginLeft: "0" }} />
                     </Link>
                     <img
                       onClick={() => {
                         handleDelete(`${product.id}`);
                       }}
+                      style={{ width: "40px", margin: "0" }}
                       className="img-Delete"
                       src={imgDelete}
                       alt="img-Delete"

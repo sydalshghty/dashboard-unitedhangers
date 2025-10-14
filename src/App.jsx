@@ -31,9 +31,13 @@ import ViewInquiry from "./components/ViewInquiry";
 import Emails from "./components/Emails";
 import AddNewEmail from "./components/AddNewEmail";
 import EditEmail from "./components/Edit-Email";
+import GetAllCategories from "./components/getAllCategories";
+import AddNewCategories from "./components/Addnewcategories";
+import EditCategory from "./components/EditCategory";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
 import useTokenRefresher from "./components/useTokenRefresher";
+
 
 function App() {
   useTokenRefresher();
@@ -102,6 +106,9 @@ function App() {
             <Route path="/Email" element={<Emails />} />
             <Route path="/AddNewEmail" element={<AddNewEmail />} />
             <Route path="EditEmail/:EmailID" element={<EditEmail />} />
+            <Route path="Categories" element={<GetAllCategories />} />
+            <Route path="/AddNewCategory" element={<AddNewCategories />} />
+            <Route path="EditCategory/:CategoryID" element={<EditCategory />} />
           </Routes>
         </div>
       </div>

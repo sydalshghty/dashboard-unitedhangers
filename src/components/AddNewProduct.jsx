@@ -14,6 +14,12 @@ function AddNewProduct() {
     const handleNavigate = () => {
         navigate("/Products");
     };
+    const [selectedCategory, setSelectedCategory] = useState(null);
+
+    const handleSelectCategory = (id) => {
+        setSelectedCategory((prev) => (prev === id ? null : id));
+    };
+
 
     const [Title, setTitle] = useState("Title");
     const [Description, setDescription] = useState("Description . . .");
@@ -117,10 +123,28 @@ function AddNewProduct() {
     }
 
     useEffect(() => {
-        getAllColors()
+        getAllColors();
+        getAlllCategories();
     }, []);
     const colors = allColors;
     //
+
+    const [categories, setcategories] = useState([]);
+    const getAlllCategories = async () => {
+        try {
+            await authFetch(`https://united-hanger-2025.up.railway.app/api/categories/get_all`, {
+                method: "GET"
+            })
+                .then((response) => response.json())
+                .then(data => setcategories(data.categories))
+        }
+        catch (error) {
+            console.error("Error not found data", error)
+        }
+    }
+
+    console.log(categories);
+
     const handleSelectMaterial = (id) => {
         setSelectedMaterials((prev) =>
             prev.includes(id)
@@ -148,11 +172,17 @@ function AddNewProduct() {
     const [name, setName] = useState("");
 
     const AddNewProduct = async () => {
+        if (!selectedCategory) {
+            alert("⚠️ Please select a category before submitting.");
+            return;
+        }
+
         const productData = {
             name: name,
             color_ids: selectedColors,
             size_ids: selectedSizes,
             material_ids: selectedMaterials,
+            category_id: selectedCategory,
         };
 
         const formData = new FormData();
@@ -349,6 +379,26 @@ function AddNewProduct() {
                                     ))}
                                 </>
                             }
+                        </div>
+                    </div>
+                    <div className="col-all-categories col-Raw-Material">
+                        <h3>Category</h3>
+                        <div className="material">
+                            {!categories ? (
+                                <h3>Loading Data ...</h3>
+                            ) : (
+                                <>
+                                    {categories.map((category) => (
+                                        <p
+                                            key={category.id}
+                                            className={`material-item ${selectedCategory === category.id ? "selected" : ""}`}
+                                            onClick={() => handleSelectCategory(category.id)}
+                                        >
+                                            {category.name}
+                                        </p>
+                                    ))}
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

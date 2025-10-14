@@ -17,7 +17,7 @@ function EditProduct() {
     const { ProductID } = useParams();
     const getProductData = async () => {
         try {
-            const response = await authFetch(`https://united-hanger-2025.up.railway.app/api/products/${ProductID}`, {
+            const response = await authFetch(`https://united-hanger-2025.up.railway.app/api/v2/products/${ProductID}`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -65,6 +65,8 @@ function EditProduct() {
     useEffect(() => {
         getProductData();
     }, []);
+
+    console.log(Product);
 
     return (
         <div className="Edit-Product-Departament">
