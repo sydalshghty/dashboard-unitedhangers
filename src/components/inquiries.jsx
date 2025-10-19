@@ -17,7 +17,7 @@ function Inquiries() {
 
     const getAllInquiries = async () => {
         try {
-            await authFetch(`https://united-hanger-2025.up.railway.app//api/inquiries`, {
+            await authFetch(`https://hanger-production.up.railway.app//api/inquiries`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`

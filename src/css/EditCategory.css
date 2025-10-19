@@ -1,0 +1,44 @@
+.visibility-buttons {
+ margin-top: 18px;
+  display: flex;
+  gap: 12px;
+  /*align-items: center;*/
+  padding-left: 40px;
+  flex-direction: column;
+ /* justify-content: flex-end;*/
+
+}
+
+/* common styles for both buttons */
+.visibility-buttons .btn {
+  padding: 8px 14px;
+  border-radius: 4px;
+  border: 0;
+  cursor: pointer;
+  font-weight: 400;
+  transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+  /*box-shadow: 0 2px 6px rgba(0,0,0,0.08);*/
+  width: 200px;
+  height: 40px;
+}
+
+/* visible button */
+.btn-visible,
+.btn-hidden {
+ /* background: #e6f7ea; 
+  color: #167a2f;*/
+ /* border: 1px solid rgba(22,122,47,0.12);*/
+ background-color: #2baa4a;
+ color: white;
+ font-size: 15px;
+ letter-spacing: 0.5px;
+ font-weight: normal;
+}
+
+/* hidden button */
+.btn-hidden {
+ /* background: #fff0f0; 
+  color: #c82333;
+  border: 1px solid rgba(200,35,51,0.12);*/
+  background-color: #c82333;
+}

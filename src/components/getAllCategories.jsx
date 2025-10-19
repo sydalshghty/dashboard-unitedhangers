@@ -14,7 +14,7 @@ function GetAllCategories() {
     const [allCategories, setAllCategories] = useState([]);
     const getAlCategories = async () => {
         try {
-            await authFetch(`https://united-hanger-2025.up.railway.app/api/categories/get_all`, {
+            await authFetch(`https://united-hanger-2025.up.railway.app//api/categories_for_dashboard`, {
                 method: "GET"
             })
                 .then((response) => response.json())
