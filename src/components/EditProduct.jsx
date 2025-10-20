@@ -14,7 +14,66 @@ import "../css/ProductSubmit.css";
 import { authFetch } from "./authFetch.js";
 function EditProduct() {
     const [Product, setProduct] = useState([]);
+    const [allCategories, setAllCategories] = useState([]);
+    const getAllCategories = async () => {
+        try {
+            await authFetch(`https://united-hanger-2025.up.railway.app/api/categories/get_all`, {
+                method: "GET"
+            })
+                .then((response) => response.json())
+                .then(data => setAllCategories(data.categories))
+        }
+        catch (error) {
+            console.error("Error Not Found Data", error)
+        }
+    }
+
+    const [Editname, setEditname] = useState("");
+    const [selectedCategoryId, setSelectedCategoryId] = useState("");
+
     const { ProductID } = useParams();
+
+    const EditProduct = async () => {
+        if (!Editname || !selectedCategoryId) {
+            alert("Please enter name and select category before saving.");
+            return;
+        }
+
+        const bodyData = {
+            name: Editname,
+            category_id: Number(selectedCategoryId)
+        };
+
+        try {
+            const response = await authFetch(
+                `https://united-hanger-2025.up.railway.app/api/v2/products/${ProductID}/edit`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(bodyData),
+                }
+            );
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("✅ Product updated successfully!");
+                console.log(data);
+                handleNavigate();
+            } else {
+                alert("❌ Failed to update Product. Please try again.");
+                console.error(data);
+            }
+        } catch (error) {
+            console.error("❌ Error while updating product:", error);
+            alert("An error occurred. Please try again.");
+        }
+    };
+
+
     const getProductData = async () => {
         try {
             const response = await authFetch(`https://united-hanger-2025.up.railway.app/api/v2/products/${ProductID}`, {
@@ -64,6 +123,7 @@ function EditProduct() {
 
     useEffect(() => {
         getProductData();
+        getAllCategories();
     }, []);
 
     console.log(Product);
@@ -114,7 +174,9 @@ function EditProduct() {
                             <form action="">
                                 <div className="col-Name">
                                     <label>Name</label>
-                                    <input type="text" placeholder={Product.name} />
+                                    <input type="text" placeholder={Product.name} onChange={(e) => {
+                                        setEditname(e.target.value);
+                                    }} />
                                 </div>
                                 <div className="col-Description">
                                     <label>Description</label>
@@ -127,6 +189,20 @@ function EditProduct() {
                                     {Product?.materials?.map((material, index) => (
                                         <p style={{ backgroundColor: `${backgroundColors(material.id)}`, color: `${colorColors(material.id)}` }} key={material.id || index}>{material.name}</p>))}
                                 </div>
+                            </div>
+                            <div className="col-Category">
+                                <label>Category</label>
+                                <select style={{ width: "300px", cursor: "pointer", height: "30px" }}
+                                    value={selectedCategoryId}
+                                    onChange={(e) => setSelectedCategoryId(e.target.value)}
+                                >
+                                    <option value="">Select a category</option>
+                                    {allCategories.map((category) => (
+                                        <option key={category.id} value={category.id}>
+                                            {category.name}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
                         <div className="Colors-Sizes-Col">
@@ -150,6 +226,9 @@ function EditProduct() {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div className="col-Delete-Edit">
+                        <button className="Edit" onClick={EditProduct}>Edit</button>
                     </div>
                 </>
             }

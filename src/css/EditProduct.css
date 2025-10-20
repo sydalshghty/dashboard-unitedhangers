@@ -187,3 +187,68 @@
             width: 100%;
         }
 }
+.Edit-Product-Departament .col-Delete-Edit{
+    padding-left: 40px;
+    padding-right: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+}
+.Edit-Product-Departament .col-Delete-Edit button{
+    width: 250px;
+    height: 40px;
+    border: none;
+    background-color: #5A67BA;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 17px;
+    color: white;
+    letter-spacing: 0.5px;
+}
+.col-Category {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.col-Category label {
+    font-size: 16px;
+    font-weight: 400;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.select-category {
+    width: 50%;
+    padding: 10px 12px;
+    border: 1.5px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    font-size: 15px;
+    color: #333;
+    outline: none;
+    transition: all 0.2s ease;
+    appearance: none; /* يخفي السهم الافتراضي */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg fill='%23666' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    cursor: pointer;
+}
+
+.select-category:hover {
+    border-color: #5a67ba;
+    background-color: #fff;
+}
+
+.select-category:focus {
+    border-color: #5a67ba;
+    box-shadow: 0 0 5px rgba(90, 103, 186, 0.4);
+    background-color: #fff;
+}
+
+.select-category option {
+    background-color: #fff;
+    color: #333;
+}
