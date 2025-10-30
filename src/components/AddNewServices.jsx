@@ -23,10 +23,18 @@ function AddNewService() {
 
     const [descService, setDescService] = useState("");
 
+    const [iconImage, setIconImage] = useState(null);
+
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         if (file) {
             setImage(file);
+        }
+    };
+    const handleIconChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setIconImage(file);
         }
     };
 
@@ -35,6 +43,7 @@ function AddNewService() {
         formData.append("image", image);
         formData.append("title", titleService);
         formData.append("description", descService);
+        formData.append("icon_image", iconImage);
 
         try {
             await authFetch("https://united-hanger-2025.up.railway.app//api/services/new",
@@ -70,21 +79,39 @@ function AddNewService() {
                 </div>
             </div>
             <div className="content-upload-product">
-                <div className="select-image">
-                    <img src={imgUpload} alt="upload-image" />
-                    <input onChange={handleImageChange} type="file" />
-                    <p>Select Image to upload</p>
-                    {image ? <img
-                        className="img-upload"
-                        src={image}
-                        alt="Uploaded"
-                        style={{
-                            position: "absolute",
-                            maxWidth: "100%",
-                            maxHeight: "100%",
-                            objectFit: "contain",
-                        }}
-                    /> : null}
+                <div>
+                    <div className="select-image">
+                        <img src={imgUpload} alt="upload-image" />
+                        <input onChange={handleImageChange} type="file" />
+                        <p>Select Image to upload</p>
+                        {image ? <img
+                            className="img-upload"
+                            src={image}
+                            alt="Uploaded"
+                            style={{
+                                position: "absolute",
+                                maxWidth: "100%",
+                                maxHeight: "100%",
+                                objectFit: "contain",
+                            }}
+                        /> : null}
+                    </div>
+                    <div className="select-image icon-svg" style={{ marginTop: "40px" }}>
+                        <img src={imgUpload} alt="upload-image" />
+                        <input onChange={handleIconChange} type="file" />
+                        <p>Select Icon to upload</p>
+                        {iconImage ? <img
+                            className="img-upload"
+                            src={iconImage}
+                            alt="Uploaded"
+                            style={{
+                                position: "absolute",
+                                maxWidth: "100%",
+                                maxHeight: "100%",
+                                objectFit: "contain",
+                            }}
+                        /> : null}
+                    </div>
                 </div>
                 <div className="product-content">
                     <div className="col-title">
