@@ -14,8 +14,9 @@ import iconColors from "../images/Vector (5).svg";
 import iconRawMaterial from "../images/Vector (6).svg";
 import iconSizes from "../images/Vector (7).svg";
 import { useState } from "react";
-import { MdEmail } from "react-icons/md";
+//import { MdEmail } from "react-icons/md";
 import { BiSolidCategory } from "react-icons/bi";
+import { IoLocationSharp } from "react-icons/io5";
 
 function Navbar() {
     const [hover, setHover] = useState(false);
@@ -30,8 +31,9 @@ function Navbar() {
     const [colorsHover, setColorsHover] = useState(false);
     const [rawMaterialHover, setRawMaterialHover] = useState(false);
     const [sizesHover, setSizesHover] = useState(false);
-    const [emailsHover, setEmailsHover] = useState(false);
+    //const [emailsHover, setEmailsHover] = useState(false);
     const [categoriesHover, setCategoriesHover] = useState(false);
+    const [locationHover, setLocationHover] = useState(false);
 
     return (
         <div className="navBar-departament">
@@ -44,7 +46,7 @@ function Navbar() {
                     <ul>
                         <li className={`${hover ? "hovered" : ""}`}
                             onClick={() => {
-                                setHover(false);
+                                setHover(true);
                                 setSliderHover(false);
                                 setInquiriesHover(false);
                                 setMessageHover(false);
@@ -56,8 +58,8 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                                setEmailsHover(false);
                                 setCategoriesHover(false);
+                                setLocationHover(false);
                             }}>
                             <Link to={"Products"} className="link">
                                 <img src={iconProducts} alt="Products" />
@@ -78,8 +80,8 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                                setEmailsHover(false);
                                 setCategoriesHover(false);
+                                setLocationHover(false);
                             }}>
                             <Link to={"Slider"} className="link">
                                 <img src={iconSlider} alt="Slider" />
@@ -99,9 +101,9 @@ function Navbar() {
                                 setBusinessHover(false);
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
-                                setEmailsHover(false);
                                 setSizesHover(false);
-                                setCategoriesHover(false);
+                                setCategoriesHover(true);
+                                setLocationHover(false);
                             }}>
                             <Link to={"categories"} className="link">
                                 <BiSolidCategory className="icon" />
@@ -122,8 +124,8 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                                setEmailsHover(false);
                                 setCategoriesHover(false);
+                                setLocationHover(false);
                             }}>
                             <Link to={"Inquiries"} className="link">
                                 <img src={iconInquiries} alt="Inquiries" />
@@ -144,8 +146,8 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                                setEmailsHover(false);
                                 setCategoriesHover(false);
+                                setLocationHover(false);
                             }}>
                             <Link to={"Messages"} className="link">
                                 <img src={iconMessage} alt="Messages" />
@@ -166,8 +168,8 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                                setEmailsHover(false);
                                 setCategoriesHover(false);
+                                setLocationHover(false);
                             }}>
                             <Link to={"Services"} className="link">
                                 <img src={iconServices} alt="Services" />
@@ -188,8 +190,8 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                                setEmailsHover(false);
                                 setCategoriesHover(false);
+                                setLocationHover(false);
                             }}>
                             <Link to={"AboutUs"} className="link">
                                 <img src={iconAboutUs} alt="About Us" />
@@ -210,8 +212,8 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                                setEmailsHover(false);
                                 setCategoriesHover(false);
+                                setLocationHover(false);
                             }}>
                             <Link to={"WhyUS"} className="link">
                                 <img src={iconWhyUs} alt="Why US" />
@@ -232,8 +234,8 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                                setEmailsHover(false);
                                 setCategoriesHover(false);
+                                setLocationHover(false);
                             }}>
                             <Link to={"OurFactory"} className="link">
                                 <img src={iconOurFactory} alt="Our Factory" />
@@ -254,8 +256,8 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                                setEmailsHover(false);
                                 setCategoriesHover(false);
+                                setLocationHover(false);
                             }}>
                             <Link to={"BusinessHours"} className="link">
                                 <img src={iconBusinessHours} alt="Business Hours" />
@@ -276,8 +278,8 @@ function Navbar() {
                                 setColorsHover(true);
                                 setRawMaterialHover(false);
                                 setSizesHover(false);
-                                setEmailsHover(false);
                                 setCategoriesHover(false);
+                                setLocationHover(false);
                             }}>
                             <Link to={"Colors"} className="link">
                                 <img src={iconColors} alt="Business Hours" />
@@ -298,8 +300,8 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(true);
                                 setSizesHover(false);
-                                setEmailsHover(false);
                                 setCategoriesHover(false);
+                                setLocationHover(false);
                             }}>
                             <Link to={"RowMaterial"} className="link">
                                 <img src={iconRawMaterial} alt="Business Hours" />
@@ -320,15 +322,15 @@ function Navbar() {
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
                                 setSizesHover(true);
-                                setEmailsHover(false);
                                 setCategoriesHover(false);
+                                setLocationHover(false);
                             }}>
                             <Link to={"Sizes"} className="link">
                                 <img src={iconSizes} alt="Business Hours" />
                             </Link>
                             <Link to={"Sizes"}>Sizes</Link>
                         </li>
-                        <li className={`${emailsHover ? "hovered" : ""}`}
+                        <li className={`${locationHover ? "hovered" : ""}`}
                             onClick={() => {
                                 setHover(false);
                                 setSliderHover(false);
@@ -341,14 +343,14 @@ function Navbar() {
                                 setBusinessHover(false);
                                 setColorsHover(false);
                                 setRawMaterialHover(false);
-                                setEmailsHover(true);
-                                setSizesHover(false);
                                 setCategoriesHover(false);
+                                setLocationHover(true);
+                                setSizesHover(false);
                             }}>
-                            <Link to={"Email"} className="link">
-                                <MdEmail className="icon" />
+                            <Link to={"locations"} className="link">
+                                <IoLocationSharp style={{ fontSize: "25px", marginRight: "5px" }} />
                             </Link>
-                            <Link to={"Email"}>Emails</Link>
+                            <Link to={"locations"}>Locations</Link>
                         </li>
                     </ul>
                 </div>

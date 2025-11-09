@@ -1,0 +1,81 @@
+.All-locations-departament .all-locations{
+    padding: 40px 40px;
+}
+.All-locations-departament .all-locations .col-location{
+    width: 100%;
+    height: fit-content;
+    background-color: #F1F2F7;
+    padding: 20px 15px;
+    border-radius: 8px;
+    display: flex;
+    position: relative;
+    margin-bottom: 15px;
+}
+.All-locations-departament .all-locations .col-location .id{
+    width: 40px;
+    height: 40px;
+    background-color: #5A67BA;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #FFFFFF;
+    font-family: sans-serif;
+    margin-right: 20px;
+}
+.All-locations-departament .all-locations .col-location .all-informatons{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 5px 0px;
+    cursor: pointer;
+}
+.All-locations-departament .all-locations .col-location .all-informatons div{
+    display: flex;
+    gap: 5px;
+}
+.All-locations-departament .all-locations .col-location .all-informatons div p{
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    font-family: sans-serif;
+    color: #1F384C;
+}
+.All-locations-departament .all-locations .col-location .all-informatons div p:nth-child(2){
+    font-size: 13px;
+}
+.All-locations-departament .all-locations .col-location .edit-delete-btns{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.All-locations-departament .all-locations .col-location .edit-delete-btns img{
+    cursor: pointer;
+    width: 40px;
+    height: 40px
+}
+@media (max-width: 768px) {
+    .All-locations-departament .all-locations{
+        padding: 20px 20px;
+    }
+    .All-locations-departament .all-locations .col-location .id{
+        width: 35px;
+        height: 35px;
+        font-size: 15px;
+    }
+    .All-locations-departament .all-locations .col-location .edit-delete-btns{
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+    }
+    .All-locations-departament .all-locations .col-location .edit-delete-btns img{
+        width: 35px;
+        height: 35px;
+    }
+}

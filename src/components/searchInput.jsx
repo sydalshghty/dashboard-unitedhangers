@@ -17,7 +17,7 @@ function SearchInput() {
                         setPlaceholder("Search")
                     }}
                     type="text" placeholder={placeholder} name="Search" />
-                    <FontAwesomeIcon className="icon-search" icon={faSearch}/>
+                <FontAwesomeIcon className="icon-search" icon={faSearch} />
             </div>
         </div>
     )

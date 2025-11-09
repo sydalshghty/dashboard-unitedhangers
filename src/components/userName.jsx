@@ -7,10 +7,10 @@ function UserName() {
     return (
         <div className="userName-col">
             <div className="col-user">
-                <FontAwesomeIcon icon={faUser}/>
+                <FontAwesomeIcon icon={faUser} />
             </div>
             <p className="p-userName">User Name</p>
-            <FontAwesomeIcon className="icon-Down" icon={faChevronDown}/>
+            <FontAwesomeIcon className="icon-Down" icon={faChevronDown} />
         </div>
     )
 }

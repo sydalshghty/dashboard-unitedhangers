@@ -28,16 +28,15 @@ import AddNewProduct from "./components/AddNewProduct";
 import EditProduct from "./components/EditProduct";
 import Login from "./components/login";
 import ViewInquiry from "./components/ViewInquiry";
-import Emails from "./components/Emails";
-import AddNewEmail from "./components/AddNewEmail";
-import EditEmail from "./components/Edit-Email";
 import GetAllCategories from "./components/getAllCategories";
 import AddNewCategories from "./components/Addnewcategories";
 import EditCategory from "./components/EditCategory";
+import AllLocations from "./components/All-Locations";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
 import useTokenRefresher from "./components/useTokenRefresher";
-
+import AddNewLocations from "./components/Addnew-locations";
+import EditLocations from "./components/Edit-Locations";
 
 function App() {
   useTokenRefresher();
@@ -103,12 +102,12 @@ function App() {
             <Route path="sizes/:SizeID" element={<EditSize />} />
             <Route path="/ViewInquiry" element={<ViewInquiry />} />
             <Route path="inquiries/:inquiryID" element={<ViewInquiry />} />
-            <Route path="/Email" element={<Emails />} />
-            <Route path="/AddNewEmail" element={<AddNewEmail />} />
-            <Route path="EditEmail/:EmailID" element={<EditEmail />} />
             <Route path="Categories" element={<GetAllCategories />} />
             <Route path="/AddNewCategory" element={<AddNewCategories />} />
             <Route path="EditCategory/:CategoryID" element={<EditCategory />} />
+            <Route path="Locations" element={<AllLocations />} />
+            <Route path="/AddNewLocations" element={<AddNewLocations />} />
+            <Route path="EditLocations/:LocationID" element={<EditLocations />} />
           </Routes>
         </div>
       </div>
