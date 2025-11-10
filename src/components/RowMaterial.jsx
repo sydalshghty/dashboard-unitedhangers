@@ -1,4 +1,4 @@
-import UserName from "./userName";
+//import UserName from "./userName";
 import "../css/rawMaterial.css";
 import SearchInput from "./searchInput";
 import "../css/searchInput.css";
@@ -85,9 +85,6 @@ function RowMaterial() {
             <div className="heading-rawmaterial">
                 <div className="text-title">
                     <p>Row Material</p>
-                </div>
-                <div className="col-userName">
-                    <UserName />
                 </div>
             </div>
             <div className="col-search">

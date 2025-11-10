@@ -11,13 +11,15 @@ function AddNewLocations() {
     const [name, setName] = useState("");
     const [emails, setEmails] = useState([""]);
     const [phone, setPhone] = useState([""]);
+    const [countrty, setCountry] = useState("");
 
     const navigate = useNavigate("");
     const handleNavigate = () => navigate("/Locations");
     const locations = {
         "name": name,
         "emails": emails,
-        "phones": phone
+        "phones": phone,
+        "country_name": countrty
     }
 
     const addnewlocation = async () => {
@@ -49,9 +51,6 @@ function AddNewLocations() {
                     </Link>
                     <p>Add New Locations</p>
                 </div>
-                <div className="col-userName">
-                    <UserName />
-                </div>
             </div>
             <div className="content-Save">
                 <Link className="button-Save" style={{ marginBottom: "40px" }} onClick={() => {
@@ -61,6 +60,14 @@ function AddNewLocations() {
             </div>
             <div className="content-Add-New-locations">
                 <div className="all-addnew-locations">
+                    <div className="col-input-locations">
+                        <p>Country</p>
+                        <input type="text" placeholder="Country" required
+                            onChange={(e) => {
+                                setCountry(e.target.value);
+                            }}
+                        />
+                    </div>
                     <div className="col-input-locations">
                         <p>Address</p>
                         <input type="text" placeholder="Address" required

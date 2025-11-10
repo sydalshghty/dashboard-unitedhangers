@@ -1,4 +1,4 @@
-import UserName from "./userName";
+//import UserName from "./userName";
 import ContentText from "./ContentText";
 import { useState, useEffect } from "react";
 import { authFetch } from "./authFetch.js";
@@ -31,7 +31,6 @@ function OurFactory() {
                     textTransform: "capitalize",
                     color: "#1F384C"
                 }}>Our Factory</p>
-                <UserName />
             </div>
             <ContentText title={`${ourfactory.slice(0, 70)} ....`} label="Our Factory" />
         </div>

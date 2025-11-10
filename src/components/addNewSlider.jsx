@@ -56,9 +56,6 @@ function AddNewSlider() {
           <img onClick={handlNavigate} src={imgIcon} alt="imgIcon" />
           <p>Add New Slider</p>
         </div>
-        <div className="col-userName">
-          <UserName />
-        </div>
       </div>
 
       <div className="content-upload-product">

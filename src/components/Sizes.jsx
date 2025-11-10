@@ -1,4 +1,4 @@
-import UserName from "./userName";
+//import UserName from "./userName";
 import SearchInput from "./searchInput";
 import AddNew from "./addNew";
 import deleteImg from "../images/Group 410.svg";
@@ -74,9 +74,6 @@ function Sizes() {
         <div className="sizes-Departament">
             <div className="heading-sizes">
                 <p className="p-title">Sizes</p>
-                <div className="col-userName">
-                    <UserName />
-                </div>
             </div>
             <div className="col-search">
                 <SearchInput />

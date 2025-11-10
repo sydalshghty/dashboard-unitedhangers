@@ -1,6 +1,6 @@
 import "../css/productSlider.css";
 import iconSlider from "../images/Group 429.svg";
-import UserName from "./userName";
+//import UserName from "./userName";
 import "../css/userName.css";
 import { useNavigate } from "react-router-dom";
 import AddNew from "./addNew";
@@ -71,7 +71,6 @@ function Service() {
                     <img src={iconSlider} alt="imgProduct" onClick={handleNavigate} />
                     <p>Service</p>
                 </div>
-                <UserName />
             </div>
             <div className="addNew-col" onClick={handleNavigateAddNew}>
                 <AddNew />

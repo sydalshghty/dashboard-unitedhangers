@@ -1,4 +1,4 @@
-import UserName from "./userName";
+//import UserName from "./userName";
 import ContentText from "./ContentText";
 import "../css/AboutUs.css";
 import { useState, useEffect } from "react";
@@ -25,7 +25,6 @@ function AboutUs() {
     <div className="AboutUs-Deparament">
       <div className="heading-AboutUs">
         <p className="P-AboutUs">About Us</p>
-        <UserName />
       </div>
       <ContentText title={`${aboutus.slice(0, 70)} ....`} label={"About Us"} />
     </div>

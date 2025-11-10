@@ -1,4 +1,4 @@
-import UserName from "./userName";
+//import UserName from "./userName";
 import SearchInput from "./searchInput";
 import AddNew from "./addNew";
 import imgDelete from "../images/Group 410.svg";
@@ -66,9 +66,6 @@ function GetAllCategories() {
         <div className="colors-Departament categories-departament">
             <div className="heading-colors">
                 <p className="title-colors">Categories</p>
-                <div className="col-userName">
-                    <UserName />
-                </div>
             </div>
             <div className="col-search">
                 <SearchInput />

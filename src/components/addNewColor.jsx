@@ -1,4 +1,4 @@
-import UserName from "./userName";
+//import UserName from "./userName";
 import imgAddNew from "../images/Group 429.svg";
 import "../css/AddNewColor.css";
 import { useNavigate } from "react-router-dom";
@@ -71,9 +71,6 @@ function AddNewColor() {
                 <div className="col-image">
                     <img onClick={handleNavigate} src={imgAddNew} alt="img-AddNew" />
                     <p>Add New Color</p>
-                </div>
-                <div className="col-userName">
-                    <UserName />
                 </div>
             </div>
             <div className="col-inputs-content">

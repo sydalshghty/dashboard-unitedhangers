@@ -1,6 +1,6 @@
 import "../css/AddNewProduct.css";
 import imgProduct from "../images/Group 429.svg";
-import UserName from "./userName";
+//import UserName from "./userName";
 import { useNavigate } from "react-router-dom";
 import SubmitButton from "./Submit";
 import imgSelect from "../images/Vector (2).png";
@@ -225,9 +225,6 @@ function AddNewProduct() {
                 <div className="col-image">
                     <img onClick={handleNavigate} src={imgProduct} alt="img-Product" />
                     <p>Add New Product</p>
-                </div>
-                <div className="col-UserName">
-                    <UserName />
                 </div>
             </div>
             <div

@@ -1,4 +1,4 @@
-import UserName from "./userName";
+//import UserName from "./userName";
 import "../css/inquiries.css";
 import SearchInput from "./searchInput";
 import { Link, useNavigate } from "react-router-dom";
@@ -53,7 +53,6 @@ function Inquiries() {
         <div className="inquiries-Departament">
             <div className="heading-inquiries">
                 <p className="p-inquiries">Inquiries</p>
-                <UserName />
             </div>
             <div className="col-Search">
                 <SearchInput />

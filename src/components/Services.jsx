@@ -1,4 +1,4 @@
-import UserName from "./userName";
+//import UserName from "./userName";
 import SearchInput from "./searchInput";
 import AddNew from "./addNew";
 import imgEdit from "../images/Group 409.svg";
@@ -81,7 +81,6 @@ function Services() {
         <div className="services-Departament">
             <div className="Services-content">
                 <p className="p-Services">Services</p>
-                <UserName />
             </div>
             <div className="col-search">
                 <SearchInput />

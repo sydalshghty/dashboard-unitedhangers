@@ -1,4 +1,4 @@
-import UserName from "./userName";
+//import UserName from "./userName";
 import SearchInput from "./searchInput";
 import AddNew from "./addNew";
 import "../css/messages.css";
@@ -48,9 +48,6 @@ function Messages() {
         <div className="Messages-Departament">
             <div className="heading-messages">
                 <p className="p-messages">Messages</p>
-                <div className="col-userName">
-                    <UserName />
-                </div>
             </div>
             <div className="col-Search">
                 <SearchInput />

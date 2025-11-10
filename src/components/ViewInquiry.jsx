@@ -1,4 +1,4 @@
-import UserName from "./userName";
+//import UserName from "./userName";
 import "../css/ViewInquiry.css";
 import imgCustomLogo from "../images/61GsnUB4HuL 2 (4).png";
 import { useParams } from "react-router-dom";
@@ -35,7 +35,6 @@ function ViewInquiry() {
         <div className="ViewInquiry-Departament">
             <div className="Inquiry-Heading">
                 <p className="P-Inquiry">View Inquiry</p>
-                <UserName />
             </div>
             {!Inquiry ?
                 <Loading />

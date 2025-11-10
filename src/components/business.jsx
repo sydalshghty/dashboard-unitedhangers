@@ -24,7 +24,6 @@ function BusinessHours() {
         <div className="BusinessHours-Departament">
             <div className="heading-Business">
                 <p className="P-Business">Business Hours</p>
-                <UserName />
             </div>
             <ContentText title={`${business.slice(0, 57)} ....`} label="Business Hours" />
 

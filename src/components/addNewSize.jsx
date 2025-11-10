@@ -1,4 +1,4 @@
-import UserName from "./userName";
+//import UserName from "./userName";
 import imgSize from "../images/Group 429.svg";
 import "../css/addNewSize.css";
 import { useNavigate } from "react-router-dom";
@@ -44,9 +44,6 @@ function AddNewSize() {
                 <div className="col-image">
                     <img onClick={handleNavigate} src={imgSize} alt="imgSize" />
                     <p>Add New Size</p>
-                </div>
-                <div className="col-userName">
-                    <UserName />
                 </div>
             </div>
             <div className="col-input-AddNewSize">

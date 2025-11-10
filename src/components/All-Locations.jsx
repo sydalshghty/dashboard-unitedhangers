@@ -1,4 +1,4 @@
-import UserName from "./userName";
+//import UserName from "./userName";
 import SearchInput from "./searchInput";
 import AddNew from "./addNew";
 import imgDelete from "../images/Group 410.svg";
@@ -67,9 +67,6 @@ function AllLocations() {
         <div className="colors-Departament All-locations-departament">
             <div className="heading-colors">
                 <p className="title-colors">Locations</p>
-                <div className="col-userName">
-                    <UserName />
-                </div>
             </div>
             <div className="col-search">
                 <SearchInput />
@@ -88,6 +85,10 @@ function AllLocations() {
                         <div className="col-location" key={location.id} style={{ backgroundColor: `${backgroundProduct(index)}` }}>
                             <p className="id">{index + 1}</p>
                             <div className="all-informatons">
+                                <div className="col-country">
+                                    <p>Country:</p>
+                                    <p>{location.country_name}</p>
+                                </div>
                                 <div className="col-email">
                                     <p>Emails:</p>
                                     <p>{location.emails.map((email) => email)}</p>

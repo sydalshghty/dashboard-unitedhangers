@@ -74,9 +74,6 @@ function AddNewService() {
                     <img onClick={handlNavigate} src={imgIcon} alt="imgIcon" />
                     <p>Add New Service</p>
                 </div>
-                <div className="col-userName">
-                    <UserName />
-                </div>
             </div>
             <div className="content-upload-product">
                 <div>

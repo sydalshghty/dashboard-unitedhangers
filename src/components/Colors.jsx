@@ -1,4 +1,4 @@
-import UserName from "./userName";
+//import UserName from "./userName";
 import SearchInput from "./searchInput";
 import AddNew from "./addNew";
 import imgDelete from "../images/Group 410.svg";
@@ -77,9 +77,6 @@ function Colors() {
         <div className="colors-Departament">
             <div className="heading-colors">
                 <p className="title-colors">Colors</p>
-                <div className="col-userName">
-                    <UserName />
-                </div>
             </div>
             <div className="col-search">
                 <SearchInput />

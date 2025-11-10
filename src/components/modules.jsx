@@ -1,4 +1,4 @@
-import UserName from "./userName";
+//import UserName from "./userName";
 import SearchInput from "./searchInput";
 import AddNew from "./addNew";
 import { Link, useNavigate } from "react-router-dom";
@@ -77,9 +77,6 @@ function Modules() {
       <div className="products-Departament">
         <div className="products-heading">
           <p className="products-title">Products</p>
-          <div className="col-userName">
-            <UserName />
-          </div>
         </div>
         <div className="col-search">
           <SearchInput />

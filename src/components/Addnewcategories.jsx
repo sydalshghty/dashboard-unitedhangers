@@ -50,9 +50,6 @@ function AddNewCategories() {
                         </Link>
                         <p className="p-title">Add New Category</p>
                     </div>
-                    <div className="col-userName">
-                        <UserName />
-                    </div>
                 </div>
                 <form className="content-Add-new-Email" onSubmit={submitdata}>
                     <input

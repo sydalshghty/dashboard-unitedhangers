@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import imgReturn from "../images/Group 429.svg";
-import UserName from "./userName";
+//import UserName from "./userName";
 import { token } from "./token";
 import { authFetch } from "./authFetch.js";
 import { useState, useEffect } from "react";
@@ -115,9 +115,6 @@ function EditCategory() {
                         <img src={imgReturn} alt="img-return" style={{ cursor: "pointer" }} />
                     </Link>
                     <p className="p-title">Edit Category</p>
-                </div>
-                <div className="col-userName">
-                    <UserName />
                 </div>
             </div>
 

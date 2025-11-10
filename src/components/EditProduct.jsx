@@ -1,5 +1,5 @@
 import imgProduct from "../images/Group 429.svg";
-import UserName from "./userName";
+//import UserName from "./userName";
 import "../css/EditProduct.css";
 import { useNavigate } from "react-router-dom";
 import imgDelete from "../images/Vector (8).svg";
@@ -134,9 +134,6 @@ function EditProduct() {
                 <div className="col-image">
                     <img onClick={handleNavigate} src={imgProduct} alt="imgIcon" />
                     <p>View Product</p>
-                </div>
-                <div className="col-userName">
-                    <UserName />
                 </div>
             </div>
 

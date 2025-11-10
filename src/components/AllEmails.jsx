@@ -68,9 +68,6 @@ function AllEmails() {
         <div className="sizes-Departament emails-departament">
             <div className="heading-sizes">
                 <p className="p-title">Emails</p>
-                <div className="col-userName">
-                    <UserName />
-                </div>
             </div>
             <div className="col-search">
                 <SearchInput />

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AddNew from "./addNew";
 import "../css/slider.css";
-import UserName from "./userName";
+//import UserName from "./userName";
 import Swal from "sweetalert2";
 import Loading from "./Loading";
 import { token } from "./token";
@@ -109,7 +109,7 @@ function Slider() {
     <div className="slider-departament">
       <div className="slider-content">
         <p className="p-slider">Sliders</p>
-        <UserName />
+
       </div>
       <div className="parent-input">
         <div className="col-search">

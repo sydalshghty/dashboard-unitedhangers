@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import UserName from "./userName";
+//import UserName from "./userName";
 import imgAddNew from "../images/Group 429.svg";
 import { Link } from "react-router-dom";
 import "../css/Addnewlocations.css";
@@ -42,11 +42,13 @@ function EditLocations() {
     const [name, setName] = useState("");
     const [emails, setemails] = useState([]);
     const [phones, setphones] = useState([]);
+    const [country, setCountry] = useState("");
 
     const EditLocation = {
         "emails": emails,
         "name": name,
-        "phones": phones
+        "phones": phones,
+        "country_name": country
     }
 
     const EditLocationOnly = async () => {
@@ -81,9 +83,6 @@ function EditLocations() {
                     </Link>
                     <p>Edit Locations</p>
                 </div>
-                <div className="col-userName">
-                    <UserName />
-                </div>
             </div>
             {!onlyLocation ?
                 <Loading />
@@ -97,6 +96,14 @@ function EditLocations() {
                             }}>Edit</Link>
                         </div>
                         <div className="all-addnew-locations">
+                            <div className="col-input-locations">
+                                <p>Country</p>
+                                <input type="text" placeholder={onlyLocation.country_name} required
+                                    onChange={(e) => {
+                                        setCountry(e.target.value);
+                                    }}
+                                />
+                            </div>
                             <div className="col-input-locations">
                                 <p>Address</p>
                                 <input type="text" placeholder={onlyLocation.name} required
@@ -115,7 +122,7 @@ function EditLocations() {
                             </div>
                             <div className="col-input-locations">
                                 <p>Phone</p>
-                                <input type="number" placeholder={onlyLocation.phones} required
+                                <input type="text" placeholder={onlyLocation.phones} required
                                     onChange={(e) => {
                                         setphones([e.target.value])
                                     }}

@@ -1,4 +1,4 @@
-import UserName from "./userName";
+//import UserName from "./userName";
 import imgIcon from "../images/Group 429.svg";
 import "../css/EditSlider.css";
 import { useNavigate } from "react-router-dom";
@@ -103,9 +103,6 @@ function EditSlider() {
                 <div className="col-image">
                     <img onClick={handlNavigate} src={imgIcon} alt="imgIcon" />
                     <p>Edit Slider</p>
-                </div>
-                <div className="col-UserName">
-                    <UserName />
                 </div>
             </div>
             <div className="col-product-Edit">
