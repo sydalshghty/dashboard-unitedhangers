@@ -1,0 +1,9 @@
+:root{
+    --background: #07934b;
+    --color-text: #ffffff;
+}
+.plan-content .container-Map{
+   position: absolute;
+    width: 600px;
+    height: 400px;
+}

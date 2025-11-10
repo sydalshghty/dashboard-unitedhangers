@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { authFetch } from "./authFetch.js";
 import { token } from "./token";
 import Swal from "sweetalert2";
+
 function AllLocations() {
     const [locations, setLocations] = useState([]);
     const getAllLocations = async () => {

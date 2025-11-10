@@ -17,7 +17,7 @@ function Inquiries() {
 
     const getAllInquiries = async () => {
         try {
-            await authFetch(`https://hanger-production.up.railway.app//api/inquiries`, {
+            await authFetch(`https://united-hanger-2025.up.railway.app/api/inquiries`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -38,6 +38,8 @@ function Inquiries() {
 
         return () => clearInterval(interval);
     }, []);
+
+    console.log(Inquiries);
 
     const backgroundProduct = (id) => {
         if (id % 2 === 0) {
@@ -88,10 +90,13 @@ function Inquiries() {
                                             <p className="P-RH-Model">{inquiry.product.name}</p>
                                             <div className="Material-Colors">
                                                 <p>{inquiry.material.name}</p>
-                                                <li style={{ backgroundColor: `${inquiry.color.hex_code}` }}></li>
+
                                             </div>
                                         </div>
-                                        <img src={inquiry.logo_path} alt="img-Inquiry" />
+                                        {inquiry.logo_path ?
+                                            <img src={inquiry.logo_path} alt="img-Inquiry" /> :
+                                            ""
+                                        }
                                     </div>
                                 </Link>
                             );
@@ -103,5 +108,4 @@ function Inquiries() {
     );
 }
 export default Inquiries;
-
 

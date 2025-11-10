@@ -8,6 +8,8 @@ import { authFetch } from "./authFetch.js";
 import { token } from "./token.jsx";
 import Loading from "./Loading.jsx";
 import { useNavigate } from "react-router-dom";
+import GooglePlan from "./googleMap.jsx";
+
 function EditLocations() {
     const navigate = useNavigate("");
     const handleNavigate = () => {
@@ -88,6 +90,12 @@ function EditLocations() {
                 :
                 <>
                     <div className="content-Add-New-locations">
+                        <div style={{ marginBottom: "30px", display: "flex", justifyContent: "flex-end" }}>
+                            <Link className="button-Save" onClick={() => {
+                                EditLocationOnly();
+                                console.log(EditLocation);
+                            }}>Edit</Link>
+                        </div>
                         <div className="all-addnew-locations">
                             <div className="col-input-locations">
                                 <p>Address</p>
@@ -114,14 +122,12 @@ function EditLocations() {
                                 />
                             </div>
                         </div>
-                        <Link className="button-Save" onClick={() => {
-                            EditLocationOnly();
-                            console.log(EditLocation);
-                        }}>Edit</Link>
+                        <GooglePlan />
                     </div>
                 </>
             }
         </div>
     )
 }
+
 export default EditLocations;

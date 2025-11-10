@@ -91,8 +91,12 @@ function ViewInquiry() {
                                 <input type="text" placeholder={Inquiry.created_at} />
                             </div>
                             <div className="Custom-Logo">
-                                <label>Custom Logo</label>
-                                <img src={Inquiry.logo_path} alt="CustomLogo" />
+                                {`${Inquiry.logo_path ?
+                                    <>
+                                        <label>Custom Logo</label>
+                                        <img src={`${Inquiry.logo_path}`} alt="CustomLogo" />
+                                    </>
+                                    : ""}`}
                             </div>
                             <div>
                                 {!Inquiry.material ? <h5>Loading...</h5> :

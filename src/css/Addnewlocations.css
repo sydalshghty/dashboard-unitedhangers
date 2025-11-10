@@ -58,3 +58,23 @@
         padding: 20px 20px ;
     }
 }
+.content-Save{
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px 40px;
+}
+.content-Save a{
+    width: 120px;
+    height: 40px;
+    background-color: #5A67BA;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    font-family: sans-serif;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
