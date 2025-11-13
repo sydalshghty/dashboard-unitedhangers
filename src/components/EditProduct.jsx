@@ -1,5 +1,4 @@
 import imgProduct from "../images/Group 429.svg";
-//import UserName from "./userName";
 import "../css/EditProduct.css";
 import { useNavigate } from "react-router-dom";
 import imgDelete from "../images/Vector (8).svg";
@@ -12,6 +11,8 @@ import { useEffect, useState } from "react";
 import Loading from "./Loading";
 import "../css/ProductSubmit.css";
 import { authFetch } from "./authFetch.js";
+
+
 function EditProduct() {
     const [Product, setProduct] = useState([]);
     const [allCategories, setAllCategories] = useState([]);
@@ -34,14 +35,24 @@ function EditProduct() {
     const { ProductID } = useParams();
 
     const EditProduct = async () => {
-        if (!Editname || !selectedCategoryId) {
-            alert("Please enter name and select category before saving.");
+        if (!Editname) {
+            alert("Please enter name before saving.");
             return;
         }
 
+        if (selectedCategories.length === 0) {
+            alert("Please select at least one category before saving.");
+            return;
+        }
+
+        // تجهيز البيانات بنفس شكل AddNewProduct
         const bodyData = {
             name: Editname,
-            category_id: Number(selectedCategoryId)
+            description: Product.description || "", // لو حابب تبعت الوصف
+            color_ids: Product.colors?.map(c => c.id) || [], // أو حدد ألوان جديدة
+            material_ids: Product.materials?.map(m => m.id) || [],
+            size_ids: Product.sizes?.map(s => s.id) || [],
+            category_ids: selectedCategories
         };
 
         try {
@@ -72,7 +83,6 @@ function EditProduct() {
             alert("An error occurred. Please try again.");
         }
     };
-
 
     const getProductData = async () => {
         try {
@@ -133,10 +143,9 @@ function EditProduct() {
             <div className="heading-EditProduct">
                 <div className="col-image">
                     <img onClick={handleNavigate} src={imgProduct} alt="imgIcon" />
-                    <p>View Product</p>
+                    <p>Edit Product</p>
                 </div>
             </div>
-
             <div className="col-images">
                 <p>Images</p>
             </div>
@@ -234,3 +243,5 @@ function EditProduct() {
     )
 }
 export default EditProduct;
+
+
