@@ -1,11 +1,13 @@
 //import UserName from "./userName";
 import "../css/ViewInquiry.css";
-import imgCustomLogo from "../images/61GsnUB4HuL 2 (4).png";
+//import imgCustomLogo from "../images/61GsnUB4HuL 2 (4).png";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { token } from "./token";
 import Loading from "./Loading";
 import { authFetch } from "./authFetch.js";
+import imgReturn from "../images/Group 429.svg";
+import { Link } from "react-router-dom";
 function ViewInquiry() {
     const { inquiryID } = useParams();
 
@@ -33,7 +35,10 @@ function ViewInquiry() {
     }, [])
     return (
         <div className="ViewInquiry-Departament">
-            <div className="Inquiry-Heading">
+            <div className="Inquiry-Heading" style={{ display: "flex", justifyContent: "start", alignItems: "center", gap: "15px" }}>
+                <Link to={"/Inquiries"} style={{ textDecoration: "none" }}>
+                    <img src={imgReturn} alt="img-return" style={{ cursor: "pointer" }} />
+                </Link>
                 <p className="P-Inquiry">View Inquiry</p>
             </div>
             {!Inquiry ?

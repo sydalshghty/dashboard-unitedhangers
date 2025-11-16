@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import { token } from "./token";
 import Loading from "./Loading";
 import { authFetch } from "./authFetch.js";
+import deleteImg from "../images/Group 410.svg";
+import Swal from "sweetalert2";
 function Inquiries() {
     const navigate = useNavigate("");
 
@@ -34,12 +36,10 @@ function Inquiries() {
         getAllInquiries();
         const interval = setInterval(() => {
             window.location.reload();
-        }, 5000);
+        }, 10000);
 
         return () => clearInterval(interval);
     }, []);
-
-    console.log(Inquiries);
 
     const backgroundProduct = (id) => {
         if (id % 2 === 0) {
@@ -48,6 +48,32 @@ function Inquiries() {
             return "#f1f2f7";
         }
     };
+
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "Delete inquiry",
+            text: `Are You Sure You want to delete inquiry ${id}`,
+            showCancelButton: true,
+            cancelButtonText: "Cancel",
+            confirmButtonText: "Delete",
+            customClass: {
+                popup: "my-Popup",
+                title: "my-title",
+                confirmButton: "my-delete",
+                cancelButton: "my-cancel",
+            }
+        }).then((data) => {
+            if (data.isConfirmed) {
+                authFetch(`https://united-hanger-2025.up.railway.app//api/inquiries/${id}/delete`, {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                }).then((response) => response.json())
+                    .then(data => getAllInquiries())
+            }
+        })
+    }
 
     return (
         <div className="inquiries-Departament">
@@ -67,17 +93,16 @@ function Inquiries() {
                     <>
                         {Inquiries.map((inquiry, index) => {
                             return (
-                                <Link
-                                    to={`/inquiries/${inquiry.id}`}
-                                    style={{ textDecoration: "none" }}
+                                <div
                                     key={inquiry.id}
+                                    className="Col-Inquiriey"
+                                    style={{ backgroundColor: backgroundProduct(inquiry.id) }}
                                 >
-                                    <div
-                                        className="Col-Inquiriey"
-                                        style={{ backgroundColor: backgroundProduct(inquiry.id) }}
+                                    <p className="P-Id">{index + 1}</p>
+                                    <Link
+                                        to={`/inquiries/${inquiry.id}`}
+                                        style={{ textDecoration: "none" }}
                                     >
-                                        <p className="P-Id">{index + 1}</p>
-
                                         <div className="inquiry-Content">
                                             <div className="information-Inquiry">
                                                 <p>{inquiry.name}</p>
@@ -92,12 +117,18 @@ function Inquiries() {
 
                                             </div>
                                         </div>
-                                        {inquiry.logo_path ?
-                                            <img src={inquiry.logo_path} alt="img-Inquiry" /> :
-                                            ""
-                                        }
-                                    </div>
-                                </Link>
+                                    </Link>
+                                    {inquiry.logo_path ?
+                                        <img src={inquiry.logo_path} alt="img-Inquiry" /> :
+                                        ""
+                                    }
+
+                                    <img src={deleteImg} alt="img-delete" style={{ width: "40px" }}
+                                        onClick={() => {
+                                            handleDelete(inquiry.id)
+                                        }}
+                                    />
+                                </div>
                             );
                         })}
                     </>
