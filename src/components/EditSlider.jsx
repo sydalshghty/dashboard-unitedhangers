@@ -107,7 +107,7 @@ function EditSlider() {
             </div>
             <div className="col-product-Edit">
                 <div className="col-image-product">
-                    <img src={imgProduct} alt="imgProduct" />
+                    <img src={imgProduct} alt="imgProduct" style={{ objectFit: "contain" }} />
                 </div>
                 <div className="content-product-Edit">
                     <div className="col-title">

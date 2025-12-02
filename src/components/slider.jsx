@@ -150,6 +150,7 @@ function Slider() {
                 {/* هنا بقى هنظهر الـ index */}
                 <p className="id-product">{index + 1}</p>
                 <img
+                  style={{ objectFit: "contain", height: "100%" }}
                   className="img-product"
                   src={product.image_path}
                   alt="img-product"

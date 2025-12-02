@@ -109,7 +109,7 @@ function Modules() {
                     <p className="product-id">{index + 1}</p>
 
                     <img
-                      style={{ width: "120px", height: "100px" }}
+                      style={{ width: "120px", height: "100px", objectFit: "contain" }}
                       className="img-product"
                       src={product.images[0].image_path}
                       alt="img-Product"
