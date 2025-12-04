@@ -9,6 +9,8 @@ import { useEffect, useState, useRef } from "react";
 import Loading from "./Loading";
 import "../css/ProductSubmit.css";
 import { authFetch } from "./authFetch.js";
+import imgSelect from "../images/Vector (2).png";
+import "../css/AddNewProduct.css";
 
 function EditProduct() {
     const [Product, setProduct] = useState([]);
@@ -135,6 +137,7 @@ function EditProduct() {
     };
 
     // ======================== Update Image ========================
+
     const updateImage = async (imageId, newFile) => {
         const formData = new FormData();
         formData.append("delete", 0);
@@ -183,8 +186,24 @@ function EditProduct() {
     const [allColors, setAllColors] = useState([]);
 
     // ======================== Render ========================
+
+    //Add Two new images Product//
+    const [image1, setImage1] = useState(null);
+    const [image2, setImage2] = useState(null);
+
+    const handleImageChange1 = (event) => {
+        const file = event.target.files[0];
+        if (file) setImage1(file);
+    };
+    const handleImageChange2 = (event) => {
+        const file = event.target.files[0];
+        if (file) setImage2(file);
+    };
+
+    //
+
     return (
-        <div className="Edit-Product-Departament">
+        <div className="Edit-Product-Departament" style={{ overflow: "hidden" }}>
             <div className="heading-EditProduct">
                 <div className="col-image">
                     <img onClick={handleNavigate} src={imgProduct} alt="imgIcon" />
@@ -241,8 +260,55 @@ function EditProduct() {
                                     </div>
                                 ))}
                             </div>
+                            <div className="add-new-images-product" style={{ display: "flex", flexWrap: "wrap" }}>
+                                <div className="col-one">
+                                    <div className="select-Image-Product">
+                                        <div className="content-image" style={{ marginTop: "20px" }}>
+                                            <input type="file" onChange={handleImageChange1} name="img-Product" />
+                                            <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
+                                            <p>Select Image</p>
+                                            {image1 && (
+                                                <img
+                                                    className="img-upload-small"
+                                                    src={URL.createObjectURL(image1)}
+                                                    alt="Uploaded"
+                                                    style={{
+                                                        position: "absolute",
+                                                        width: "100%",
+                                                        height: "100%",
+                                                        objectFit: "contain"
+                                                    }}
+                                                />
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-one">
+                                    <div className="select-Image-Product">
+                                        <div className="content-image" style={{ marginTop: "20px" }}>
+                                            <input type="file" onChange={handleImageChange2} name="img-Product" />
+                                            <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
+                                            <p>Select Image</p>
+                                            {image2 && (
+                                                <img
+                                                    className="img-upload-small"
+                                                    src={URL.createObjectURL(image2)}
+                                                    alt="Uploaded"
+                                                    style={{
+                                                        position: "absolute",
+                                                        width: "100%",
+                                                        height: "100%",
+                                                        objectFit: "contain"
+                                                    }}
+                                                />
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
 
                     {/* المحتوى */}
                     <div className="content-Product-Submit">

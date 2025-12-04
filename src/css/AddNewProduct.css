@@ -95,12 +95,13 @@
     -ms-border-radius: 25px;
     -o-border-radius: 25px;
 }
-.Add-New-Product-Departament .col-Select-Image .select-Image-Two{
+ .col-Select-Image .select-Image-Two{
     display: flex;
     width: 50%;
     height: 269px;
 }
-.Add-New-Product-Departament .col-Select-Image .select-Image-Two .select-Image-Product{
+ .col-Select-Image .select-Image-Two .select-Image-Product,
+ .add-new-images-product .col-one .select-Image-Product{
     position: relative;
     width: 200px;
     height: 128px;
@@ -114,27 +115,33 @@
     -ms-border-radius: 25px;
     -o-border-radius: 25px;
 }
-.Add-New-Product-Departament .col-Select-Image .select-Image-Two .select-Image-Product input{
+ .col-Select-Image .select-Image-Two .select-Image-Product input,
+ .add-new-images-product .col-one .select-Image-Product input{
     position: absolute;
     opacity: 0;
 }
-.Add-New-Product-Departament .col-Select-Image .select-Image-Two .select-Image-Product img{
+ .col-Select-Image .select-Image-Two .select-Image-Product img,
+ .add-new-images-product .col-one  .select-Image-Product img{
     width: 40px;
     cursor: pointer;
     margin-top: -5px;
 }
-.Add-New-Product-Departament .col-Select-Image .select-Image-Two .select-Image-Product p{
+ .col-Select-Image .select-Image-Two .select-Image-Product p,
+  .add-new-images-product .col-one .select-Image-Product p{
     font-size: 15px;
     font-weight: 200;
     letter-spacing: 0.5px;
     font-family: sans-serif;
     color: #8D8D8D;
 }
-.Add-New-Product-Departament .col-Select-Image .select-Image-One{
+.Add-New-Product-Departament .col-Select-Image .select-Image-One,
+ .add-new-images-product .col-one .select-Image-Product{
     margin-right: 20px;
 }
 .Add-New-Product-Departament .col-Select-Image .select-Image-One .col-select,
-.Add-New-Product-Departament .col-Select-Image .select-Image-Two .col-select{
+.Add-New-Product-Departament .col-Select-Image .select-Image-Two .col-select,
+.add-new-images-product .col-one .select-Image-Product .col-select
+{
     display: flex;
     flex-direction: column;
     width: 100%;

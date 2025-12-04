@@ -32,25 +32,30 @@ function AddNewProduct() {
     const [image2, setImage2] = useState(null);
     const [image3, setImage3] = useState(null);
     const [image4, setImage4] = useState(null);
+    const [image5, setImage5] = useState(null);
 
-    const handleImageChange = (event) => {
+    const handleImageChange1 = (event) => {
         const file = event.target.files[0];
         if (file) setImage1(file);
     };
-    const handleImageChange1 = (event) => {
+    const handleImageChange2 = (event) => {
         const file = event.target.files[0];
         if (file) setImage2(file);
     };
-    const handleImageChange2 = (event) => {
+    const handleImageChange3 = (event) => {
         const file = event.target.files[0];
         if (file) setImage3(file);
     };
-    const handleImageChange3 = (event) => {
+    const handleImageChange4 = (event) => {
         const file = event.target.files[0];
         if (file) setImage4(file);
     };
+    const handleImageChange5 = (event) => {
+        const file = event.target.files[0];
+        if (file) setImage5(file);
+    };
 
-    const images = [image1, image2, image3, image4];
+    const images = [image1, image2, image3, image4, image5];
 
     const [selectedMaterials, setSelectedMaterials] = useState([]);
     const [selectedSizes, setSelectedSizes] = useState([]);
@@ -172,6 +177,7 @@ function AddNewProduct() {
         if (image2) formData.append("images", image2);
         if (image3) formData.append("images", image3);
         if (image4) formData.append("images", image4);
+        if (image5) formData.append("images", image5);
 
         try {
             const response = await authFetch(`https://united-hanger-2025.up.railway.app/api/products/new`, {
@@ -206,7 +212,6 @@ function AddNewProduct() {
                     <p>Add New Product</p>
                 </div>
             </div>
-
             <div
                 className="submit-col"
                 onClick={async () => {
@@ -221,7 +226,7 @@ function AddNewProduct() {
             <div className="col-Select-Image">
                 <div className="select-Image-One">
                     <div className="col-select">
-                        <input type="file" onChange={handleImageChange} name="Img-Product" style={{ objectFit: "contain" }} />
+                        <input type="file" onChange={handleImageChange1} name="Img-Product" style={{ objectFit: "contain" }} />
                         <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
                         <p>Select Main Image</p>
                         {image1 && (
@@ -240,39 +245,56 @@ function AddNewProduct() {
                         )}
                     </div>
                 </div>
-                <div className="select-Image-Two">
+                <div className="select-Image-Two" style={{ display: "flex", flexWrap: "wrap", height: "100%" }}>
                     <div className="col-one">
-                        {[handleImageChange1, handleImageChange2].map((handler, index) => {
-                            const img = [image2, image3][index];
-                            return (
-                                <div className="select-Image-Product" key={index}>
-                                    <div className="content-image">
-                                        <input type="file" onChange={handler} name="img-Product" />
-                                        <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
-                                        <p>Select Image</p>
-                                        {img && (
-                                            <img
-                                                className="img-upload-small"
-                                                src={URL.createObjectURL(img)}
-                                                alt="Uploaded"
-                                                style={{
-                                                    position: "absolute",
-                                                    width: "100%",
-                                                    height: "100%",
-                                                    objectFit: "contain"
-                                                }}
-                                            />
-                                        )}
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                    <div className="col-two">
                         <div className="select-Image-Product">
                             <div className="content-image">
-                                <input onChange={handleImageChange3} type="file" name="img-Product" />
-                                <img src={imgSelect} alt="img-Select" />
+                                <input type="file" onChange={handleImageChange2} name="img-Product" />
+                                <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
+                                <p>Select Image</p>
+                                {image2 && (
+                                    <img
+                                        className="img-upload-small"
+                                        src={URL.createObjectURL(image2)}
+                                        alt="Uploaded"
+                                        style={{
+                                            position: "absolute",
+                                            width: "100%",
+                                            height: "100%",
+                                            objectFit: "contain"
+                                        }}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-one">
+                        <div className="select-Image-Product">
+                            <div className="content-image">
+                                <input type="file" onChange={handleImageChange3} name="img-Product" />
+                                <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
+                                <p>Select Image</p>
+                                {image3 && (
+                                    <img
+                                        className="img-upload-small"
+                                        src={URL.createObjectURL(image3)}
+                                        alt="Uploaded"
+                                        style={{
+                                            position: "absolute",
+                                            width: "100%",
+                                            height: "100%",
+                                            objectFit: "contain"
+                                        }}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-one">
+                        <div className="select-Image-Product">
+                            <div className="content-image">
+                                <input type="file" onChange={handleImageChange4} name="img-Product" />
+                                <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
                                 <p>Select Image</p>
                                 {image4 && (
                                     <img
@@ -290,9 +312,30 @@ function AddNewProduct() {
                             </div>
                         </div>
                     </div>
+                    <div className="col-one">
+                        <div className="select-Image-Product">
+                            <div className="content-image">
+                                <input type="file" onChange={handleImageChange5} name="img-Product" />
+                                <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
+                                <p>Select Image</p>
+                                {image5 && (
+                                    <img
+                                        className="img-upload-small"
+                                        src={URL.createObjectURL(image5)}
+                                        alt="Uploaded"
+                                        style={{
+                                            position: "absolute",
+                                            width: "100%",
+                                            height: "100%",
+                                            objectFit: "contain"
+                                        }}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
             <div className="content-Product-Submit">
                 <div className="Name-Description-Col">
                     <form action="">
@@ -356,7 +399,6 @@ function AddNewProduct() {
                         </div>
                     </div>
                 </div>
-
                 <div className="Colors-Sizes-Col">
                     <div className="Colors-Departament">
                         <h3>Colors</h3>
