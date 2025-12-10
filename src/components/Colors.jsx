@@ -91,7 +91,7 @@ function Colors() {
                 AllColors.map((color, index) => {
                     return (
                         <div className="main-product-colors" key={color.id}>
-                            <div className="content-product" style={{ backgroundColor: backgroundProduct(`${color.id}`) }}>
+                            <div className="content-product" style={{ backgroundColor: backgroundProduct(`${index + 1}`) }}>
                                 <Link to={`/colors/${color.id}`} style={{ textDecoration: "none", display: "flex", width: "100%" }}>
                                     <div className="col-text">
                                         {/* هنا بقي الترقيم فقط مكان الـ id */}

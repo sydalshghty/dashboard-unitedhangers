@@ -59,7 +59,11 @@ function AddNewColor() {
                 body: formData,
             })
                 .then((response) => response.json())
-                .then(data => console.log(data))
+                .then(data => {
+                    alert("✅ Color added successfully!")
+                    console.log(data)
+                    handleNavigate();
+                })
         } catch (error) {
             console.error("Error: Not Found Data", error)
         }
@@ -118,7 +122,6 @@ function AddNewColor() {
                 }}>Cancel</button>
                 <button className="submit" onClick={async () => {
                     AddNewColor();
-                    handleNavigate();
                 }}>Submit</button>
             </div>
         </div>

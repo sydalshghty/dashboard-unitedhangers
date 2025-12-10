@@ -73,7 +73,7 @@ function Color() {
             });
             const data = await response.json();
             console.log(data);
-            Swal.fire("✅", "Category has been updated successfully!", "success");
+            Swal.fire("✅", "Color has been updated successfully!", "success");
             handleNavigate();
         } catch (error) {
             console.error("Error: Not Found Data", error);
@@ -96,7 +96,6 @@ function Color() {
             const data = await response.json();
             console.log("Visibility updated:", data);
 
-            // تحديث حالة الواجهة
             setItem(prev => ({
                 ...prev,
                 visible: newVisibility
@@ -141,7 +140,6 @@ function Color() {
                             type="text"
                             placeholder={item.code}
                             name="Code"
-                            readOnly
                         />
                     </div>
                 </div>
@@ -167,7 +165,6 @@ function Color() {
                 </div>
             </div>
 
-            {/* visibility buttons */}
             <div className="visibility-buttons">
                 <button
                     className="Edit"
