@@ -259,44 +259,27 @@ function EditProduct() {
 
     const sizeImageInputRef = useRef(null);
 
+    //patch images sizes
+
+    //Add size image function
     const addSizeImage = (sizeId, barType) => {
         sizeImageInputRef.current.onchange = async (e) => {
             const file = e.target.files[0];
             if (!file) return;
 
             const formData = new FormData();
+            formData.append("delete", 0);
             formData.append("image", file);
             formData.append("size_id", sizeId);
-            formData.append("bar_type", barType); // with_bar | without_bar
-
-            await authFetch(
-                `https://united-hanger-2025.up.railway.app/api/products/${ProductID}/size/image`,
-                {
-                    method: "POST",
-                    headers: { Authorization: `Bearer ${token}` },
-                    body: formData,
-                }
+            formData.append(
+                "entity_type",
+                barType === "with_bar"
+                    ? "product_size_with_bar"
+                    : "product_size_without_bar"
             );
 
-            getProductData();
-        };
-
-        sizeImageInputRef.current.click();
-    };
-
-    const editSizeImage = (sizeId, imageId, barType) => {
-        sizeImageInputRef.current.onchange = async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const formData = new FormData();
-            formData.append("image", file);
-            formData.append("image_id", imageId);
-            formData.append("size_id", sizeId);
-            formData.append("bar_type", barType);
-
-            await authFetch(
-                `https://united-hanger-2025.up.railway.app/api/products/${ProductID}/size/image`,
+            const res = await authFetch(
+                `https://united-hanger-2025.up.railway.app/api/products/${ProductID}/image`,
                 {
                     method: "PATCH",
                     headers: { Authorization: `Bearer ${token}` },
@@ -304,12 +287,100 @@ function EditProduct() {
                 }
             );
 
-            getProductData();
+            if (res.ok) {
+                alert("✔ Size image added");
+                getProductData();
+            } else {
+                alert("❌ Failed to add image");
+            }
         };
 
         sizeImageInputRef.current.click();
     };
 
+    //Edit size image function
+    const editSizeImage = (sizeId, imageId, barType) => {
+        sizeImageInputRef.current.onchange = async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("delete", 0);
+            formData.append("image", file);
+            formData.append("image_id", imageId);
+            formData.append("size_id", sizeId);
+            formData.append(
+                "entity_type",
+                barType === "with_bar"
+                    ? "product_size_with_bar"
+                    : "product_size_without_bar"
+            );
+
+            const res = await authFetch(
+                `https://united-hanger-2025.up.railway.app/api/products/${ProductID}/image`,
+                {
+                    method: "PATCH",
+                    headers: { Authorization: `Bearer ${token}` },
+                    body: formData,
+                }
+            );
+
+            if (res.ok) {
+                alert("✔ Size image updated");
+                getProductData();
+            } else {
+                alert("❌ Failed to update image");
+            }
+        };
+
+        sizeImageInputRef.current.click();
+    };
+
+    //Delete size image function
+    const deleteSizeImage = async (imageId, sizeId, barType) => {
+        try {
+            const formData = new FormData();
+            formData.append("delete", 1);
+            formData.append("image_id", imageId);
+            formData.append("size_id", sizeId);
+            formData.append(
+                "entity_type",
+                barType === "with_bar"
+                    ? "product_size_with_bar"
+                    : "product_size_without_bar"
+            );
+
+            const res = await authFetch(
+                `https://united-hanger-2025.up.railway.app/api/products/${ProductID}/image`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: formData,
+                }
+            );
+
+            const data = await res.json();
+            console.log("DELETE RESPONSE:", data);
+
+            if (!res.ok) throw new Error(data.message);
+
+            alert("✔ Image deleted");
+            getProductData();
+        } catch (err) {
+            console.error(err);
+            alert(err.message || "Delete failed");
+        }
+    };
+
+    const handleDeleteSizeImage = (img, size, barType) => {
+        if (!img?.id || !size?.id) return;
+
+        if (window.confirm("Are you sure you want to delete the image?")) {
+            deleteSizeImage(img.id, size.id, barType);
+        }
+    };
 
     return (
         <div className="Edit-Product-Departament" style={{ overflow: "hidden" }}>
@@ -518,18 +589,18 @@ function EditProduct() {
                             </div>
                             {/* ===== SIZE IMAGES SECTION ===== */}
                             <div className="Sizes-Images-Section">
-                                <h2>Size Images</h2>
+                                <h2 style={{ fontSize: "22px", marginBottom: "10px" }}>Size Images</h2>
 
                                 {Product.sizes?.map(size => (
                                     <div key={size.id} className="Size-Block">
 
-                                        <h3>
+                                        <h3 style={{ marginBottom: "10px", fontSize: "18px" }}>
                                             Size: {size.value} {size.unit}
                                         </h3>
 
                                         {/* WITH BAR */}
                                         <div className="Size-Images">
-                                            <h4>With Bar</h4>
+                                            <h4 style={{ fontSize: "15px" }}>With Bar</h4>
                                             <div className="Images-Grid">
                                                 {Array.from({ length: 6 }).map((_, index) => {
                                                     const img = size.images_with_bar?.[index];
@@ -538,26 +609,35 @@ function EditProduct() {
                                                         <div key={index} className="Image-Slot">
                                                             {img ? (
                                                                 <>
-                                                                    <img src={img.image_path} alt="" />
-                                                                    <button
-                                                                        onClick={() =>
-                                                                            editSizeImage(
-                                                                                size.id,
-                                                                                img.id,
-                                                                                "with_bar"
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        Edit
-                                                                    </button>
+                                                                    <img src={img.image_path} className="img-product" alt="img-product-size" />
+                                                                    <div className="all-buttons">
+                                                                        <button
+                                                                            className="edit-button"
+                                                                            onClick={() =>
+                                                                                editSizeImage(size.id, img.id, "with_bar")
+                                                                            }
+                                                                        >
+                                                                            <img src={imgEdit} alt="edit-img" />
+                                                                        </button>
+                                                                        <button
+                                                                            className="delete-button"
+                                                                            onClick={() =>
+                                                                                handleDeleteSizeImage(img, size, "with_bar")
+                                                                            }
+                                                                        >
+                                                                            <img src={imgDelete} alt="delete-img" />
+                                                                        </button>
+                                                                    </div>
                                                                 </>
                                                             ) : (
                                                                 <button
+                                                                    className="add-new-button"
                                                                     onClick={() =>
                                                                         addSizeImage(size.id, "with_bar")
                                                                     }
                                                                 >
-                                                                    Add
+                                                                    <img src={imgSelect} alt="img-select" />
+                                                                    <p>Select new image</p>
                                                                 </button>
                                                             )}
                                                         </div>
@@ -567,7 +647,7 @@ function EditProduct() {
                                         </div>
 
                                         {/* WITHOUT BAR */}
-                                        <div className="Size-Images">
+                                        <div className="Size-Images images-without-bar">
                                             <h4>Without Bar</h4>
                                             <div className="Images-Grid">
                                                 {Array.from({ length: 6 }).map((_, index) => {
@@ -577,26 +657,33 @@ function EditProduct() {
                                                         <div key={index} className="Image-Slot">
                                                             {img ? (
                                                                 <>
-                                                                    <img src={img.image_path} alt="" />
-                                                                    <button
-                                                                        onClick={() =>
-                                                                            editSizeImage(
-                                                                                size.id,
-                                                                                img.id,
-                                                                                "without_bar"
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        Edit
-                                                                    </button>
+                                                                    <img src={img.image_path} alt="img-product" className="img-product" />
+                                                                    <div className="all-buttons">
+                                                                        <button
+                                                                            onClick={() =>
+                                                                                editSizeImage(size.id, img.id, "without_bar")
+                                                                            }
+                                                                        >
+                                                                            <img src={imgEdit} alt="edit-img" />
+                                                                        </button>
+                                                                        <button
+                                                                            onClick={() =>
+                                                                                handleDeleteSizeImage(img, size, "without_bar")
+                                                                            }
+                                                                        >
+                                                                            <img src={imgDelete} alt="delete-img" />
+                                                                        </button>
+                                                                    </div>
                                                                 </>
                                                             ) : (
                                                                 <button
+                                                                    className="add-new-button"
                                                                     onClick={() =>
                                                                         addSizeImage(size.id, "without_bar")
                                                                     }
                                                                 >
-                                                                    Add
+                                                                    <img src={imgSelect} alt="img-select" />
+                                                                    <p>Select new image</p>
                                                                 </button>
                                                             )}
                                                         </div>

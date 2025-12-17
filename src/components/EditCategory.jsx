@@ -147,21 +147,23 @@ function EditCategory() {
             </form>
 
             <div className="visibility-buttons">
-                <button
-                    type="button"
-                    className={`btn btn-visible ${categoryonly.visible ? "active" : ""}`}
-                    onClick={toggleVisibility}
-                >
-                    Visible
-                </button>
-
-                <button
-                    type="button"
-                    className={`btn btn-hidden ${!categoryonly.visible ? "active" : ""}`}
-                    onClick={toggleVisibility}
-                >
-                    Hidden
-                </button>
+                {categoryonly.is_visible === true ?
+                    <button
+                        type="button"
+                        className={`btn btn-hidden ${!categoryonly.visible ? "active" : ""}`}
+                        onClick={toggleVisibility}
+                    >
+                        Hidden
+                    </button>
+                    :
+                    <button
+                        type="button"
+                        className={`btn btn-visible ${categoryonly.visible ? "active" : ""}`}
+                        onClick={toggleVisibility}
+                    >
+                        Visible
+                    </button>
+                }
                 <button
                     type="button"
                     className={`btn btn-hidden`}

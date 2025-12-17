@@ -252,3 +252,70 @@
     background-color: #fff;
     color: #333;
 }
+
+/*update new changes*/
+.Sizes-Images-Section .Size-Block{
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 20px;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+}
+.Sizes-Images-Section .Size-Block .Size-Images .Images-Grid{
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+    width: 100%;
+    height: 100%;
+    flex-wrap: wrap;
+}
+.Sizes-Images-Section .Size-Block .Size-Images .Images-Grid .Image-Slot{
+    width: 150px;
+    height: 100px;
+    background-color: #f6f6f6;
+    border-radius: 4px;
+    position: relative;
+}
+.Sizes-Images-Section .Size-Block .Size-Images .Images-Grid .Image-Slot .all-buttons{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+.Sizes-Images-Section .Size-Block .Size-Images .Images-Grid .Image-Slot .all-buttons button{
+    border: none;
+    cursor: pointer;
+}
+.Sizes-Images-Section .Size-Block .Size-Images .Images-Grid .Image-Slot .all-buttons button img{
+    width: 25px;
+    height: 25px;
+}
+.Sizes-Images-Section .Size-Block .Size-Images .Images-Grid .Image-Slot .img-product{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.Sizes-Images-Section .Size-Block .Size-Images .Images-Grid .Image-Slot .add-new-button{
+    border: none;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.Sizes-Images-Section .Size-Block .Size-Images .Images-Grid .Image-Slot .add-new-button img{
+    cursor: pointer;
+    width: 50px;
+    margin-bottom: 10px;
+}
+.Sizes-Images-Section .Size-Block .Size-Images .Images-Grid .Image-Slot .add-new-button p{
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
+}
+.images-without-bar{
+    margin-top: 20px;
+}

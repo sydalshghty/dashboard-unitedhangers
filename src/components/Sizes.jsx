@@ -92,7 +92,7 @@ function Sizes() {
                             <div
                                 className="content-product-size"
                                 key={size.id}
-                                style={{ backgroundColor: backgroundSize(index) }}
+                                style={{ backgroundColor: backgroundSize(index + 1) }}
                             >
                                 <Link
                                     to={`/sizes/${size.id}`}

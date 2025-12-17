@@ -104,7 +104,7 @@ function RowMaterial() {
                     {materials.map((material, index) => {
                         return (
                             <div className="col-main-product" key={material.id}>
-                                <div className="container-product" style={{ backgroundColor: backgroundColor(material.id) }}>
+                                <div className="container-product" style={{ backgroundColor: backgroundColor(index + 1) }}>
                                     <Link to={`/materials/${material.id}`} style={{ textDecoration: "none", width: "100%" }}>
                                         <div className="contain-text">
                                             <p className="id-product">{index + 1}</p>

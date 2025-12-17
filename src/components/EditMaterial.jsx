@@ -138,22 +138,23 @@ function EditMaterial() {
                     >
                         Edit
                     </button>
-
-                    <button
-                        type="button"
-                        className={`btn btn-visible ${material.visible ? "active" : ""}`}
-                        onClick={() => toggleVisibility(true)}
-                    >
-                        Visible
-                    </button>
-
-                    <button
-                        type="button"
-                        className={`btn btn-hidden ${!material.visible ? "active" : ""}`}
-                        onClick={() => toggleVisibility(false)}
-                    >
-                        Hidden
-                    </button>
+                    {material.is_visible === true ?
+                        <button
+                            type="button"
+                            className={`btn btn-hidden ${!material.visible ? "active" : ""}`}
+                            onClick={() => toggleVisibility(false)}
+                        >
+                            Hidden
+                        </button>
+                        :
+                        <button
+                            type="button"
+                            className={`btn btn-visible ${material.visible ? "active" : ""}`}
+                            onClick={() => toggleVisibility(true)}
+                        >
+                            Visible
+                        </button>
+                    }
                 </div>
             </div>
         </div>

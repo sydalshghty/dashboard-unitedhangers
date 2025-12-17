@@ -183,22 +183,23 @@ function Color() {
                 >
                     Edit
                 </button>
-
-                <button
-                    type="button"
-                    className={`btn btn-visible ${item.visible ? "active" : ""}`}
-                    onClick={() => toggleVisibility(true)}
-                >
-                    Visible
-                </button>
-
-                <button
-                    type="button"
-                    className={`btn btn-hidden ${!item.visible ? "active" : ""}`}
-                    onClick={() => toggleVisibility(false)}
-                >
-                    Hidden
-                </button>
+                {item.is_visible === true ?
+                    <button
+                        type="button"
+                        className={`btn btn-hidden ${!item.visible ? "active" : ""}`}
+                        onClick={() => toggleVisibility(false)}
+                    >
+                        Hidden
+                    </button>
+                    :
+                    <button
+                        type="button"
+                        className={`btn btn-visible ${item.visible ? "active" : ""}`}
+                        onClick={() => toggleVisibility(true)}
+                    >
+                        Visible
+                    </button>
+                }
             </div>
         </div>
     );

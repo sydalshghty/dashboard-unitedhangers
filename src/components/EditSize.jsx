@@ -148,22 +148,24 @@ function EditSize() {
                 >
                     Edit
                 </button>
+                {size.is_visible === true ?
+                    <button
+                        type="button"
+                        className={`btn btn-hidden ${!size.visible ? "active" : ""}`}
+                        onClick={() => toggleVisibility(false)}
+                    >
+                        Hidden
+                    </button>
+                    :
+                    <button
+                        type="button"
+                        className={`btn btn-visible ${size.visible ? "active" : ""}`}
+                        onClick={() => toggleVisibility(true)}
+                    >
+                        Visible
+                    </button>
+                }
 
-                <button
-                    type="button"
-                    className={`btn btn-visible ${size.visible ? "active" : ""}`}
-                    onClick={() => toggleVisibility(true)}
-                >
-                    Visible
-                </button>
-
-                <button
-                    type="button"
-                    className={`btn btn-hidden ${!size.visible ? "active" : ""}`}
-                    onClick={() => toggleVisibility(false)}
-                >
-                    Hidden
-                </button>
             </div>
         </div>
     );
