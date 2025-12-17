@@ -4,6 +4,7 @@ import "../css/WhyUs.css";
 import "../css/AboutUs.css";
 import { useState, useEffect } from "react";
 import { authFetch } from "./authFetch.js";
+import ProductList from "./test-product.jsx";
 function WhyUS() {
     const [whyus, setwhyus] = useState("Why US");
     const getwhyus = async () => {
@@ -23,12 +24,15 @@ function WhyUS() {
     }, [])
 
     return (
-        <div className="WhyUs-Departament">
-            <div className="heading-WhyUs">
-                <p className="P-WhyUs">Why US</p>
+        <>
+            <div className="WhyUs-Departament">
+                <div className="heading-WhyUs">
+                    <p className="P-WhyUs">Why US</p>
+                </div>
+                <ContentText title={`${whyus.slice(0, 70)} ....`} label="Why US" />
             </div>
-            <ContentText title={`${whyus.slice(0, 70)} ....`} label="Why US" />
-        </div>
+            <ProductList />
+        </>
     )
 }
 export default WhyUS;

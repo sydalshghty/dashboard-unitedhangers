@@ -101,7 +101,8 @@
     height: 269px;
 }
  .col-Select-Image .select-Image-Two .select-Image-Product,
- .add-new-images-product .col-one .select-Image-Product{
+ .add-new-images-product .col-one .select-Image-Product,
+ .all-content-addnew-product .all-select-images .col-one .select-Image-Product{
     position: relative;
     width: 200px;
     height: 128px;
@@ -116,18 +117,21 @@
     -o-border-radius: 25px;
 }
  .col-Select-Image .select-Image-Two .select-Image-Product input,
- .add-new-images-product .col-one .select-Image-Product input{
+ .add-new-images-product .col-one .select-Image-Product input,
+ .all-content-addnew-product .all-select-images .col-one .select-Image-Product input{
     position: absolute;
     opacity: 0;
 }
  .col-Select-Image .select-Image-Two .select-Image-Product img,
- .add-new-images-product .col-one  .select-Image-Product img{
+ .add-new-images-product .col-one  .select-Image-Product img,
+ .all-content-addnew-product .all-select-images .col-one .select-Image-Product img{
     width: 40px;
     cursor: pointer;
     margin-top: -5px;
 }
  .col-Select-Image .select-Image-Two .select-Image-Product p,
-  .add-new-images-product .col-one .select-Image-Product p{
+  .add-new-images-product .col-one .select-Image-Product p,
+  .all-content-addnew-product .all-select-images .col-one .select-Image-Product p{
     font-size: 15px;
     font-weight: 200;
     letter-spacing: 0.5px;
@@ -135,13 +139,14 @@
     color: #8D8D8D;
 }
 .Add-New-Product-Departament .col-Select-Image .select-Image-One,
- .add-new-images-product .col-one .select-Image-Product{
+ .add-new-images-product .col-one .select-Image-Product,
+ .all-content-addnew-product .all-select-images .col-one .select-Image-Product{
     margin-right: 20px;
 }
 .Add-New-Product-Departament .col-Select-Image .select-Image-One .col-select,
 .Add-New-Product-Departament .col-Select-Image .select-Image-Two .col-select,
-.add-new-images-product .col-one .select-Image-Product .col-select
-{
+.add-new-images-product .col-one .select-Image-Product .col-select,
+.all-content-addnew-product .all-select-images .col-one .select-Image-Product .col-select{
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -351,6 +356,81 @@
     height: 120px !important;
 }
 
-
-
-
+.all-content-addnew-product{
+    display: flex;
+}
+.all-content-addnew-product .content-Product-Submit{
+    min-width: 1600px;
+}
+.all-content-addnew-product .all-select-images{
+    position: relative;
+    margin-top: 40px;
+    display: flex;
+   flex-wrap: wrap;
+   gap: 10px;
+    height: 100%;
+    margin-left: -700px;
+}
+.all-content-addnew-product .all-select-images::before{
+    content: "Main Images Product";
+    position: absolute;
+    top: -40px;
+    left: 20px;
+    font-size: 22px;
+}
+.all-content-addnew-product .all-select-images .col-one .select-Image-Product .content-image{
+    margin-top: 15px;
+}
+@media (max-width: 2000px){
+    .all-content-addnew-product .content-Product-Submit{
+        min-width: 1250px;
+    }
+    .all-content-addnew-product .all-select-images{
+        margin-left: -600px;
+    }
+}
+@media (max-width:  1700px){
+    .all-content-addnew-product{
+        flex-direction: column;
+    }
+    .all-content-addnew-product .content-Product-Submit,
+    .all-content-addnew-product .content-Product-Submit .Name-Description-Col,
+    .all-content-addnew-product .content-Product-Submit .Colors-Sizes-Col{
+        min-width: 100%;
+    }
+    .all-content-addnew-product .all-select-images{
+        margin-left: 20px;
+      /*  margin-right: 40px;*/
+        /*width: 100%;*/
+    }
+}
+/**/
+.all-select-images{
+    max-height: fit-content;
+}
+.all-main-images-product{
+    max-height: fit-content !important;
+}
+.images-sizes{
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    width: fit-content;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+.images-sizes .col-one .select-Image-Product{
+    width: 130px !important;
+    height: 100px !important;
+}
+.all-content-addnew-product .images-sizes .col-one .select-Image-Product img{
+    width: 30px !important;
+}
+.all-content-addnew-product .images-sizes .col-one .select-Image-Product p{
+    font-size: 12px;
+}
+.all-content-addnew-product .images-sizes::before{
+    content: "Sizes Images";
+}
+.images-sizes .col-heading p{
+    margin-bottom: 10px;
+}

@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import imgReturn from "../images/Group 429.svg";
-//import UserName from "./userName";
 import { token } from "./token";
 import { authFetch } from "./authFetch.js";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import imgEdit from "../images/Group 445.svg";
 import "../css/EditCategory.css";
 
 function EditCategory() {
@@ -37,11 +37,18 @@ function EditCategory() {
     }, []);
 
     /* Edit Category Data */
+    const [image1, setImage1] = useState(null);
+    const handleImageChange1 = (event) => {
+        const file = event.target.files[0];
+        if (file) setImage1(file);
+    };
+
     const [name, setname] = useState("");
     const EditCategoryName = async (e) => {
         e.preventDefault();
         const formData = new FormData();
         formData.append("name", name);
+        formData.append("image", image1);
 
         try {
             const response = await authFetch(`https://united-hanger-2025.up.railway.app/api/category/${CategoryID}`, {
@@ -54,7 +61,7 @@ function EditCategory() {
             const data = await response.json();
             alert("✅ Category has been updated successfully!");
             console.log(data);
-            handleNavigate();
+            getCategoryonly();
         } catch (error) {
             console.error("Error not found data", error);
             alert("❌ An error occurred. Please try again.");
@@ -119,6 +126,17 @@ function EditCategory() {
             </div>
 
             <form className="col-Edit-Email" onSubmit={EditCategoryName}>
+                <div className="main-Image" style={{ backgroundColor: "#f2f2f2", borderRadius: "10px", width: "450px", height: "250px", marginBottom: "20px", position: "relative" }}>
+                    <img className="img-Product" src={categoryonly.image_path} style={{ objectFit: "contain", width: "100%", height: "100%" }} />
+                    <div className="Delete-Edit-Image" style={{ position: "absolute", right: 10, top: 10, cursor: "pointer", display: "flex" }}>
+                        <input
+                            onChange={handleImageChange1}
+                            type="file"
+                            style={{ width: "50px", height: "50px", position: "absolute", zIndex: " 555555", opacity: "0", cursor: "pointer" }}
+                        />
+                        <img src={imgEdit} alt="edit" />
+                    </div>
+                </div>
                 <input
                     type="text"
                     required

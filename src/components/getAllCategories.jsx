@@ -38,7 +38,7 @@ function GetAllCategories() {
 
     const handleDelete = (id) => {
         Swal.fire({
-            title: "Delete Color",
+            title: "Delete Category",
             text: `Are You Sure You want to delete Category ${id}`,
             showCancelButton: true,
             cancelButtonText: "Cancel",
@@ -87,10 +87,12 @@ function GetAllCategories() {
                             {allCategories.map((category, index) => {
                                 return (
                                     <div className="col-category" style={{ cursor: "pointer", marginBottom: "20px", backgroundColor: `${getBackground(index + 1)}` }} key={category.id}>
-                                        <div className="col-div">
-                                            <p className="category-id">{index + 1}</p>
-                                            <p>{category.name}</p>
-                                        </div>
+                                        <Link to={`/EditCategory/${category.id}`} style={{ textDecoration: "none", color: "black", width: "90%" }}>
+                                            <div className="col-div">
+                                                <p className="category-id">{index + 1}</p>
+                                                <p>{category.name}</p>
+                                            </div>
+                                        </Link>
                                         <div className="Edit-Delete-Col">
                                             <img
                                                 className="img-Delete"
