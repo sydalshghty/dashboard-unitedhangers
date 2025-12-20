@@ -36,33 +36,6 @@ function EditProduct() {
     const fileInputRef = useRef(null);
     const { ProductID } = useParams();
     const navigate = useNavigate();
-    const getProductData = async () => {
-        try {
-            const response = await authFetch(
-                `https://united-hanger-2025.up.railway.app/api/v2/products/${ProductID}`,
-                { method: "GET", headers: { "Authorization": `Bearer ${token}` } }
-            );
-
-            const data = await response.json();
-            setProduct(data.product);
-
-            if (data.product.images?.length > 0) {
-                const mainImg = data.product.images.find(img => img.image_type === 0);
-
-                if (mainImg) {
-                    setMainImageId(mainImg.id);
-                    setMainImagePath(mainImg.image_path);
-                } else {
-                    setMainImageId(data.product.images[0].id);
-                    setMainImagePath(data.product.images[0].image_path);
-                }
-            }
-
-        } catch (error) {
-            console.error("Error fetching product data:", error);
-        }
-    };
-
     const getAllCategories = async () => {
         const res = await authFetch(
             `https://united-hanger-2025.up.railway.app/api/categories/get_all`,
@@ -107,65 +80,33 @@ function EditProduct() {
         getAllColors();
     }, []);
 
-    const EditProductFunc = async () => {
-        if (!Editname) return alert("Enter product name");
-        if (!selectedCategories.length) return alert("Select category");
-        if (!selectedColors.length) return alert("Select color");
-        if (!selectedMaterilas.length) return alert("Select material");
-        if (!selectedSizes.length) return alert("Select size");
+    const getProductData = async () => {
+        try {
+            const response = await authFetch(
+                `https://united-hanger-2025.up.railway.app/api/v2/products/${ProductID}`,
+                { method: "GET", headers: { Authorization: `Bearer ${token}` } }
+            );
 
-        const bodyData = {
-            name: Editname,
-            category_ids: selectedCategories,
-            color_ids: selectedColors,
-            material_ids: selectedMaterilas,
-            size_ids: selectedSizes,
-            can_has_bar: checked,
-            description: Editdescription
-        };
+            const data = await response.json();
+            setProduct(data.product);
 
-        const response = await authFetch(
-            `https://united-hanger-2025.up.railway.app/api/v2/products/${ProductID}/edit`,
-            {
-                method: "PUT",
-                headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
-                body: JSON.stringify(bodyData),
+            // ---- set all default selections ----
+            setEditname(data.product.name || "");
+            setEditdescription(data.product.description || "");
+            setChecked(data.product.can_has_bar || false);
+
+            setSelectedCategories(data.product.categories.map(cat => cat.id));
+            setSelectedMaterials(data.product.materials.map(mat => mat.id));
+            setSelectedSizes(data.product.sizes.map(sz => sz.id));
+            setSelectedColors(data.product.colors.map(color => color.id));
+
+            if (data.product.images?.length > 0) {
+                const mainImg = data.product.images.find(img => img.image_type === 0);
+                setMainImageId(mainImg?.id || data.product.images[0].id);
+                setMainImagePath(mainImg?.image_path || data.product.images[0].image_path);
             }
-        );
-
-        const data = await response.json();
-
-        if (response.ok) {
-            alert("✔ Product Updated");
-            navigate("/Products");
-        } else {
-            alert("❌ Error updating product");
-            console.log(data);
-        }
-    };
-
-    const uploadNewImage = async (file) => {
-        const formData = new FormData();
-        formData.append("delete", 0);
-        formData.append("image", file);
-
-        const response = await authFetch(
-            `https://united-hanger-2025.up.railway.app/api/products/${ProductID}/image`,
-            {
-                method: "PATCH",
-                headers: { "Authorization": `Bearer ${token}` },
-                body: formData,
-            }
-        );
-
-        const data = await response.json();
-
-        if (response.ok) {
-            alert("✔ Image Uploaded");
-            getProductData();
-        } else {
-            alert("❌ Failed Upload");
-            console.log(data);
+        } catch (err) {
+            console.error(err);
         }
     };
 
@@ -196,6 +137,108 @@ function EditProduct() {
             getProductData();
         } else {
             alert("❌ Failed update");
+            console.log(data);
+        }
+    };
+
+    /*   const handleImageChange1 = (e) => {
+           if (e.target.files.length > 0) {
+               const file = e.target.files[0];
+               setImage1(file);
+               uploadNewImage(file);
+           }
+       };
+   
+       const handleImageChange2 = (e) => {
+           if (e.target.files.length > 0) {
+               const file = e.target.files[0];
+               setImage2(file);
+               uploadNewImage(file);
+           }
+       };
+   */
+    // ---------- Edit function ----------
+    const EditProductFunc = async () => {
+        // validations
+        if (!Editname) return alert("❌ Please enter product name");
+        if (!selectedCategories.length) return alert("❌ Please select category");
+        if (!selectedColors.length) return alert("❌ Please select color");
+        if (!selectedMaterilas.length) return alert("❌ Please select material");
+        if (!selectedSizes.length) return alert("❌ Please select size");
+
+        // ----- Send all data back, even لو ما تغيرش شيء -----
+        const productData = {
+            name: Editname,
+            category_ids: selectedCategories,
+            color_ids: selectedColors,
+            material_ids: selectedMaterilas,
+            size_ids: selectedSizes,
+            can_has_bar: checked,
+            description: Editdescription
+        };
+
+
+        const formData = new FormData();
+        formData.append("product_data", JSON.stringify(productData));
+        sizesForNewImages.forEach((sizeObj, sizeIndex) => {
+            // صور بدون بار
+            sizeObj.imageWithoutBarSlot?.forEach((file, imgIndex) => {
+                formData.append(`size[${sizeIndex}][image_without_bar][${imgIndex}]`, file);
+            });
+
+            // صور مع بار
+            sizeObj.imageWithBarSlot?.forEach((file, imgIndex) => {
+                formData.append(`size[${sizeIndex}][image_with_bar][${imgIndex}]`, file);
+            });
+        });
+
+        try {
+            const response = await authFetch(
+                `https://united-hanger-2025.up.railway.app/api/v2/products/${ProductID}/edit`,
+                {
+                    method: "PUT",
+                    headers: { Authorization: `Bearer ${token}` },
+                    body: formData
+                }
+            );
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("✔ Product Updated Successfully");
+                navigate("/Products");
+            } else {
+                console.log(data);
+                alert("❌ Error updating product");
+            }
+        } catch (error) {
+            console.error(error);
+            alert("❌ Something went wrong while updating the product");
+        }
+    };
+
+
+    const uploadNewImage = async (file) => {
+        const formData = new FormData();
+        formData.append("delete", 0);
+        formData.append("image", file);
+
+        const response = await authFetch(
+            `https://united-hanger-2025.up.railway.app/api/products/${ProductID}/image`,
+            {
+                method: "PATCH",
+                headers: { "Authorization": `Bearer ${token}` },
+                body: formData,
+            }
+        );
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert("✔ Image Uploaded");
+            getProductData();
+        } else {
+            alert("❌ Failed Upload");
             console.log(data);
         }
     };
@@ -259,9 +302,22 @@ function EditProduct() {
 
     const sizeImageInputRef = useRef(null);
 
-    //patch images sizes
 
-    //Add size image function
+    //Edit product
+    const [activeSizeId, setActiveSizeId] = useState(null);
+
+    const handleSelectSizeForImages = (sizeId) => {
+        setSizesForNewImages(prev => {
+            if (prev.find(s => s.sizeId === sizeId)) return prev;
+            return [...prev, { sizeId, withBar: checked }];
+        });
+    };
+
+    const [sizesForNewImages, setSizesForNewImages] = useState([]);
+
+    //update functions
+
+    //Add size image
     const addSizeImage = (sizeId, barType) => {
         sizeImageInputRef.current.onchange = async (e) => {
             const file = e.target.files[0];
@@ -297,7 +353,6 @@ function EditProduct() {
 
         sizeImageInputRef.current.click();
     };
-
     //Edit size image function
     const editSizeImage = (sizeId, imageId, barType) => {
         sizeImageInputRef.current.onchange = async (e) => {
@@ -382,30 +437,48 @@ function EditProduct() {
         }
     };
 
+    //add new images sizes
+    const addSizeNewImage = (sizeId, barType, index) => {
+        sizeImageInputRef.current.onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            setSizesForNewImages(prev => {
+                const newArr = [...prev];
+                let sizeObj = newArr.find(s => s.sizeId === sizeId);
+                if (!sizeObj) {
+                    sizeObj = { sizeId, imageWithBarSlot: [], imageWithoutBarSlot: [] };
+                    newArr.push(sizeObj);
+                }
+
+                if (barType === "with_bar") {
+                    sizeObj.imageWithBarSlot[index] = file;
+                } else {
+                    sizeObj.imageWithoutBarSlot[index] = file;
+                }
+
+                return newArr;
+            });
+        };
+        sizeImageInputRef.current.click();
+    };
     return (
         <div className="Edit-Product-Departament" style={{ overflow: "hidden" }}>
-
             <div className="heading-EditProduct">
                 <div className="col-image">
                     <img onClick={() => navigate("/Products")} src={imgProduct} alt="" />
                     <p>Edit Product</p>
                 </div>
             </div>
-
             <div className="col-Delete-Edit" style={{ display: "flex", justifyContent: "flex-end" }}>
                 <button className="Edit" onClick={EditProductFunc}>Edit</button>
             </div>
-
             <div className="col-images"><p>Images</p></div>
-
             {Product.length === 0 ? <Loading /> :
                 <>
                     <div className="Images-Departament">
-
-
                         <div className="main-Image">
                             <img className="img-Product" src={mainImagePath} style={{ objectFit: "contain" }} />
-
                             <div className="Delete-Edit-Image">
                                 <input
                                     type="file"
@@ -419,8 +492,6 @@ function EditProduct() {
                                 />
                             </div>
                         </div>
-
-
                         <div className="all-Images-Products">
                             <div className="col-img-product">
                                 {Product.images
@@ -456,8 +527,6 @@ function EditProduct() {
                                         </div>
                                     ))}
                             </div>
-
-
                             {Product.images.length < 6 &&
                                 <div className="add-new-images-product">
                                     <div className="col-one">
@@ -474,18 +543,8 @@ function EditProduct() {
                         </div>
 
                     </div>
-
-
                     <div className="content-Product-Submit">
                         <div className="Name-Description-Col">
-                            <div className="col-checkbox" style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: "20px" }}>
-                                <input type="checkbox" checked={checked} style={{ width: "25px", height: "25px", cursor: "pointer" }}
-                                    onChange={(e) => {
-                                        setChecked(e.target.checked)
-                                    }}
-                                />
-                                <span style={{ textTransform: "capitalize", fontSize: "20px" }}>bar</span>
-                            </div>
                             <form>
                                 <div className="col-Name">
                                     <label>Name</label>
@@ -504,8 +563,14 @@ function EditProduct() {
                                     />
                                 </div>
                             </form>
-
-
+                            <div className="col-checkbox" style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: "20px" }}>
+                                <input type="checkbox" checked={checked} style={{ width: "25px", height: "25px", cursor: "pointer" }}
+                                    onChange={(e) => {
+                                        setChecked(e.target.checked)
+                                    }}
+                                />
+                                <span style={{ textTransform: "capitalize", fontSize: "20px" }}>bar</span>
+                            </div>
                             <div className="col-Raw-Material">
                                 <h3>Raw Material</h3>
                                 <div>
@@ -544,10 +609,7 @@ function EditProduct() {
                             </div>
 
                         </div>
-
-
                         <div className="Colors-Sizes-Col">
-
                             <div className="Colors-Departament">
                                 <h3>Colors</h3>
 
@@ -562,24 +624,33 @@ function EditProduct() {
                                             )}
                                         >
                                             <li style={{ backgroundColor: color.hex_code }}></li>
-                                            <p >{color.name}</p>
+                                            <p className={`material-item ${selectedColors.includes(color.id) ? "selected" : ""}`}>{color.name}</p>
                                         </div>
                                     ))}
                                 </div>
                             </div>
-
                             <div className="Sizes-Departament">
                                 <h3>Sizes</h3>
-
                                 <div className="ALL-Col-Sizes">
                                     {allSizes.map(size => (
-                                        <p key={size.id}
+                                        <p
+                                            key={size.id}
                                             className={`material-item ${selectedSizes.includes(size.id) ? "selected" : ""}`}
-                                            onClick={() => setSelectedSizes(prev =>
-                                                prev.includes(size.id)
-                                                    ? prev.filter(id => id !== size.id)
-                                                    : [...prev, size.id]
-                                            )}
+                                            onClick={() => {
+                                                // Toggle selection
+                                                if (activeSizeId === size.id) {
+                                                    setActiveSizeId(null); // لو ضغط على نفس size، نخفي قسم الصور
+                                                } else {
+                                                    setActiveSizeId(size.id); // نحدد الـ size الحالي
+                                                }
+
+                                                // تحديث الـ selectedSizes
+                                                setSelectedSizes(prev =>
+                                                    prev.includes(size.id)
+                                                        ? prev.filter(id => id !== size.id)
+                                                        : [...prev, size.id]
+                                                );
+                                            }}
                                         >
                                             {size.value} {size.unit}
                                         </p>
@@ -587,6 +658,117 @@ function EditProduct() {
                                 </div>
 
                             </div>
+
+                            {/* ===== SIZE IMAGES SECTION ===== */}
+
+                            <div className="Sizes-Images-Section">
+                                <h2 style={{ fontSize: "22px", marginBottom: "10px" }}>Size Images</h2>
+
+                                {Product.sizes?.map(size => (
+                                    <div key={size.id} className="Size-Block">
+
+                                        <h3 style={{ marginBottom: "10px", fontSize: "18px" }}>
+                                            Size: {size.value} {size.unit}
+                                        </h3>
+
+
+                                        <div className="Size-Images">
+                                            <h4 style={{ fontSize: "15px" }}>With Bar</h4>
+                                            <div className="Images-Grid">
+                                                {Array.from({ length: 6 }).map((_, index) => {
+                                                    const img = size.images_with_bar?.[index];
+
+                                                    return (
+                                                        <div key={index} className="Image-Slot">
+                                                            {img ? (
+                                                                <>
+                                                                    <img src={img.image_path} className="img-product" alt="img-product-size" />
+                                                                    <div className="all-buttons">
+                                                                        <button
+                                                                            className="edit-button"
+                                                                            onClick={() =>
+                                                                                editSizeImage(size.id, img.id, "with_bar")
+                                                                            }
+                                                                        >
+                                                                            <img src={imgEdit} alt="edit-img" />
+                                                                        </button>
+                                                                        <button
+                                                                            className="delete-button"
+                                                                            onClick={() =>
+                                                                                handleDeleteSizeImage(img, size, "with_bar")
+                                                                            }
+                                                                        >
+                                                                            <img src={imgDelete} alt="delete-img" />
+                                                                        </button>
+                                                                    </div>
+                                                                </>
+                                                            ) : (
+                                                                <button
+                                                                    className="add-new-button"
+                                                                    onClick={() =>
+                                                                        addSizeImage(size.id, "with_bar")
+                                                                    }
+                                                                >
+                                                                    <img src={imgSelect} alt="img-select" />
+                                                                    <p>Select new image</p>
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+
+
+                                        <div className="Size-Images images-without-bar">
+                                            <h4>Without Bar</h4>
+                                            <div className="Images-Grid">
+                                                {Array.from({ length: 6 }).map((_, index) => {
+                                                    const img = size.images_without_bar?.[index];
+
+                                                    return (
+                                                        <div key={index} className="Image-Slot">
+                                                            {img ? (
+                                                                <>
+                                                                    <img src={img.image_path} alt="img-product" className="img-product" />
+                                                                    <div className="all-buttons">
+                                                                        <button
+                                                                            onClick={() =>
+                                                                                editSizeImage(size.id, img.id, "without_bar")
+                                                                            }
+                                                                        >
+                                                                            <img src={imgEdit} alt="edit-img" />
+                                                                        </button>
+                                                                        <button
+                                                                            onClick={() =>
+                                                                                handleDeleteSizeImage(img, size, "without_bar")
+                                                                            }
+                                                                        >
+                                                                            <img src={imgDelete} alt="delete-img" />
+                                                                        </button>
+                                                                    </div>
+                                                                </>
+                                                            ) : (
+                                                                <button
+                                                                    className="add-new-button"
+                                                                    onClick={() =>
+                                                                        addSizeImage(size.id, "without_bar")
+                                                                    }
+                                                                >
+                                                                    <img src={imgSelect} alt="img-select" />
+                                                                    <p>Select new image</p>
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                ))}
+                            </div>
+
                             {/* ===== SIZE IMAGES SECTION ===== */}
                             <div className="Sizes-Images-Section">
                                 <h2 style={{ fontSize: "22px", marginBottom: "10px" }}>Size Images</h2>
@@ -696,6 +878,100 @@ function EditProduct() {
                                 ))}
                             </div>
 
+                            {activeSizeId && (
+                                <div className="Sizes-Images-Section">
+                                    <h2 style={{ fontSize: "22px", marginBottom: "10px" }}>
+                                        Add Images For Selected Size
+                                    </h2>
+
+                                    {checked && (
+                                        <div className="Size-Images">
+                                            <h4 style={{ marginBottom: "15px", letterSpacing: "0.5px", fontSize: "17px" }}>With Bar</h4>
+                                            <div className="Images-Grid" style={{
+                                                display: "flex",
+                                                marginBottom: "20px",
+                                                padding: "20px",
+                                                boxShadow: "0px 4px 10px rgba(0,0,0,0.25)",
+                                                borderRadius: "8px",
+                                                width: "100%",
+                                                height: "100%",
+                                                flexWrap: "wrap",
+                                                gap: "20px"
+                                            }}>
+                                                {Array.from({ length: 6 }).map((_, index) => {
+                                                    const sizeObj = sizesForNewImages.find(s => s.sizeId === activeSizeId);
+                                                    const file = sizeObj?.imageWithBarSlot?.[index]; // كل slot صورة خاصة
+
+                                                    return (
+                                                        <div key={index} className="Image-Slot">
+                                                            {file ? (
+                                                                <img
+                                                                    src={URL.createObjectURL(file)}
+                                                                    alt="with-bar"
+                                                                    style={{ width: "130px", height: "100px", objectFit: "cover", borderRadius: "4px" }}
+                                                                />
+                                                            ) : (
+                                                                <button
+                                                                    className="add-new-button"
+                                                                    onClick={() => addSizeNewImage(activeSizeId, "with_bar", index)}
+                                                                    // نبعت index عشان نحط الصورة في مكانها
+                                                                    style={{ border: "none", width: "130px", height: "100px", backgroundColor: "#f6f6f6", borderRadius: "4px" }}
+                                                                >
+                                                                    <img src={imgSelect} alt="select-img" style={{ width: "40px", cursor: "pointer", marginBottom: "10px" }} />
+                                                                    <p>Select Image</p>
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <div className="Size-Images images-without-bar">
+                                        <h4 style={{ marginBottom: "15px", letterSpacing: "0.5px", fontSize: "17px" }}>Without Bar</h4>
+                                        <div className="Images-Grid" style={{
+                                            display: "flex",
+                                            marginBottom: "20px",
+                                            padding: "20px",
+                                            boxShadow: "0px 4px 10px rgba(0,0,0,0.25)",
+                                            borderRadius: "8px",
+                                            width: "100%",
+                                            height: "100%",
+                                            flexWrap: "wrap",
+                                            gap: "20px"
+                                        }}>
+                                            {Array.from({ length: 6 }).map((_, index) => {
+                                                const sizeObj = sizesForNewImages.find(s => s.sizeId === activeSizeId);
+                                                const file = sizeObj?.imageWithoutBarSlot?.[index]; // نفس الفكرة للـ without bar
+
+                                                return (
+                                                    <div key={index} className="Image-Slot">
+                                                        {file ? (
+                                                            <img
+                                                                src={URL.createObjectURL(file)}
+                                                                alt="without-bar"
+                                                                style={{ width: "130px", height: "100px", objectFit: "cover", borderRadius: "4px" }}
+                                                            />
+                                                        ) : (
+                                                            <button
+                                                                className="add-new-button"
+                                                                onClick={() => addSizeNewImage(activeSizeId, "without_bar", index)}
+                                                                style={{ border: "none", width: "130px", height: "100px", backgroundColor: "#f6f6f6", borderRadius: "4px" }}
+                                                            >
+                                                                <img src={imgSelect} alt="select-img" style={{ width: "40px", cursor: "pointer", marginBottom: "10px" }} />
+                                                                <p>Select Image</p>
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+
                         </div>
                     </div>
                 </>
@@ -706,13 +982,11 @@ function EditProduct() {
                 style={{ display: "none" }}
                 accept="image/*"
             />
-
         </div>
     );
 }
 
 export default EditProduct;
-
 
 
 
