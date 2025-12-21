@@ -9,6 +9,7 @@ import Loading from "./Loading";
 import { authFetch } from "./authFetch.js";
 
 function EditMaterial() {
+    const [checked, setchecked] = useState(false);
     const { MaterialID } = useParams();
     const navigate = useNavigate();
 
@@ -33,6 +34,7 @@ function EditMaterial() {
             );
             const data = await response.json();
             setMaterial(data.material);
+            setchecked(data.material.no_color);
         } catch (error) {
             console.error("Error: Not Found Data", error);
         }
@@ -41,6 +43,8 @@ function EditMaterial() {
     useEffect(() => {
         getMaterial();
     }, []);
+
+    console.log(material)
 
     /* Edit Material */
     const PutMaterial = async () => {
@@ -51,6 +55,7 @@ function EditMaterial() {
 
         const formData = new FormData();
         formData.append("name", newName);
+        formData.append("no_color", Number(checked))
 
         try {
             const response = await authFetch(
@@ -102,6 +107,10 @@ function EditMaterial() {
         }
     };
 
+    useEffect(() => {
+        console.log(checked);
+    }, [checked])
+
     if (!material) return <Loading />;
 
     return (
@@ -121,7 +130,12 @@ function EditMaterial() {
                     placeholder={material.name}
                     name="Name-Material"
                 />
+                <p>{material.no_color}</p>
+                <form action="" style={{ marginTop: "10px", display: "flex", gap: "5px" }}>
+                    <input type="checkbox" checked={checked} style={{ width: "20px", height: "20px", cursor: "pointer" }} onChange={(e) => setchecked(e.target.checked)} />
+                    <span style={{ textTransform: "capitalize" }}>color</span>
 
+                </form>
                 <div className="visibility-buttons visible-materials">
                     <button
                         className="Edit"
