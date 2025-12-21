@@ -7,8 +7,11 @@ import { useEffect, useState } from "react";
 import { token } from "./token";
 import "../css/cssNewProduct.css";
 import { authFetch } from "./authFetch.js";
+import Loading from "./Loading.jsx";
 
 function AddNewProduct() {
+    const [loading, setLoading] = useState(false);
+
     const navigate = useNavigate();
 
     const handleNavigate = () => {
@@ -215,6 +218,8 @@ function AddNewProduct() {
             }
         }
 
+        setLoading(true);
+
         const productData = {
             name: name,
             color_ids: selectedColors,
@@ -280,6 +285,9 @@ function AddNewProduct() {
             console.log("Error adding product:", error);
             alert("❌ Failed to add product. Please try again");
         }
+        finally {
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -304,419 +312,420 @@ function AddNewProduct() {
         selectedSizes.includes(size.id)
     );
 
-    /*   console.log("sizeImages:", sizeImages);
-       console.log("checked:", checked);
-       console.log("selectedSizes:", selectedSizes);*/
-
     return (
         <div className="Add-New-Product-Departament">
-            <div className="heading-AddNewProduct">
-                <div className="col-image">
-                    <img onClick={handleNavigate} src={imgProduct} alt="img-Product" />
-                    <p>Add New Product</p>
+            <>
+                <div className="heading-AddNewProduct">
+                    <div className="col-image">
+                        <img onClick={handleNavigate} src={imgProduct} alt="img-Product" />
+                        <p>Add New Product</p>
+                    </div>
                 </div>
-            </div>
-            <div
-                className="submit-col"
-                onClick={async () => {
-                    await AddNewProduct();
-                }}
-            >
-                <SubmitButton />
-            </div>
-            <div className="all-content-addnew-product">
-                <div className="content-Product-Submit" style={{ display: "flex", flexDirection: "column", marginTop: "0px" }}>
-                    <div className="Name-Description-Col">
-                        <form action="">
-                            <div className="col-Name">
-                                <label>Name</label>
-                                <input
-                                    onFocus={() => setTitle("")}
-                                    onBlur={() => setTitle("Title")}
-                                    onChange={(e) => setName(e.target.value)}
-                                    type="text"
-                                    placeholder={Title}
-                                />
-                            </div>
-                            <div className="col-Description">
-                                <label>Description</label>
-                                <input
-                                    onFocus={() => setDescription("")}
+                <div
+                    className="submit-col"
+                    onClick={async () => {
+                        await AddNewProduct();
+                    }}
+                >
+                    <SubmitButton />
+                </div>
+                <div className="all-content-addnew-product">
+                    <div className="content-Product-Submit" style={{ display: "flex", flexDirection: "column", marginTop: "0px" }}>
+                        <div className="Name-Description-Col">
+                            <form action="">
+                                <div className="col-Name">
+                                    <label>Name</label>
+                                    <input
+                                        onFocus={() => setTitle("")}
+                                        onBlur={() => setTitle("Title")}
+                                        onChange={(e) => setName(e.target.value)}
+                                        type="text"
+                                        placeholder={Title}
+                                    />
+                                </div>
+                                <div className="col-Description">
+                                    <label>Description</label>
+                                    <input
+                                        onFocus={() => setDescription("")}
+                                        onChange={(e) => {
+                                            setDescription(e.target.value)
+                                        }}
+                                        type="text"
+                                        placeholder={Description}
+                                    />
+                                </div>
+                            </form>
+                            <div className="content-checkbox" style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                                <input type="checkbox"
+                                    checked={checked}
                                     onChange={(e) => {
-                                        setDescription(e.target.value)
+                                        setChecked(e.target.checked)
                                     }}
-                                    type="text"
-                                    placeholder={Description}
-                                />
+                                    style={{ cursor: "pointer", width: "20px", height: "20px" }} />
+                                {checked ?
+                                    <span style={{ textTransform: "capitalize" }}>has bar</span>
+                                    :
+                                    <span style={{ textTransform: "capitalize" }}>no bar</span>
+                                }
                             </div>
-                        </form>
-                        <div className="content-checkbox" style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-                            <input type="checkbox"
-                                checked={checked}
-                                onChange={(e) => {
-                                    setChecked(e.target.checked)
-                                }}
-                                style={{ cursor: "pointer", width: "20px", height: "20px" }} />
-                            {checked ?
-                                <span style={{ textTransform: "capitalize" }}>has bar</span>
-                                :
-                                <span style={{ textTransform: "capitalize" }}>no bar</span>
-                            }
-                        </div>
-                        <div className="col-Raw-Material">
-                            <h3>Raw Material</h3>
-                            <div className="material">
-                                {allmaterials.length === 0 ? (
-                                    <h3>Loading Data ...</h3>
-                                ) : (
-                                    allmaterials.map((material) => (
-                                        <p
-                                            key={material.id}
-                                            className={`material-item ${selectedMaterials.includes(material.id) ? "selected" : ""}`}
-                                            onClick={() => handleSelectMaterial(material.id)}
-                                        >
-                                            {material.name}
-                                        </p>
-                                    ))
-                                )}
+                            <div className="col-Raw-Material">
+                                <h3>Raw Material</h3>
+                                <div className="material">
+                                    {allmaterials.length === 0 ? (
+                                        <h3>Loading Data ...</h3>
+                                    ) : (
+                                        allmaterials.map((material) => (
+                                            <p
+                                                key={material.id}
+                                                className={`material-item ${selectedMaterials.includes(material.id) ? "selected" : ""}`}
+                                                onClick={() => handleSelectMaterial(material.id)}
+                                            >
+                                                {material.name}
+                                            </p>
+                                        ))
+                                    )}
+                                </div>
+                            </div>
+                            <div className="col-all-categories col-Raw-Material" style={{ marginTop: "0px" }}>
+                                <h3>Category</h3>
+                                <div className="material">
+                                    {categories.length === 0 ? (
+                                        <h3>Loading Data ...</h3>
+                                    ) : (
+                                        categories.map((category) => (
+                                            <p
+                                                style={{ width: "fit-content", paddingLeft: "20px", paddingRight: "20px" }}
+                                                key={category.id}
+                                                className={`material-item ${selectedCategories.includes(category.id) ? "selected" : ""}`}
+                                                onClick={() => handleSelectCategory(category.id)}
+                                            >
+                                                {category.name}
+                                            </p>
+                                        ))
+                                    )}
+                                </div>
                             </div>
                         </div>
-                        <div className="col-all-categories col-Raw-Material" style={{ marginTop: "0px" }}>
-                            <h3>Category</h3>
-                            <div className="material">
-                                {categories.length === 0 ? (
-                                    <h3>Loading Data ...</h3>
-                                ) : (
-                                    categories.map((category) => (
-                                        <p
-                                            style={{ width: "fit-content", paddingLeft: "20px", paddingRight: "20px" }}
-                                            key={category.id}
-                                            className={`material-item ${selectedCategories.includes(category.id) ? "selected" : ""}`}
-                                            onClick={() => handleSelectCategory(category.id)}
-                                        >
-                                            {category.name}
-                                        </p>
-                                    ))
-                                )}
+                        <div className="Colors-Sizes-Col">
+                            <div className="Colors-Departament">
+                                <h3>Colors</h3>
+                                <div className="ALL-Col-Colors">
+                                    {allColors.length === 0 ? (
+                                        <h3>Loading Data ...</h3>
+                                    ) : (
+                                        allColors.map((color) => (
+                                            <div
+                                                key={color.id}
+                                                className={`color-item onclick-btn ${selectedColors.includes(color.id) ? "selected" : ""}`}
+                                                onClick={() => handleSelectColor(color.id)}
+                                            >
+                                                <li style={{ backgroundColor: color.hex_code }}></li>
+                                                <p className="selected">{color.name}</p>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="Sizes-Departament">
+                                <h3>Sizes</h3>
+                                <div className="ALL-Col-Sizes">
+                                    {allSizes.length === 0 ? (
+                                        <h3>Loading Data ...</h3>
+                                    ) : (
+                                        allSizes.map((size) => (
+                                            <p
+                                                key={size.id}
+                                                className={`size-item ${selectedSizes.includes(size.id) ? "selected" : ""}`}
+                                                onClick={() => handleSelectSize(size.id)}
+                                            >
+                                                {size.value} {size.unit}
+                                            </p>
+                                        ))
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className="Colors-Sizes-Col">
-                        <div className="Colors-Departament">
-                            <h3>Colors</h3>
-                            <div className="ALL-Col-Colors">
-                                {allColors.length === 0 ? (
-                                    <h3>Loading Data ...</h3>
-                                ) : (
-                                    allColors.map((color) => (
-                                        <div
-                                            key={color.id}
-                                            className={`color-item onclick-btn ${selectedColors.includes(color.id) ? "selected" : ""}`}
-                                            onClick={() => handleSelectColor(color.id)}
-                                        >
-                                            <li style={{ backgroundColor: color.hex_code }}></li>
-                                            <p className="selected">{color.name}</p>
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                        <div className="all-select-images all-main-images-product" style={{ maxHeight: "100%", marginBottom: "20px" }}>
+                            <div className="col-one">
+                                <div className="select-Image-Product">
+                                    <div className="content-image">
+                                        <input type="file" onChange={handleImageChange1} name="img-Product" />
+                                        <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
+                                        <p>Select Main Image</p>
+                                        {image1 && (
+                                            <img
+                                                className="img-upload-small"
+                                                src={URL.createObjectURL(image1)}
+                                                alt="Uploaded"
+                                                style={{
+                                                    position: "absolute",
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    objectFit: "contain"
+                                                }}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-one">
+                                <div className="select-Image-Product">
+                                    <div className="content-image">
+                                        <input type="file" onChange={handleImageChange2} name="img-Product" />
+                                        <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
+                                        <p>Select Image</p>
+                                        {image2 && (
+                                            <img
+                                                className="img-upload-small"
+                                                src={URL.createObjectURL(image2)}
+                                                alt="Uploaded"
+                                                style={{
+                                                    position: "absolute",
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    objectFit: "contain"
+                                                }}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-one">
+                                <div className="select-Image-Product">
+                                    <div className="content-image">
+                                        <input type="file" onChange={handleImageChange3} name="img-Product" />
+                                        <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
+                                        <p>Select Image</p>
+                                        {image3 && (
+                                            <img
+                                                className="img-upload-small"
+                                                src={URL.createObjectURL(image3)}
+                                                alt="Uploaded"
+                                                style={{
+                                                    position: "absolute",
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    objectFit: "contain"
+                                                }}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-one">
+                                <div className="select-Image-Product">
+                                    <div className="content-image">
+                                        <input type="file" onChange={handleImageChange4} name="img-Product" />
+                                        <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
+                                        <p>Select Image</p>
+                                        {image4 && (
+                                            <img
+                                                className="img-upload-small"
+                                                src={URL.createObjectURL(image4)}
+                                                alt="Uploaded"
+                                                style={{
+                                                    position: "absolute",
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    objectFit: "contain"
+                                                }}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-one">
+                                <div className="select-Image-Product">
+                                    <div className="content-image">
+                                        <input type="file" onChange={handleImageChange5} name="img-Product" />
+                                        <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
+                                        <p>Select Image</p>
+                                        {image5 && (
+                                            <img
+                                                className="img-upload-small"
+                                                src={URL.createObjectURL(image5)}
+                                                alt="Uploaded"
+                                                style={{
+                                                    position: "absolute",
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    objectFit: "contain"
+                                                }}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-one">
+                                <div className="select-Image-Product">
+                                    <div className="content-image">
+                                        <input type="file" onChange={handleImageChange6} name="img-Product" />
+                                        <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
+                                        <p>Select Image</p>
+                                        {image6 && (
+                                            <img
+                                                className="img-upload-small"
+                                                src={URL.createObjectURL(image6)}
+                                                alt="Uploaded"
+                                                style={{
+                                                    position: "absolute",
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    objectFit: "contain"
+                                                }}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {selectedSizesData.map((size) => (
+                            <div
+                                key={size.id}
+                                className="all-select-images images-sizes"
+                                style={{ display: "flex", flexDirection: "column", gap: "20px", Width: "fit-content", marginRight: "40px" }}
+                            >
+                                {/* 🔹 لو checked = false (نفس شغلك القديم) */}
+                                {!checked && (
+                                    <>
+                                        <div className="col-heading">
+                                            <p>{size.value} {size.unit}</p>
+                                            <p>Images Without Bar</p>
                                         </div>
-                                    ))
+
+                                        <div style={{ display: "flex", flexWrap: "wrap" }}>
+                                            {[0, 1, 2, 3, 4, 5].map((i) => (
+                                                <div className="col-one" key={i}>
+                                                    <div className="select-Image-Product">
+                                                        <div className="content-image">
+                                                            <input
+                                                                type="file"
+                                                                onChange={(e) =>
+                                                                    handleSizeImageChange(
+                                                                        size.id,
+                                                                        "without_bar",
+                                                                        i,
+                                                                        e.target.files[0]
+                                                                    )
+                                                                }
+                                                            />
+                                                            <img src={imgSelect} alt="img-Select" />
+                                                            <p>Select Image</p>
+
+                                                            {sizeImages[size.id]?.without_bar?.[i] && (
+                                                                <img
+                                                                    className="img-upload-small"
+                                                                    src={URL.createObjectURL(
+                                                                        sizeImages[size.id].without_bar[i]
+                                                                    )}
+                                                                    alt="Uploaded"
+                                                                />
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
+
+                                {/* 🔹 لو checked = true */}
+                                {checked && (
+                                    <>
+                                        {/* WITH BAR */}
+                                        <div className="col-heading">
+                                            <p>{size.value} {size.unit}</p>
+                                            <p>Images With Bar</p>
+                                        </div>
+
+                                        <div style={{ display: "flex", flexWrap: "wrap" }}>
+                                            {[0, 1, 2, 3, 4, 5].map((i) => (
+                                                <div className="col-one" key={`with-${i}`}>
+                                                    <div className="select-Image-Product">
+                                                        <div className="content-image">
+                                                            <input
+                                                                type="file"
+                                                                onChange={(e) =>
+                                                                    handleSizeImageChange(
+                                                                        size.id,
+                                                                        "with_bar",
+                                                                        i,
+                                                                        e.target.files[0]
+                                                                    )
+                                                                }
+                                                            />
+                                                            <img src={imgSelect} alt="img-Select" />
+                                                            <p>Select Image</p>
+
+                                                            {sizeImages[size.id]?.with_bar?.[i] && (
+                                                                <img
+                                                                    className="img-upload-small"
+                                                                    src={URL.createObjectURL(
+                                                                        sizeImages[size.id].with_bar[i]
+                                                                    )}
+                                                                    alt="Uploaded"
+                                                                />
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        {/* WITHOUT BAR */}
+                                        <div className="col-heading">
+                                            <p>{size.value} {size.unit}</p>
+                                            <p>Images Without Bar</p>
+                                        </div>
+
+                                        <div style={{ display: "flex", flexWrap: "wrap" }}>
+                                            {[0, 1, 2, 3, 4, 5].map((i) => (
+                                                <div className="col-one" key={`without-${i}`}>
+                                                    <div className="select-Image-Product">
+                                                        <div className="content-image">
+                                                            <input
+                                                                type="file"
+                                                                onChange={(e) =>
+                                                                    handleSizeImageChange(
+                                                                        size.id,
+                                                                        "without_bar",
+                                                                        i,
+                                                                        e.target.files[0]
+                                                                    )
+                                                                }
+                                                            />
+                                                            <img src={imgSelect} alt="img-Select" />
+                                                            <p>Select Image</p>
+
+                                                            {sizeImages[size.id]?.without_bar?.[i] && (
+                                                                <img
+                                                                    className="img-upload-small"
+                                                                    src={URL.createObjectURL(
+                                                                        sizeImages[size.id].without_bar[i]
+                                                                    )}
+                                                                    alt="Uploaded"
+                                                                />
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </>
                                 )}
                             </div>
-                        </div>
+                        ))}
 
-                        <div className="Sizes-Departament">
-                            <h3>Sizes</h3>
-                            <div className="ALL-Col-Sizes">
-                                {allSizes.length === 0 ? (
-                                    <h3>Loading Data ...</h3>
-                                ) : (
-                                    allSizes.map((size) => (
-                                        <p
-                                            key={size.id}
-                                            className={`size-item ${selectedSizes.includes(size.id) ? "selected" : ""}`}
-                                            onClick={() => handleSelectSize(size.id)}
-                                        >
-                                            {size.value} {size.unit}
-                                        </p>
-                                    ))
-                                )}
-                            </div>
-                        </div>
+
                     </div>
                 </div>
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                    <div className="all-select-images all-main-images-product" style={{ maxHeight: "100%", marginBottom: "20px" }}>
-                        <div className="col-one">
-                            <div className="select-Image-Product">
-                                <div className="content-image">
-                                    <input type="file" onChange={handleImageChange1} name="img-Product" />
-                                    <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
-                                    <p>Select Main Image</p>
-                                    {image1 && (
-                                        <img
-                                            className="img-upload-small"
-                                            src={URL.createObjectURL(image1)}
-                                            alt="Uploaded"
-                                            style={{
-                                                position: "absolute",
-                                                width: "100%",
-                                                height: "100%",
-                                                objectFit: "contain"
-                                            }}
-                                        />
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-one">
-                            <div className="select-Image-Product">
-                                <div className="content-image">
-                                    <input type="file" onChange={handleImageChange2} name="img-Product" />
-                                    <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
-                                    <p>Select Image</p>
-                                    {image2 && (
-                                        <img
-                                            className="img-upload-small"
-                                            src={URL.createObjectURL(image2)}
-                                            alt="Uploaded"
-                                            style={{
-                                                position: "absolute",
-                                                width: "100%",
-                                                height: "100%",
-                                                objectFit: "contain"
-                                            }}
-                                        />
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-one">
-                            <div className="select-Image-Product">
-                                <div className="content-image">
-                                    <input type="file" onChange={handleImageChange3} name="img-Product" />
-                                    <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
-                                    <p>Select Image</p>
-                                    {image3 && (
-                                        <img
-                                            className="img-upload-small"
-                                            src={URL.createObjectURL(image3)}
-                                            alt="Uploaded"
-                                            style={{
-                                                position: "absolute",
-                                                width: "100%",
-                                                height: "100%",
-                                                objectFit: "contain"
-                                            }}
-                                        />
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-one">
-                            <div className="select-Image-Product">
-                                <div className="content-image">
-                                    <input type="file" onChange={handleImageChange4} name="img-Product" />
-                                    <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
-                                    <p>Select Image</p>
-                                    {image4 && (
-                                        <img
-                                            className="img-upload-small"
-                                            src={URL.createObjectURL(image4)}
-                                            alt="Uploaded"
-                                            style={{
-                                                position: "absolute",
-                                                width: "100%",
-                                                height: "100%",
-                                                objectFit: "contain"
-                                            }}
-                                        />
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-one">
-                            <div className="select-Image-Product">
-                                <div className="content-image">
-                                    <input type="file" onChange={handleImageChange5} name="img-Product" />
-                                    <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
-                                    <p>Select Image</p>
-                                    {image5 && (
-                                        <img
-                                            className="img-upload-small"
-                                            src={URL.createObjectURL(image5)}
-                                            alt="Uploaded"
-                                            style={{
-                                                position: "absolute",
-                                                width: "100%",
-                                                height: "100%",
-                                                objectFit: "contain"
-                                            }}
-                                        />
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-one">
-                            <div className="select-Image-Product">
-                                <div className="content-image">
-                                    <input type="file" onChange={handleImageChange6} name="img-Product" />
-                                    <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
-                                    <p>Select Image</p>
-                                    {image6 && (
-                                        <img
-                                            className="img-upload-small"
-                                            src={URL.createObjectURL(image6)}
-                                            alt="Uploaded"
-                                            style={{
-                                                position: "absolute",
-                                                width: "100%",
-                                                height: "100%",
-                                                objectFit: "contain"
-                                            }}
-                                        />
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {selectedSizesData.map((size) => (
-                        <div
-                            key={size.id}
-                            className="all-select-images images-sizes"
-                            style={{ display: "flex", flexDirection: "column", gap: "20px", Width: "fit-content", marginRight: "40px" }}
-                        >
-                            {/* 🔹 لو checked = false (نفس شغلك القديم) */}
-                            {!checked && (
-                                <>
-                                    <div className="col-heading">
-                                        <p>{size.value} {size.unit}</p>
-                                        <p>Images Without Bar</p>
-                                    </div>
-
-                                    <div style={{ display: "flex", flexWrap: "wrap" }}>
-                                        {[0, 1, 2, 3, 4, 5].map((i) => (
-                                            <div className="col-one" key={i}>
-                                                <div className="select-Image-Product">
-                                                    <div className="content-image">
-                                                        <input
-                                                            type="file"
-                                                            onChange={(e) =>
-                                                                handleSizeImageChange(
-                                                                    size.id,
-                                                                    "without_bar",
-                                                                    i,
-                                                                    e.target.files[0]
-                                                                )
-                                                            }
-                                                        />
-                                                        <img src={imgSelect} alt="img-Select" />
-                                                        <p>Select Image</p>
-
-                                                        {sizeImages[size.id]?.without_bar?.[i] && (
-                                                            <img
-                                                                className="img-upload-small"
-                                                                src={URL.createObjectURL(
-                                                                    sizeImages[size.id].without_bar[i]
-                                                                )}
-                                                                alt="Uploaded"
-                                                            />
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </>
-                            )}
-
-                            {/* 🔹 لو checked = true */}
-                            {checked && (
-                                <>
-                                    {/* WITH BAR */}
-                                    <div className="col-heading">
-                                        <p>{size.value} {size.unit}</p>
-                                        <p>Images With Bar</p>
-                                    </div>
-
-                                    <div style={{ display: "flex", flexWrap: "wrap" }}>
-                                        {[0, 1, 2, 3, 4, 5].map((i) => (
-                                            <div className="col-one" key={`with-${i}`}>
-                                                <div className="select-Image-Product">
-                                                    <div className="content-image">
-                                                        <input
-                                                            type="file"
-                                                            onChange={(e) =>
-                                                                handleSizeImageChange(
-                                                                    size.id,
-                                                                    "with_bar",
-                                                                    i,
-                                                                    e.target.files[0]
-                                                                )
-                                                            }
-                                                        />
-                                                        <img src={imgSelect} alt="img-Select" />
-                                                        <p>Select Image</p>
-
-                                                        {sizeImages[size.id]?.with_bar?.[i] && (
-                                                            <img
-                                                                className="img-upload-small"
-                                                                src={URL.createObjectURL(
-                                                                    sizeImages[size.id].with_bar[i]
-                                                                )}
-                                                                alt="Uploaded"
-                                                            />
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    {/* WITHOUT BAR */}
-                                    <div className="col-heading">
-                                        <p>{size.value} {size.unit}</p>
-                                        <p>Images Without Bar</p>
-                                    </div>
-
-                                    <div style={{ display: "flex", flexWrap: "wrap" }}>
-                                        {[0, 1, 2, 3, 4, 5].map((i) => (
-                                            <div className="col-one" key={`without-${i}`}>
-                                                <div className="select-Image-Product">
-                                                    <div className="content-image">
-                                                        <input
-                                                            type="file"
-                                                            onChange={(e) =>
-                                                                handleSizeImageChange(
-                                                                    size.id,
-                                                                    "without_bar",
-                                                                    i,
-                                                                    e.target.files[0]
-                                                                )
-                                                            }
-                                                        />
-                                                        <img src={imgSelect} alt="img-Select" />
-                                                        <p>Select Image</p>
-
-                                                        {sizeImages[size.id]?.without_bar?.[i] && (
-                                                            <img
-                                                                className="img-upload-small"
-                                                                src={URL.createObjectURL(
-                                                                    sizeImages[size.id].without_bar[i]
-                                                                )}
-                                                                alt="Uploaded"
-                                                            />
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </>
-                            )}
-                        </div>
-                    ))}
-
-
+                <div className="content-loading" style={{ position: "fixed", zIndex: -1, width: "100%", height: "100%", top: "0", left: 0, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    {loading && <Loading />}
                 </div>
-            </div>
+            </>
         </div>
     );
 }

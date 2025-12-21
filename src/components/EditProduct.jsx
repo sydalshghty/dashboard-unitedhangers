@@ -105,6 +105,7 @@ function EditProduct() {
                 setMainImageId(mainImg?.id || data.product.images[0].id);
                 setMainImagePath(mainImg?.image_path || data.product.images[0].image_path);
             }
+
         } catch (err) {
             console.error(err);
         }
@@ -141,22 +142,6 @@ function EditProduct() {
         }
     };
 
-    /*   const handleImageChange1 = (e) => {
-           if (e.target.files.length > 0) {
-               const file = e.target.files[0];
-               setImage1(file);
-               uploadNewImage(file);
-           }
-       };
-   
-       const handleImageChange2 = (e) => {
-           if (e.target.files.length > 0) {
-               const file = e.target.files[0];
-               setImage2(file);
-               uploadNewImage(file);
-           }
-       };
-   */
     // ---------- Edit function ----------
     const EditProductFunc = async () => {
         // validations
@@ -298,10 +283,9 @@ function EditProduct() {
     useEffect(() => {
         console.log(checked);
     }, [checked])
-    console.log(Product);
+    // console.log(Product);
 
     const sizeImageInputRef = useRef(null);
-
 
     //Edit product
     const [activeSizeId, setActiveSizeId] = useState(null);
@@ -462,6 +446,7 @@ function EditProduct() {
         };
         sizeImageInputRef.current.click();
     };
+
     return (
         <div className="Edit-Product-Departament" style={{ overflow: "hidden" }}>
             <div className="heading-EditProduct">
@@ -588,8 +573,6 @@ function EditProduct() {
                                     ))}
                                 </div>
                             </div>
-
-
                             <div className="col-all-categories col-Raw-Material">
                                 <h3>Category</h3>
                                 <div className="material">
@@ -607,7 +590,6 @@ function EditProduct() {
                                     ))}
                                 </div>
                             </div>
-
                         </div>
                         <div className="Colors-Sizes-Col">
                             <div className="Colors-Departament">
@@ -657,116 +639,6 @@ function EditProduct() {
                                     ))}
                                 </div>
 
-                            </div>
-
-                            {/* ===== SIZE IMAGES SECTION ===== */}
-
-                            <div className="Sizes-Images-Section">
-                                <h2 style={{ fontSize: "22px", marginBottom: "10px" }}>Size Images</h2>
-
-                                {Product.sizes?.map(size => (
-                                    <div key={size.id} className="Size-Block">
-
-                                        <h3 style={{ marginBottom: "10px", fontSize: "18px" }}>
-                                            Size: {size.value} {size.unit}
-                                        </h3>
-
-
-                                        <div className="Size-Images">
-                                            <h4 style={{ fontSize: "15px" }}>With Bar</h4>
-                                            <div className="Images-Grid">
-                                                {Array.from({ length: 6 }).map((_, index) => {
-                                                    const img = size.images_with_bar?.[index];
-
-                                                    return (
-                                                        <div key={index} className="Image-Slot">
-                                                            {img ? (
-                                                                <>
-                                                                    <img src={img.image_path} className="img-product" alt="img-product-size" />
-                                                                    <div className="all-buttons">
-                                                                        <button
-                                                                            className="edit-button"
-                                                                            onClick={() =>
-                                                                                editSizeImage(size.id, img.id, "with_bar")
-                                                                            }
-                                                                        >
-                                                                            <img src={imgEdit} alt="edit-img" />
-                                                                        </button>
-                                                                        <button
-                                                                            className="delete-button"
-                                                                            onClick={() =>
-                                                                                handleDeleteSizeImage(img, size, "with_bar")
-                                                                            }
-                                                                        >
-                                                                            <img src={imgDelete} alt="delete-img" />
-                                                                        </button>
-                                                                    </div>
-                                                                </>
-                                                            ) : (
-                                                                <button
-                                                                    className="add-new-button"
-                                                                    onClick={() =>
-                                                                        addSizeImage(size.id, "with_bar")
-                                                                    }
-                                                                >
-                                                                    <img src={imgSelect} alt="img-select" />
-                                                                    <p>Select new image</p>
-                                                                </button>
-                                                            )}
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
-                                        </div>
-
-
-                                        <div className="Size-Images images-without-bar">
-                                            <h4>Without Bar</h4>
-                                            <div className="Images-Grid">
-                                                {Array.from({ length: 6 }).map((_, index) => {
-                                                    const img = size.images_without_bar?.[index];
-
-                                                    return (
-                                                        <div key={index} className="Image-Slot">
-                                                            {img ? (
-                                                                <>
-                                                                    <img src={img.image_path} alt="img-product" className="img-product" />
-                                                                    <div className="all-buttons">
-                                                                        <button
-                                                                            onClick={() =>
-                                                                                editSizeImage(size.id, img.id, "without_bar")
-                                                                            }
-                                                                        >
-                                                                            <img src={imgEdit} alt="edit-img" />
-                                                                        </button>
-                                                                        <button
-                                                                            onClick={() =>
-                                                                                handleDeleteSizeImage(img, size, "without_bar")
-                                                                            }
-                                                                        >
-                                                                            <img src={imgDelete} alt="delete-img" />
-                                                                        </button>
-                                                                    </div>
-                                                                </>
-                                                            ) : (
-                                                                <button
-                                                                    className="add-new-button"
-                                                                    onClick={() =>
-                                                                        addSizeImage(size.id, "without_bar")
-                                                                    }
-                                                                >
-                                                                    <img src={imgSelect} alt="img-select" />
-                                                                    <p>Select new image</p>
-                                                                </button>
-                                                            )}
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                ))}
                             </div>
 
                             {/* ===== SIZE IMAGES SECTION ===== */}
