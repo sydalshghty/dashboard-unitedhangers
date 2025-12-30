@@ -11,6 +11,7 @@ import Loading from "./Loading";
 import "../css/ProductSubmit.css";
 import { authFetch } from "./authFetch.js";
 import imgSelect from "../images/Vector (2).png";
+import { toast } from "react-toastify";
 import "../css/AddNewProduct.css";
 
 function EditProduct() {
@@ -26,6 +27,7 @@ function EditProduct() {
     const [selectedMaterilas, setSelectedMaterials] = useState([]);
     const [selectedSizes, setSelectedSizes] = useState([]);
     const [selectedColors, setSelectedColors] = useState([]);
+
 
     const [mainImageId, setMainImageId] = useState(null);
     const [mainImagePath, setMainImagePath] = useState("");
@@ -99,6 +101,14 @@ function EditProduct() {
             setSelectedMaterials(data.product.materials.map(mat => mat.id));
             setSelectedSizes(data.product.sizes.map(sz => sz.id));
             setSelectedColors(data.product.colors.map(color => color.id));
+            setColorGroupsData(
+                data.product.color_groups?.map(group => ({
+                    id: group.id,
+                    name: group.name,
+                    color_ids: group.colors.map(c => c.id)
+                })) || []
+            );
+
 
             if (data.product.images?.length > 0) {
                 const mainImg = data.product.images.find(img => img.image_type === 0);
@@ -141,67 +151,6 @@ function EditProduct() {
             console.log(data);
         }
     };
-
-    // ---------- Edit function ----------
-    const EditProductFunc = async () => {
-        // validations
-        if (!Editname) return alert("❌ Please enter product name");
-        if (!selectedCategories.length) return alert("❌ Please select category");
-        if (!selectedColors.length) return alert("❌ Please select color");
-        if (!selectedMaterilas.length) return alert("❌ Please select material");
-        if (!selectedSizes.length) return alert("❌ Please select size");
-
-        // ----- Send all data back, even لو ما تغيرش شيء -----
-        const productData = {
-            name: Editname,
-            category_ids: selectedCategories,
-            color_ids: selectedColors,
-            material_ids: selectedMaterilas,
-            size_ids: selectedSizes,
-            can_has_bar: checked,
-            description: Editdescription
-        };
-
-
-        const formData = new FormData();
-        formData.append("product_data", JSON.stringify(productData));
-        sizesForNewImages.forEach((sizeObj, sizeIndex) => {
-            // صور بدون بار
-            sizeObj.imageWithoutBarSlot?.forEach((file, imgIndex) => {
-                formData.append(`size[${sizeIndex}][image_without_bar][${imgIndex}]`, file);
-            });
-
-            // صور مع بار
-            sizeObj.imageWithBarSlot?.forEach((file, imgIndex) => {
-                formData.append(`size[${sizeIndex}][image_with_bar][${imgIndex}]`, file);
-            });
-        });
-
-        try {
-            const response = await authFetch(
-                `https://united-hanger-2025.up.railway.app/api/v2/products/${ProductID}/edit`,
-                {
-                    method: "PUT",
-                    headers: { Authorization: `Bearer ${token}` },
-                    body: formData
-                }
-            );
-
-            const data = await response.json();
-
-            if (response.ok) {
-                alert("✔ Product Updated Successfully");
-                navigate("/Products");
-            } else {
-                console.log(data);
-                alert("❌ Error updating product");
-            }
-        } catch (error) {
-            console.error(error);
-            alert("❌ Something went wrong while updating the product");
-        }
-    };
-
 
     const uploadNewImage = async (file) => {
         const formData = new FormData();
@@ -447,6 +396,209 @@ function EditProduct() {
         sizeImageInputRef.current.click();
     };
 
+    // console.log(Product);
+
+    //update colors group
+    const [idGroup, setIdGroup] = useState("");
+    const [selectedColorsGroups, setSelectedColorsGroups] = useState([]);
+    const [nameGroup, setNameGroup] = useState("");
+
+    //update color groups
+
+    const [colorGroupsData, setColorGroupsData] = useState([]);
+
+    const handleGroupNameChange = (groupId, value) => {
+        setColorGroupsData(prev =>
+            prev.map(group =>
+                group.id === groupId
+                    ? { ...group, name: value }
+                    : group
+            )
+        );
+    };
+
+    const toggleColorInGroup = (groupId, colorId) => {
+        setColorGroupsData(prev =>
+            prev.map(group => {
+                if (group.id !== groupId) return group;
+
+                const exists = group.color_ids.includes(colorId);
+
+                return {
+                    ...group,
+                    color_ids: exists
+                        ? group.color_ids.filter(id => id !== colorId)
+                        : [...group.color_ids, colorId]
+                };
+            })
+        );
+    };
+
+    const EditProductFunc = async () => {
+        // validations
+        if (!Editname) return alert("❌ Please enter product name");
+        if (!selectedCategories.length) return alert("❌ Please select category");
+        if (!selectedColors.length) return alert("❌ Please select color");
+        if (!selectedMaterilas.length) return alert("❌ Please select material");
+        if (!selectedSizes.length) return alert("❌ Please select size");
+
+        // ----- Send all data back, even لو ما تغيرش شيء -----
+        const productData = {
+            name: Editname,
+            category_ids: selectedCategories,
+            color_ids: selectedColors,
+            material_ids: selectedMaterilas,
+            size_ids: selectedSizes,
+            can_has_bar: checked,
+            description: Editdescription,
+            color_groups: colorGroupsData
+        };
+
+        const formData = new FormData();
+        formData.append("product_data", JSON.stringify(productData));
+        sizesForNewImages.forEach((sizeObj, sizeIndex) => {
+            // صور بدون بار
+            sizeObj.imageWithoutBarSlot?.forEach((file, imgIndex) => {
+                formData.append(`size[${sizeIndex}][image_without_bar][${imgIndex}]`, file);
+            });
+
+            // صور مع بار
+            sizeObj.imageWithBarSlot?.forEach((file, imgIndex) => {
+                formData.append(`size[${sizeIndex}][image_with_bar][${imgIndex}]`, file);
+            });
+        });
+
+        try {
+            const response = await authFetch(
+                `https://united-hanger-2025.up.railway.app/api/v2/products/${ProductID}/edit`,
+                {
+                    method: "PUT",
+                    headers: { Authorization: `Bearer ${token}` },
+                    body: formData
+                }
+            );
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("✔ Product Updated Successfully");
+                navigate("/Products");
+            } else {
+                console.log(data);
+                alert("❌ Error updating product");
+            }
+        } catch (error) {
+            console.error(error);
+            alert("❌ Something went wrong while updating the product");
+        }
+        finally {
+            console.log("COLOR GROUPS:", colorGroupsData);
+
+        }
+    };
+
+    //update color groups images
+    const deleteColorGroupImage = async (imageId, colorGroupId) => {
+        const isConfirmed = window.confirm("Are you sure you want to delete the image?");
+        if (!isConfirmed) return;
+
+        const formData = new FormData();
+        formData.append("delete", 1);
+        formData.append("image_id", imageId);
+        formData.append("entity_type", "product_color_group");
+        formData.append("color_group_id", colorGroupId);
+
+        try {
+            const res = await authFetch(
+                `https://united-hanger-2025.up.railway.app/api/products/${Product.id}/image`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: formData
+                }
+            );
+
+            const data = await res.json();
+
+            if (res.ok) {
+                setProduct(prev => ({
+                    ...prev,
+                    color_groups: prev.color_groups.map(g =>
+                        g.id === colorGroupId
+                            ? { ...g, images: g.images.filter(img => img.id !== imageId) }
+                            : g
+                    )
+                }));
+
+                alert("✅ Image deleted successfully");
+            } else {
+                alert(data.message || "❌ Failed to delete image");
+            }
+        } catch (err) {
+            console.error(err);
+            alert("❌ An error occurred while deleting");
+        }
+    };
+
+    const fileInputRefs = useRef({});
+    const [tempImages, setTempImages] = useState({});
+
+    const updateColorGroupImage = async (file, imageId, groupId) => {
+        try {
+            if (!file) return alert("Please select an image!");
+            if (!Product?.id) return alert("Product ID is not available!");
+
+            const formData = new FormData();
+            formData.append("delete", 0); // <-- مهم جداً
+            formData.append("image", file);
+            formData.append("image_id", imageId);
+            formData.append("entity_type", "product_color_group");
+            formData.append("color_group_id", groupId);
+
+            const res = await authFetch(
+                `https://united-hanger-2025.up.railway.app/api/products/${Product.id}/image`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: formData
+                }
+            );
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                console.error("Server error:", data);
+                return alert("Failed to update image: " + data.message);
+            }
+
+            console.log("Image updated successfully:", data);
+            alert("✅ Image updated successfully");
+
+            // تحديث الصورة في الـ UI
+            setProduct(prev => ({
+                ...prev,
+                color_groups: prev.color_groups.map(group =>
+                    group.id === groupId
+                        ? {
+                            ...group,
+                            images: group.images.map(img =>
+                                img.id === imageId ? { ...img, image_path: data.image_path } : img
+                            )
+                        }
+                        : group
+                )
+            }));
+
+        } catch (err) {
+            console.error("Error in updateColorGroupImage:", err);
+            toast.error("❌ An error occurred while updating image");
+        }
+    };
+
     return (
         <div className="Edit-Product-Departament" style={{ overflow: "hidden" }}>
             <div className="heading-EditProduct">
@@ -590,6 +742,84 @@ function EditProduct() {
                                     ))}
                                 </div>
                             </div>
+                            {Product.color_groups.length === 0 ?
+                                ""
+                                :
+                                <>
+                                    {colorGroupsData.map((group, index) => (
+                                        <div className="colors-groups-section Colors-Sizes-Col" key={group.id} style={{ width: "100%" }}>
+
+                                            <h3 style={{ marginBottom: "15px" }}>Color Groups</h3>
+
+                                            <div className="all-information-group Colors-Departament" style={{ boxShadow: "0 4px 10px rgba(0,0,0,.15)", padding: 15, borderRadius: "10px", marginBottom: "20px" }}>
+
+                                                {/* اسم الجروب */}
+                                                <div className="col-name" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                                                    <label htmlFor="">Group Name</label>
+                                                    <input
+                                                        style={{ width: "100%", height: "45px", backgroundColor: "#f6f6f6", border: "none", outline: "none", padding: "10px", marginBottom: "20px" }}
+                                                        type="text"
+                                                        value={group.name}
+                                                        onChange={(e) =>
+                                                            handleGroupNameChange(group.id, e.target.value)
+                                                        }
+                                                    />
+                                                </div>
+
+                                                {/* الألوان */}
+                                                <div className="ALL-Col-Colors">
+                                                    {allColors.map(color => (
+                                                        <div
+                                                            style={{ minWidth: "fit-content" }}
+                                                            key={color.id}
+                                                            className={`material-item ${group.color_ids.includes(color.id) ? "selected" : ""
+                                                                }`}
+                                                            onClick={() =>
+                                                                toggleColorInGroup(group.id, color.id)
+                                                            }
+                                                        >
+                                                            <li style={{ backgroundColor: color.hex_code }}></li>
+                                                            <p className={`material-item ${group.color_ids.includes(color.id) ? "selected" : ""
+                                                                }`}>{color.name}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+
+                                                {/* صور الجروب */}
+                                                <div className="all-images-groups" style={{ boxShadow: "0 4px 10px rgba(0,0,0,.15)", padding: 15, borderRadius: "10px", marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                                                    {Product.color_groups
+                                                        ?.find(g => g.id === group.id)
+                                                        ?.images?.map(img => (
+                                                            <div key={img.id} style={{ width: "160px", height: "120px", backgroundColor: "#f6f6f6", position: "relative", borderRadius: "10px" }}>
+                                                                <img src={img.image_path} style={{ position: "absolute", width: "100%", height: "100%", objectFit: "contain" }} />
+                                                                <div className="edit-delete-btns" style={{ position: "absolute", display: "flex", gap: "10px", top: "10px", justifyContent: "space-between", width: "100%", paddingLeft: "10px", paddingRight: "10px" }}>
+                                                                    <img src={imgEdit} alt="edit-img"
+                                                                        onClick={() => fileInputRefs.current[img.id].click()}
+                                                                        style={{ width: "30px", cursor: "pointer" }}
+                                                                    />
+                                                                    <img src={imgDelete} alt="delete-img"
+                                                                        onClick={() =>
+                                                                            deleteColorGroupImage(img.id, group.id)
+                                                                        }
+                                                                        style={{ width: "30px", cursor: "pointer" }} />
+                                                                </div>
+
+                                                                <input
+                                                                    type="file"
+                                                                    accept="image/*"
+                                                                    hidden
+                                                                    ref={el => { if (el) fileInputRefs.current[img.id] = el; }}
+                                                                    onChange={(e) => updateColorGroupImage(e.target.files[0], img.id, group.id)}
+                                                                />
+                                                            </div>
+                                                        ))}
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </>
+                            }
                         </div>
                         <div className="Colors-Sizes-Col">
                             <div className="Colors-Departament">
@@ -598,6 +828,7 @@ function EditProduct() {
                                 <div className="ALL-Col-Colors">
                                     {allColors.map(color => (
                                         <div key={color.id}
+                                            style={{ minWidth: "160px" }}
                                             className={`material-item ${selectedColors.includes(color.id) ? "selected" : ""}`}
                                             onClick={() => setSelectedColors(prev =>
                                                 prev.includes(color.id)
@@ -640,7 +871,6 @@ function EditProduct() {
                                 </div>
 
                             </div>
-
                             {/* ===== SIZE IMAGES SECTION ===== */}
                             <div className="Sizes-Images-Section">
                                 <h2 style={{ fontSize: "22px", marginBottom: "10px" }}>Size Images</h2>
@@ -842,8 +1072,6 @@ function EditProduct() {
                                     </div>
                                 </div>
                             )}
-
-
                         </div>
                     </div>
                 </>
@@ -859,6 +1087,4 @@ function EditProduct() {
 }
 
 export default EditProduct;
-
-
 

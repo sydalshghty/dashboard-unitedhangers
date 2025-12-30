@@ -8,7 +8,7 @@ import { token } from "./token";
 import "../css/cssNewProduct.css";
 import { authFetch } from "./authFetch.js";
 import Loading from "./Loading.jsx";
-
+import { FaPlus } from "react-icons/fa6";
 function AddNewProduct() {
     const [loading, setLoading] = useState(false);
 
@@ -180,7 +180,137 @@ function AddNewProduct() {
 
     const [sizeImages, setSizeImages] = useState({});
 
+
+    useEffect(() => {
+        console.log(checked)
+    }, [checked]);
+    //
+
+    const handleSizeImageChange = (sizeId, type, index, file) => {
+        setSizeImages(prev => ({
+            ...prev,
+            [sizeId]: {
+                ...prev[sizeId],
+                [type]: {
+                    ...(prev[sizeId]?.[type] || {}),
+                    [index]: file
+                }
+            }
+        }));
+    };
+
+    const selectedSizesData = allSizes.filter(size =>
+        selectedSizes.includes(size.id)
+    );
+
+    //Color Groups
+    const [groups, setGroups] = useState(true);
+    const [colorsGroup, setColorsGroup] = useState([]);
+    const [nameGroup, setNameGroup] = useState("");
+    const handleSelectColorGroup = (id) => {
+        setColorsGroup((prev) =>
+            prev.includes(id)
+                ? prev.filter((colorId) => colorId !== id)
+                : [...prev, id]
+        );
+    };
+
+    const [colorImage1, setColorImage1] = useState(null);
+    const [colorImage2, setColorImage2] = useState(null);
+    const [colorImage3, setColorImage3] = useState(null);
+    const [colorImage4, setColorImage4] = useState(null);
+    const [colorImage5, setColorImage5] = useState(null);
+    const [colorImage6, setColorImage6] = useState(null);
+
+    const handleColorImageChange1 = (event) => {
+        const file = event.target.files[0];
+        if (file) setColorImage1(file);
+    };
+    const handleColorImageChange2 = (event) => {
+        const file = event.target.files[0];
+        if (file) setColorImage2(file);
+    };
+    const handleColorImageChange3 = (event) => {
+        const file = event.target.files[0];
+        if (file) setColorImage3(file);
+    };
+    const handleColorImageChange4 = (event) => {
+        const file = event.target.files[0];
+        if (file) setColorImage4(file);
+    };
+    const handleColorImageChange5 = (event) => {
+        const file = event.target.files[0];
+        if (file) setColorImage5(file);
+    };
+    const handleColorImageChange6 = (event) => {
+        const file = event.target.files[0];
+        if (file) setColorImage6(file);
+    };
+    //update color groups
+    const [colorGroups, setColorGroups] = useState([]);
+    const addColorGroup = () => {
+        setColorGroups(prev => [
+            ...prev,
+            {
+                name: "",
+                color_ids: [],
+                images: []
+            }
+        ]);
+    };
+
+    const handleGroupNameChange = (index, value) => {
+        setColorGroups(prev => {
+            const updated = [...prev];
+            updated[index].name = value;
+            return updated;
+        });
+    };
+
+    const handleGroupColorToggle = (groupIndex, colorId) => {
+        setColorGroups(prev => {
+            const updated = [...prev];
+            const colors = updated[groupIndex].color_ids;
+
+            updated[groupIndex].color_ids = colors.includes(colorId)
+                ? colors.filter(id => id !== colorId)
+                : [...colors, colorId];
+
+            return updated;
+        });
+    };
+
+    const handleGroupImageChange = (groupIndex, file) => {
+        if (!file) return;
+
+        setColorGroups(prev => {
+            const updated = [...prev];
+            updated[groupIndex].images.push(file);
+            return updated;
+        });
+    };
+
+
     const AddNewProduct = async () => {
+        for (let i = 0; i < colorGroups.length; i++) {
+            const group = colorGroups[i];
+
+            if (!group.name.trim()) {
+                alert(`⚠️ Group ${i + 1}: name is required`);
+                return;
+            }
+
+            if (group.color_ids.length === 0) {
+                alert(`⚠️ Group ${i + 1}: select at least one color`);
+                return;
+            }
+
+            if (group.images.length === 0) {
+                alert(`⚠️ Group ${i + 1}: upload at least one image`);
+                return;
+            }
+        }
+
         // 🔹 1. لازم Category
         if (selectedCategories.length === 0) {
             alert("⚠️ Please select at least one category");
@@ -227,10 +357,27 @@ function AddNewProduct() {
             material_ids: selectedMaterials,
             category_ids: selectedCategories,
             description: Description,
-            can_has_bar: checked
+            can_has_bar: checked,
         };
 
         const formData = new FormData();
+
+        if (colorGroups.length > 0) {
+            productData.color_groups = colorGroups.map(group => ({
+                name: group.name,
+                color_ids: group.color_ids
+            }));
+        }
+
+        colorGroups.forEach((group, groupIndex) => {
+            group.images.forEach((img, imgIndex) => {
+                formData.append(
+                    `color_group[${groupIndex}][image][${imgIndex}]`,
+                    img
+                );
+            });
+        });
+
         formData.append("product_data", JSON.stringify(productData));
         if (image1) formData.append("images", image1);
         if (image2) formData.append("images", image2);
@@ -289,28 +436,6 @@ function AddNewProduct() {
             setLoading(false);
         }
     };
-
-    useEffect(() => {
-        console.log(checked)
-    }, [checked]);
-    //
-
-    const handleSizeImageChange = (sizeId, type, index, file) => {
-        setSizeImages(prev => ({
-            ...prev,
-            [sizeId]: {
-                ...prev[sizeId],
-                [type]: {
-                    ...(prev[sizeId]?.[type] || {}),
-                    [index]: file
-                }
-            }
-        }));
-    };
-
-    const selectedSizesData = allSizes.filter(size =>
-        selectedSizes.includes(size.id)
-    );
 
     return (
         <div className="Add-New-Product-Departament">
@@ -445,6 +570,84 @@ function AddNewProduct() {
                                     )}
                                 </div>
                             </div>
+
+                            <div className="colors-groups-content" style={{ marginBottom: "20px", letterSpacing: "0.5px" }}>
+                                <div className="heading-group" style={{ display: "flex", gap: "10px", alignItems: "center", marginBottom: "20px" }}>
+                                    <FaPlus style={{ cursor: "pointer", fontSize: "25px" }}
+                                        onClick={addColorGroup}
+                                    />
+                                    <h3>Color Groups</h3>
+                                </div>
+                                {colorGroups.map((group, groupIndex) => (
+                                    <div
+                                        key={groupIndex}
+                                        className="information-colors-group Colors-Departament"
+                                        style={{ boxShadow: "0 4px 10px rgba(0,0,0,.15)", padding: 15, borderRadius: "10px", marginBottom: "20px" }}
+                                    >
+
+                                        {/* Group Name */}
+                                        <div className="content-group-name" style={{ display: "flex", flexDirection: "column", gap: "5px", marginBottom: "20px" }}>
+                                            <label>Group Name</label>
+                                            <input
+                                                style={{ border: "none", outline: "none", backgroundColor: "#f6f6f6", height: "40px", padding: "10px" }}
+                                                type="text"
+                                                placeholder="Enter Group Name"
+                                                value={group.name}
+                                                onChange={(e) =>
+                                                    handleGroupNameChange(groupIndex, e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                        {/* Colors */}
+                                        <div className="ALL-Col-Colors">
+                                            {allColors.map(color => (
+                                                <div
+                                                    key={color.id}
+                                                    className={`color-item ${group.color_ids.includes(color.id) ? "selected" : ""
+                                                        }`}
+                                                    onClick={() =>
+                                                        handleGroupColorToggle(groupIndex, color.id)
+                                                    }
+                                                >
+                                                    <li style={{ backgroundColor: color.hex_code }} />
+                                                    <p>{color.name}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        {/* Images */}
+                                        <div className="all-images">
+                                            <div className="col-select-img" style={{ backgroundColor: "#f6f6f6", maxWidth: "160px", borderRadius: "10px", textAlign: "center", padding: "15px", position: "relative" }}>
+                                                <img src={imgSelect} alt="img-select" style={{ width: "50px", cursor: "pointer" }} />
+                                                <p>select Image</p>
+                                                <input
+                                                    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", opacity: 0, cursor: "pointer" }}
+                                                    type="file"
+                                                    onChange={(e) =>
+                                                        handleGroupImageChange(groupIndex, e.target.files[0])
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                        {/* Preview */}
+                                        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                                            {group.images.map((img, i) => (
+                                                <div className="col-image" style={{ backgroundColor: "#f6f6f6", padding: "10px", marginTop: "20px", width: "110px", height: "80px", borderRadius: "8px" }}>
+                                                    <img
+                                                        style={{ width: "100%", height: "100%", objectFit: "contain", display: "flex", justifyContent: "center", alignItems: "center" }}
+                                                        key={i}
+                                                        src={URL.createObjectURL(img)}
+                                                        width={60}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                    </div>
+                                ))}
+
+                            </div>
+
                         </div>
                     </div>
                     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -452,9 +655,15 @@ function AddNewProduct() {
                             <div className="col-one">
                                 <div className="select-Image-Product">
                                     <div className="content-image">
-                                        <input type="file" onChange={handleImageChange1} name="img-Product" />
-                                        <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
-                                        <p>Select Main Image</p>
+                                        {image1 ?
+                                            ""
+                                            :
+                                            <>
+                                                <input type="file" onChange={handleImageChange1} name="img-Product" />
+                                                <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
+                                                <p>Select Main Image</p>
+                                            </>
+                                        }
                                         {image1 && (
                                             <img
                                                 className="img-upload-small"
@@ -474,9 +683,16 @@ function AddNewProduct() {
                             <div className="col-one">
                                 <div className="select-Image-Product">
                                     <div className="content-image">
-                                        <input type="file" onChange={handleImageChange2} name="img-Product" />
-                                        <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
-                                        <p>Select Image</p>
+                                        {image2 ?
+                                            ""
+                                            :
+                                            <>
+                                                <input type="file" onChange={handleImageChange2} name="img-Product" />
+                                                <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
+                                                <p>Select Image</p>
+                                            </>
+                                        }
+
                                         {image2 && (
                                             <img
                                                 className="img-upload-small"
@@ -496,9 +712,16 @@ function AddNewProduct() {
                             <div className="col-one">
                                 <div className="select-Image-Product">
                                     <div className="content-image">
-                                        <input type="file" onChange={handleImageChange3} name="img-Product" />
-                                        <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
-                                        <p>Select Image</p>
+                                        {
+                                            image3 ?
+                                                ""
+                                                :
+                                                <>
+                                                    <input type="file" onChange={handleImageChange3} name="img-Product" />
+                                                    <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
+                                                    <p>Select Image</p>
+                                                </>
+                                        }
                                         {image3 && (
                                             <img
                                                 className="img-upload-small"
@@ -518,9 +741,15 @@ function AddNewProduct() {
                             <div className="col-one">
                                 <div className="select-Image-Product">
                                     <div className="content-image">
-                                        <input type="file" onChange={handleImageChange4} name="img-Product" />
-                                        <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
-                                        <p>Select Image</p>
+                                        {image4 ?
+                                            ""
+                                            :
+                                            <>
+                                                <input type="file" onChange={handleImageChange4} name="img-Product" />
+                                                <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
+                                                <p>Select Image</p>
+                                            </>
+                                        }
                                         {image4 && (
                                             <img
                                                 className="img-upload-small"
@@ -540,9 +769,15 @@ function AddNewProduct() {
                             <div className="col-one">
                                 <div className="select-Image-Product">
                                     <div className="content-image">
-                                        <input type="file" onChange={handleImageChange5} name="img-Product" />
-                                        <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
-                                        <p>Select Image</p>
+                                        {image5 ?
+                                            ""
+                                            :
+                                            <>
+                                                <input type="file" onChange={handleImageChange5} name="img-Product" />
+                                                <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
+                                                <p>Select Image</p>
+                                            </>
+                                        }
                                         {image5 && (
                                             <img
                                                 className="img-upload-small"
@@ -562,9 +797,15 @@ function AddNewProduct() {
                             <div className="col-one">
                                 <div className="select-Image-Product">
                                     <div className="content-image">
-                                        <input type="file" onChange={handleImageChange6} name="img-Product" />
-                                        <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
-                                        <p>Select Image</p>
+                                        {image6 ?
+                                            ""
+                                            :
+                                            <>
+                                                <input type="file" onChange={handleImageChange6} name="img-Product" />
+                                                <img src={imgSelect} alt="img-Select" style={{ objectFit: "contain" }} />
+                                                <p>Select Image</p>
+                                            </>
+                                        }
                                         {image6 && (
                                             <img
                                                 className="img-upload-small"
@@ -718,8 +959,6 @@ function AddNewProduct() {
                                 )}
                             </div>
                         ))}
-
-
                     </div>
                 </div>
                 <div className="content-loading" style={{ position: "fixed", zIndex: -1, width: "100%", height: "100%", top: "0", left: 0, display: "flex", justifyContent: "center", alignItems: "center" }}>
